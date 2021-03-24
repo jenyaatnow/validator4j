@@ -1,6 +1,6 @@
 package com.validator4j.core;
 
-import java.util.Objects;
+import com.validator4j.util.Checks;
 
 final class ValidationErrorImpl implements ValidationError {
 
@@ -9,8 +9,8 @@ final class ValidationErrorImpl implements ValidationError {
     private final String message;
 
     ValidationErrorImpl(final String path, final String message) {
-        Objects.requireNonNull(path, "Error path must not be null");
-        Objects.requireNonNull(path, "Error message must not be null");
+        Checks.nonNull(path, "path");
+        Checks.nonNull(message, "message");
 
         this.path = path;
         this.message = message;

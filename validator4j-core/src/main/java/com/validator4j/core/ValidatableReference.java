@@ -1,6 +1,7 @@
 package com.validator4j.core;
 
-import java.util.Objects;
+import com.validator4j.util.Checks;
+
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -17,8 +18,8 @@ public abstract class ValidatableReference<Target> {
     private final Consumer<String> reject;
 
     protected ValidatableReference(final String path, final Target value, final ErrorsContainer errors) {
-        Objects.requireNonNull(path, "Value path must not be null");
-        Objects.requireNonNull(errors, "Errors container must not be null");
+        Checks.nonNull(path, "path");
+        Checks.nonNull(errors, "errors");
 
         this.path = path;
         this.value = value;
@@ -31,7 +32,7 @@ public abstract class ValidatableReference<Target> {
     }
 
     public void validate(final BiConsumer<Target, Consumer<String>> validationHandler) {
-        Objects.requireNonNull(path, "Validation handler must not be null");
+        Checks.nonNull(validationHandler, "validationHandler");
 
         validationHandler.accept(value, reject);
     }

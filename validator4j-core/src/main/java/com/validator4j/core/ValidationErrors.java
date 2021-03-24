@@ -1,8 +1,9 @@
 package com.validator4j.core;
 
+import com.validator4j.util.Checks;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 final class ValidationErrors implements ErrorsContainer {
 
@@ -10,7 +11,7 @@ final class ValidationErrors implements ErrorsContainer {
 
     @Override
     public void add(final ValidationError error) {
-        Objects.requireNonNull(error, "Error path must not be null");
+        Checks.nonNull(error, "error");
 
         errors.add(error);
     }

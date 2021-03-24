@@ -2,7 +2,7 @@ package com.validator4j.codegen;
 
 enum TestTemplateResource {
 
-    SINGLE_VALUE_GETTER("getter/single-value-getter.java", TemplateResource.SINGLE_VALUE_GETTER);
+    SINGLE_VALUE_GETTER("getter/single-value-getter", TemplateResource.SINGLE_VALUE_GETTER);
 
     private final String relativePath;
 

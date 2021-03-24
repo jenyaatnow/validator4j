@@ -1,5 +1,7 @@
 package com.validator4j.codegen;
 
+import com.validator4j.util.Checks;
+
 import java.io.IOException;
 
 final class ResourceReader {

@@ -6,6 +6,7 @@ enum OutcomeTemplatePlaceholderType implements TemplatePlaceholder {
     FIELDS("outcome.fields"),
     GETTERS("outcome.getters"),
     IMPORT_VALIDATOR4J("outcome.import.validator4j"),
+    IMPORT_JAVA("outcome.import.java"),
     IMPORT_ROOT("outcome.import.root"),
     IMPORT_NESTED("outcome.import.nested"),
     PACKAGE("outcome.package"),

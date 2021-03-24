@@ -7,8 +7,7 @@ import com.validator4j.core.ValidatableObject;
 import com.validator4j.core.ValidatableReference;
 import com.validator4j.sample.source.NestedPojo;
 import com.validator4j.sample.source.TestPojo;
-
-import java.util.Objects;
+import com.validator4j.util.Checks;
 
 public final class VTestPojo extends ValidatableObject<TestPojo> {
 
@@ -26,7 +25,7 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
     public VTestPojo(final TestPojo value) {
         this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
 
-        Objects.requireNonNull(value, "Validated object must not be null");
+        Checks.nonNull(value, "value");
     }
 
     /**

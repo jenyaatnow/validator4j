@@ -1,6 +1,8 @@
 package ${outcome.package};
-    ${outcome.
-    .root}
+
+import ${outcome.import.validator4j};
+import ${outcome.import.java};
+import ${outcome.import.root};
 
 
 public final class V${outcome.type.root}Collection extends ValidatableCollection<${outcome.type.root}, V${outcome.type.root}> {

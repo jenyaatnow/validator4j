@@ -1,9 +1,10 @@
 package com.validator4j.core;
 
+import com.validator4j.util.Checks;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -31,7 +32,7 @@ public class ValidatableCollection<T, VT extends ValidatableReference<T>> extend
     }
 
     public void forEach(final Consumer<VT> validationHandler) {
-        Objects.requireNonNull(path, "Validator handler must not be null");
+        Checks.nonNull(validationHandler, "validationHandler");
 
         value.forEach(validationHandler);
     }
@@ -41,7 +42,7 @@ public class ValidatableCollection<T, VT extends ValidatableReference<T>> extend
     private static <T1, VT1 extends ValidatableReference<T1>> List<VT1> toValidatableList(
         final Collection<T1> source, final String path, final BiFunction<String, T1, VT1> valueMapper
     ) {
-        Objects.requireNonNull(valueMapper, "Value mapper must not be null");
+        Checks.nonNull(valueMapper, "valueMapper");
 
         return Optional.ofNullable(source)
             .map(s -> {
