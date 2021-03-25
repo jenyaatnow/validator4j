@@ -9,9 +9,10 @@ class VGetterGeneratorTest {
 
     @Test
     void generateVIntegerGetter() {
-        final var actual = getterGenerator.generateVIntegerGetter("id");
+        final var getterDetails = new GetterDetails("getId", TestPojo.class);
+        final var actual = getterGenerator.generate(ValidatableType.INTEGER, getterDetails);
         final var expected = ResourceReader
-            .readResourceAsString(TestTemplateResource.SINGLE_VALUE_GETTER.getRelativePath());
+            .readResourceAsString(TestTemplateResource.SIMPLE_VALUE_GETTER.getRelativePath());
 
         Assertions.assertEquals(expected, actual);
     }

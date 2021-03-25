@@ -1,0 +1,1 @@
+this.${unit.assignment.field-name} = new ${unit.assignment.v-type}(appendPath("${unit.assignment.field-name}"), safeGet(value, ${unit.assignment.source-type}::${unit.assignment.source-getter-name}), errors);

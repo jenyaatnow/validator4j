@@ -7,8 +7,8 @@ enum GetterTemplatePlaceholderType implements TemplatePlaceholder {
     RETURN_TYPE("unit.getter.return-type"),
 
     /**
-     * Getter name suffix placeholder (get[NamePart]). */
-    METHOD_NAME_SUFFIX("unit.getter.method-name-suffix"),
+     * Getter name. */
+    NAME("unit.getter.name"),
 
     /**
      * Getter return field name. */

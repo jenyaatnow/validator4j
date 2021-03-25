@@ -18,16 +18,12 @@ class PlaceholderResolver {
         );
     }
 
-    public String resolve(final String source,
-                          final String replacement,
-                          final TemplatePlaceholder placeholderName)
-    {
+    public String resolve(final String source, final PlaceholderReplacement placeholderReplacement) {
         Checks.nonNull(source, "source");
-        Checks.nonNull(replacement, "replacement");
-        Checks.nonNull(placeholderName, "placeholderName");
+        Checks.nonNull(placeholderReplacement, "placeholderReplacement");
 
-        final var placeholder = buildPlaceholder(placeholderName);
-        final var result = source.replaceAll(placeholder, replacement);
+        final var placeholder = buildPlaceholder(placeholderReplacement.getPlaceholder());
+        final var result = source.replaceAll(placeholder, placeholderReplacement.getReplacement());
         return result;
     }
 
