@@ -9,7 +9,7 @@ final class ImportGenerator extends AbstractCodeGenerator {
     public String generate(final Class<?> clazz) {
         Checks.nonNull(clazz, "clazz");
 
-        final var template = ResourceReader.instance.readResourceAsString(TemplateResource.IMPORT);
+        final var template = getTemplate(TemplateResource.IMPORT);
         final var placeholderReplacement =
             new PlaceholderReplacement(ImportTemplatePlaceholderType.FULLY_QUALIFIED_CLASS_NAME, clazz.getName());
         final var result = resolvePlaceholders(template, Stream.of(placeholderReplacement));

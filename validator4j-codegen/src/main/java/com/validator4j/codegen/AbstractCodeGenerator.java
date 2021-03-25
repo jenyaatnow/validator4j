@@ -25,4 +25,10 @@ abstract class AbstractCodeGenerator {
 
         return placeholderResolver.resolve(template, resolvers);
     }
+
+    final String getTemplate(final TemplateResource templateResource) {
+        Checks.nonNull(templateResource, "templateResource");
+
+        return ResourceReader.instance.readResourceAsString(templateResource);
+    }
 }

@@ -1,0 +1,43 @@
+package com.validator4j.sample.generated;
+
+import com.validator4j.codegen.TestPojo;
+import com.validator4j.core.ErrorsContainer;
+import com.validator4j.core.ValidatableInteger;
+import com.validator4j.core.ValidatableObject;
+import com.validator4j.core.ValidatableReference;
+import com.validator4j.util.Checks;
+
+
+public final class VTestPojo extends ValidatableObject<TestPojo> {
+
+    private final ValidatableInteger id;
+
+    private final ValidatableInteger anotherId;
+
+    /**
+     * Root object constructor.
+     */
+    public VTestPojo(final TestPojo value) {
+        this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
+
+        Checks.nonNull(value, "value");
+    }
+
+    /**
+     * Nested object constructor.
+     */
+    VTestPojo(final String path, final TestPojo value, final ErrorsContainer errors) {
+        super(path, value, errors);
+
+        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), errors);
+        this.anotherId = new ValidatableInteger(appendPath("anotherId"), safeGet(value, TestPojo::getAnotherId), errors);
+    }
+
+    public ValidatableInteger getId() {
+        return id;
+    }
+
+    public ValidatableInteger getAnotherId() {
+        return anotherId;
+    }
+}

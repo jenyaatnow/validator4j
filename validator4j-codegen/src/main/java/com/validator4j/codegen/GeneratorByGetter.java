@@ -4,11 +4,12 @@ import com.validator4j.util.Checks;
 
 import java.util.stream.Stream;
 
-abstract class CodeUnitGenerator extends AbstractCodeGenerator {
+abstract class GeneratorByGetter extends AbstractCodeGenerator {
 
-    public String generate(final ValidatableType vType, final GetterDetails getterDetails) {
-        Checks.nonNull(vType, "vType");
+    public String generate(final GetterDetails getterDetails) {
         Checks.nonNull(getterDetails, "getterDetails");
+
+        final var vType = getterDetails.getVType();
 
         switch (vType) {
             case INTEGER: return resolvePlaceholders(vType, getterDetails);
@@ -21,7 +22,7 @@ abstract class CodeUnitGenerator extends AbstractCodeGenerator {
     }
 
     private String resolvePlaceholders(final ValidatableType vType, final GetterDetails getterDetails) {
-        final var template = ResourceReader.instance.readResourceAsString(supplyTemplateResource());
+        final var template = getTemplate(supplyTemplateResource());
 
         final var placeholderReplacements = supplyPlaceholderReplacements(vType, getterDetails);
         final var result = resolvePlaceholders(template, placeholderReplacements);

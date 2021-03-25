@@ -2,7 +2,7 @@ package com.validator4j.codegen;
 
 import java.util.stream.Stream;
 
-final class VAssignmentGenerator extends CodeUnitGenerator {
+final class AssignmentGenerator extends GeneratorByGetter {
 
     @Override
     TemplateResource supplyTemplateResource() {

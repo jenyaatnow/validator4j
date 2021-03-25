@@ -2,6 +2,7 @@ package com.validator4j.codegen;
 
 enum TestTemplateResource implements ResourcePath {
 
+    V_OBJECT("outcome/v-object", TemplateResource.V_OBJECT),
     IMPORT("unit/import", TemplateResource.IMPORT),
     SIMPLE_V_FIELD("unit/simple-v-field", TemplateResource.SIMPLE_V_FIELD),
     SIMPLE_ASSIGNMENT("unit/simple-assignment", TemplateResource.SIMPLE_ASSIGNMENT),

@@ -2,6 +2,8 @@ package com.validator4j.codegen;
 
 enum TemplateResource implements ResourcePath {
 
+    V_OBJECT("outcome/v-object-template"),
+    V_COLLECTION("outcome/v-collection-template"),
     IMPORT("unit/import-template"),
     SIMPLE_V_FIELD("unit/simple-v-field-template"),
     SIMPLE_ASSIGNMENT("unit/simple-assignment-template"),

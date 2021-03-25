@@ -2,7 +2,7 @@ package com.validator4j.codegen;
 
 enum OutcomeTemplatePlaceholderType implements TemplatePlaceholder {
 
-    CONSTRUCTOR_ASSIGNMENTS("outcome.constructor.assignments"),
+    ASSIGNMENTS("outcome.constructor.assignments"),
     FIELDS("outcome.fields"),
     GETTERS("outcome.getters"),
     IMPORTS("outcome.imports"),

@@ -5,7 +5,7 @@ ${outcome.imports}
 
 public final class V${outcome.type.root} extends ValidatableObject<${outcome.type.root}> {
 
-    ${outcome.fields}
+${outcome.fields}
 
     /**
      * Root object constructor.
@@ -22,8 +22,8 @@ public final class V${outcome.type.root} extends ValidatableObject<${outcome.typ
     V${outcome.type.root}(final String path, final ${outcome.type.root} value, final ErrorsContainer errors) {
         super(path, value, errors);
 
-        ${outcome.constructor.assignments}
+${outcome.constructor.assignments}
     }
 
-    ${outcome.getters}
+${outcome.getters}
 }

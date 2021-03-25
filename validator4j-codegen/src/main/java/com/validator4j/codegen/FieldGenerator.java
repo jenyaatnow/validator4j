@@ -2,7 +2,7 @@ package com.validator4j.codegen;
 
 import java.util.stream.Stream;
 
-final class VFieldGenerator extends CodeUnitGenerator {
+final class FieldGenerator extends GeneratorByGetter {
 
     @Override
     TemplateResource supplyTemplateResource() {

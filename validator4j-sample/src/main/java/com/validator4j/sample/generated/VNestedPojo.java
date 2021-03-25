@@ -26,7 +26,7 @@ public final class VNestedPojo extends ValidatableObject<NestedPojo> {
     /**
      * Nested object constructor.
      */
-    public VNestedPojo(final String path, final NestedPojo value, final ErrorsContainer errors) {
+    VNestedPojo(final String path, final NestedPojo value, final ErrorsContainer errors) {
         super(path, value, errors);
 
         this.id = new ValidatableInteger(appendPath("id"), safeGet(value, NestedPojo::getId), errors);
