@@ -2,12 +2,9 @@ package com.validator4j.codegen;
 
 import com.validator4j.util.Checks;
 
-import java.util.function.Function;
 import java.util.stream.Stream;
 
-abstract class CodeUnitGenerator {
-
-    private final PlaceholderResolver placeholderResolver = new PlaceholderResolver();
+abstract class CodeUnitGenerator extends AbstractCodeGenerator {
 
     public String generate(final ValidatableType vType, final GetterDetails getterDetails) {
         Checks.nonNull(vType, "vType");
@@ -24,18 +21,11 @@ abstract class CodeUnitGenerator {
     }
 
     private String resolvePlaceholders(final ValidatableType vType, final GetterDetails getterDetails) {
-        final var relativePath = supplyTemplateResource().getRelativePath();
-        final var template = ResourceReader.readResourceAsString(relativePath);
+        final var template = ResourceReader.instance.readResourceAsString(supplyTemplateResource());
 
-        final var resolvers = supplyPlaceholderReplacements(vType, getterDetails)
-            .<Function<String, String>>map(placeholderRepl ->
-                tmpl -> placeholderResolver.resolve(
-                    tmpl,
-                    new PlaceholderReplacement(placeholderRepl.getPlaceholder(), placeholderRepl.getReplacement())
-                )
-            );
-
-        return placeholderResolver.resolve(template, resolvers);
+        final var placeholderReplacements = supplyPlaceholderReplacements(vType, getterDetails);
+        final var result = resolvePlaceholders(template, placeholderReplacements);
+        return result;
     }
 
     abstract TemplateResource supplyTemplateResource();
