@@ -3,7 +3,7 @@ package com.validator4j.codegen;
 enum AssignmentTemplatePlaceholderType implements TemplatePlaceholder {
 
     /**
-     * Assigned implementation of {@link com.validator4j.core.ValidatableReference}. */
+     * Assigned implementation of {@link com.validator4j.core.ValidatableReference} placeholder. */
     V_TYPE("unit.assignment.v-type"),
 
     /**
@@ -15,7 +15,7 @@ enum AssignmentTemplatePlaceholderType implements TemplatePlaceholder {
     SOURCE_GETTER_NAME("unit.assignment.source-getter-name"),
 
     /**
-     * Field return field name. */
+     * Field return field name placeholder. */
     FIELD_NAME("unit.assignment.field-name");
 
     private final String value;

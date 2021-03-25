@@ -2,8 +2,9 @@ package com.validator4j.codegen;
 
 enum TestTemplateResource {
 
-    SIMPLE_ASSIGNMENT("getter/simple-assignment", TemplateResource.SIMPLE_ASSIGNMENT),
-    SIMPLE_VALUE_GETTER("getter/simple-value-getter", TemplateResource.SIMPLE_VALUE_GETTER);
+    SIMPLE_V_FIELD("unit/simple-v-field", TemplateResource.SIMPLE_V_FIELD),
+    SIMPLE_ASSIGNMENT("unit/simple-assignment", TemplateResource.SIMPLE_ASSIGNMENT),
+    SIMPLE_VALUE_GETTER("unit/simple-value-getter", TemplateResource.SIMPLE_VALUE_GETTER);
 
     private final String relativePath;
 

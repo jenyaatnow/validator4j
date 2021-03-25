@@ -5,7 +5,7 @@ import com.validator4j.util.Checks;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-abstract class CodeGenerator {
+abstract class CodeUnitGenerator {
 
     private final PlaceholderResolver placeholderResolver = new PlaceholderResolver();
 

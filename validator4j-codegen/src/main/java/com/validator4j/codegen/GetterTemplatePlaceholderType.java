@@ -7,11 +7,11 @@ enum GetterTemplatePlaceholderType implements TemplatePlaceholder {
     RETURN_TYPE("unit.getter.return-type"),
 
     /**
-     * Getter name. */
+     * Getter name placeholder. */
     NAME("unit.getter.name"),
 
     /**
-     * Getter return field name. */
+     * Getter return field name placeholder. */
     FIELD_NAME("unit.getter.field-name");
 
     private final String value;
