@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import static com.validator4j.codegen.CodeGenUtils.LINE_SEPARATOR;
 
 
-final class VObjectGenerator extends AbstractCodeGenerator {
+public final class VObjectGenerator extends AbstractCodeGenerator {
 
     private final AssignmentGenerator assignmentGenerator = new AssignmentGenerator();
     private final FieldGenerator fieldGenerator = new FieldGenerator();
@@ -18,7 +18,7 @@ final class VObjectGenerator extends AbstractCodeGenerator {
     public String generate(final SourceSpec sourceSpec) {
         Checks.nonNull(sourceSpec, "sourceSpec");
 
-        final var sourceType = sourceSpec.getSourceClass().getSimpleName();
+        final var sourceType = sourceSpec.getSourceType().getSimpleName().toString();
         final var fields = generateFields(sourceSpec);
         final var getters = generateGetters(sourceSpec);
         final var assignments = generateAssignments(sourceSpec);

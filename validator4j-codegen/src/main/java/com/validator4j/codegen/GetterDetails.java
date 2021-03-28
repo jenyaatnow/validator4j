@@ -2,15 +2,17 @@ package com.validator4j.codegen;
 
 import com.validator4j.util.Checks;
 
+import javax.lang.model.element.TypeElement;
+
 public class GetterDetails {
 
     private final String name;
     private final ValidatableType vType;
-    private final Class<?> enclosingType;
+    private final TypeElement enclosingType;
 
     public GetterDetails(final String name,
                          final ValidatableType vType,
-                         final Class<?> enclosingType)
+                         final TypeElement enclosingType)
     {
         Checks.nonNull(name, "name");
         Checks.nonNull(vType, "vType");
@@ -29,7 +31,7 @@ public class GetterDetails {
         return vType;
     }
 
-    public Class<?> getEnclosingType() {
+    public TypeElement getEnclosingType() {
         return enclosingType;
     }
 

@@ -18,7 +18,8 @@ final class AssignmentGenerator extends GeneratorByGetter {
             new PlaceholderReplacement(AssignmentTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName()),
             new PlaceholderReplacement(AssignmentTemplatePlaceholderType.SOURCE_GETTER_NAME, getterDetails.getName()),
             new PlaceholderReplacement(
-                AssignmentTemplatePlaceholderType.SOURCE_TYPE, getterDetails.getEnclosingType().getSimpleName()
+                AssignmentTemplatePlaceholderType.SOURCE_TYPE,
+                getterDetails.getEnclosingType().getSimpleName().toString()
             )
         );
     }

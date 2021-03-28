@@ -1,5 +1,6 @@
 package com.validator4j.codegen;
 
+import com.validator4j.codegen.model.TypeElementImpl;
 import com.validator4j.core.ValidatableInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +22,11 @@ class GeneratorByGetterTest {
     }
 
     private static Stream<Arguments> codeGeneratorTestProvider() {
-        final var getterDetails = new GetterDetails("getId", ValidatableType.INTEGER, TestPojo.class);
+        final var getterDetails = new GetterDetails(
+            "getId",
+            ValidatableType.INTEGER,
+            TypeElementImpl.of(TestPojo.class)
+        );
 
         return Stream.of(
             Arguments.of(
@@ -41,7 +46,7 @@ class GeneratorByGetterTest {
 
             // TODO move to another test class
             Arguments.of(
-                (Supplier<String>) () -> new ImportGenerator().generate(ValidatableInteger.class),
+                (Supplier<String>) () -> new ImportGenerator().generate(TypeElementImpl.of(ValidatableInteger.class)),
                 TestTemplateResource.IMPORT
             )
         );

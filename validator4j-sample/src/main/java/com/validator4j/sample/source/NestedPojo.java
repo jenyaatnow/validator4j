@@ -1,10 +1,7 @@
 package com.validator4j.sample.source;
 
-import com.validator4j.core.Validatable;
-
 import java.util.Collection;
 
-@Validatable
 public class NestedPojo {
 
     private final Integer id;
