@@ -1,5 +1,8 @@
 package com.validator4j.codegen;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 enum TemplateResource implements ResourcePath {
 
     V_OBJECT("outcome/v-object-template"),
@@ -10,10 +13,6 @@ enum TemplateResource implements ResourcePath {
     SIMPLE_VALUE_GETTER("unit/simple-value-getter-template");
 
     private final String relativePath;
-
-    TemplateResource(final String relativePath) {
-        this.relativePath = relativePath;
-    }
 
     @Override
     public String getRelativePath() {

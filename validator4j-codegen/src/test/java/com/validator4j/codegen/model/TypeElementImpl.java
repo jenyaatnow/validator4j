@@ -1,6 +1,6 @@
 package com.validator4j.codegen.model;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -20,9 +20,7 @@ public class TypeElementImpl implements TypeElement {
 
     private final Class<?> clazz;
 
-    private TypeElementImpl(final Class<?> clazz) {
-        Checks.nonNull(clazz, "clazz");
-
+    private TypeElementImpl(@NonNull final Class<?> clazz) {
         this.clazz = clazz;
     }
 

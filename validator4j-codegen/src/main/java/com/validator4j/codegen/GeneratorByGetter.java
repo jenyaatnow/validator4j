@@ -1,14 +1,12 @@
 package com.validator4j.codegen;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import java.util.stream.Stream;
 
 abstract class GeneratorByGetter extends AbstractCodeGenerator {
 
-    public String generate(final GetterDetails getterDetails) {
-        Checks.nonNull(getterDetails, "getterDetails");
-
+    public String generate(@NonNull final GetterDetails getterDetails) {
         final var vType = getterDetails.getVType();
 
         switch (vType) {
@@ -21,7 +19,9 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
         }
     }
 
-    private String resolvePlaceholders(final ValidatableType vType, final GetterDetails getterDetails) {
+    private String resolvePlaceholders(@NonNull final ValidatableType vType,
+                                       @NonNull final GetterDetails getterDetails)
+    {
         final var template = getTemplate(supplyTemplateResource());
 
         final var placeholderReplacements = supplyPlaceholderReplacements(vType, getterDetails);

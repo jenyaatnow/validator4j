@@ -10,6 +10,8 @@ import com.validator4j.core.ValidatableInteger;
 import com.validator4j.core.ValidatableObject;
 import com.validator4j.core.ValidatableReference;
 import com.validator4j.util.Checks;
+import lombok.NonNull;
+import lombok.SneakyThrows;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -18,7 +20,6 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +30,9 @@ import java.util.stream.Collectors;
 public class ValidatableProcessor extends AbstractProcessor {
 
     @Override
-    public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
+    public boolean process(@NonNull final Set<? extends TypeElement> annotations,
+                           @NonNull final RoundEnvironment roundEnv)
+    {
         bootstrap();
 
         annotations.stream()
@@ -44,12 +47,12 @@ public class ValidatableProcessor extends AbstractProcessor {
         ElementUtils.initProcessingEnv(processingEnv);
     }
 
-    private void generate(final RoundEnvironment roundEnv) {
+    private void generate(@NonNull final RoundEnvironment roundEnv) {
         roundEnv.getElementsAnnotatedWith(Validatable.class)
             .forEach(element -> generate((TypeElement) element));
     }
 
-    private void generate(final TypeElement annotatedClass) {
+    private void generate(@NonNull final TypeElement annotatedClass) {
         final var sourceSpec = new SourceSpec(
             getPackageName(annotatedClass),
             getImports(annotatedClass),
@@ -63,7 +66,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         write(annotatedClass.getSimpleName(), sourceContent);
     }
 
-    private Set<TypeElement> getImports(final TypeElement annotatedClass) {
+    private Set<TypeElement> getImports(@NonNull final TypeElement annotatedClass) {
         final var typeElements = ElementUtils.getTypeElements(
             ValidatableObject.class,
             ValidatableReference.class,
@@ -77,7 +80,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         return typeElements;
     }
 
-    private List<GetterDetails> getGetterDetails(TypeElement annotatedClass) {
+    private List<GetterDetails> getGetterDetails(@NonNull final TypeElement annotatedClass) {
         final var getterDetails = annotatedClass.getEnclosedElements().stream()
             .filter(element -> element.getSimpleName().toString().startsWith("get"))
             .map(element ->
@@ -90,7 +93,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         return getterDetails;
     }
 
-    private String getPackageName(TypeElement annotatedClass) {
+    private String getPackageName(@NonNull final TypeElement annotatedClass) {
         final var className = annotatedClass.getQualifiedName().toString();
         String packageName = null;
         int lastDot = className.lastIndexOf('.');
@@ -100,16 +103,12 @@ public class ValidatableProcessor extends AbstractProcessor {
         return packageName;
     }
 
-    private void write(final Name className, final String sourceContent) {
-        try {
-            final var file = processingEnv.getFiler().createSourceFile("V" + className);
+    @SneakyThrows
+    private void write(@NonNull final Name className, @NonNull final String sourceContent) {
+        final var file = processingEnv.getFiler().createSourceFile("V" + className);
 
-            try (final var out = new PrintWriter(file.openWriter())) {
-                out.print(sourceContent);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        try (final var out = new PrintWriter(file.openWriter())) {
+            out.print(sourceContent);
         }
     }
 }

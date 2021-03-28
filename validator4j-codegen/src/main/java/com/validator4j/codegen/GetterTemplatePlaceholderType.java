@@ -1,5 +1,9 @@
 package com.validator4j.codegen;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 enum GetterTemplatePlaceholderType implements TemplatePlaceholder {
 
     /**
@@ -14,14 +18,5 @@ enum GetterTemplatePlaceholderType implements TemplatePlaceholder {
      * Getter return field name placeholder. */
     FIELD_NAME("unit.getter.field-name");
 
-    private final String value;
-
-    GetterTemplatePlaceholderType(final String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
+    @Getter private final String value;
 }

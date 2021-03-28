@@ -1,15 +1,13 @@
 package com.validator4j.codegen;
 
-import com.validator4j.util.Checks;
-
-import java.io.IOException;
+import lombok.NonNull;
+import lombok.SneakyThrows;
 
 final class ResourceReaderImpl implements ResourceReader {
 
+    @SneakyThrows
     @Override
-    public String readResourceAsString(final ResourcePath resourcePath) {
-        Checks.nonNull(resourcePath, "resourcePath");
-
+    public String readResourceAsString(@NonNull final ResourcePath resourcePath) {
         final var relativePath = resourcePath.getRelativePath();
         try (final var inputStream = ResourceReaderImpl.class.getClassLoader().getResourceAsStream(relativePath)) {
             if (inputStream == null) {
@@ -20,8 +18,6 @@ final class ResourceReaderImpl implements ResourceReader {
             final var resourceContent = new String(bytes);
 
             return resourceContent;
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
         }
     }
 }

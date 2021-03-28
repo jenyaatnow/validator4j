@@ -1,6 +1,6 @@
 package com.validator4j.core;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -17,10 +17,10 @@ public abstract class ValidatableReference<Target> {
 
     private final Consumer<String> reject;
 
-    protected ValidatableReference(final String path, final Target value, final ErrorsContainer errors) {
-        Checks.nonNull(path, "path");
-        Checks.nonNull(errors, "errors");
-
+    protected ValidatableReference(@NonNull final String path,
+                                   final Target value,
+                                   @NonNull final ErrorsContainer errors)
+    {
         this.path = path;
         this.value = value;
         this.errors = errors;
@@ -31,9 +31,7 @@ public abstract class ValidatableReference<Target> {
         };
     }
 
-    public void validate(final BiConsumer<Target, Consumer<String>> validationHandler) {
-        Checks.nonNull(validationHandler, "validationHandler");
-
+    public void validate(@NonNull final BiConsumer<Target, Consumer<String>> validationHandler) {
         validationHandler.accept(value, reject);
     }
 }

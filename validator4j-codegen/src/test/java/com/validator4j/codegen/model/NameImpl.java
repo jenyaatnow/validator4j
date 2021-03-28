@@ -1,6 +1,6 @@
 package com.validator4j.codegen.model;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import javax.lang.model.element.Name;
 
@@ -8,8 +8,7 @@ public class NameImpl implements Name {
 
     private final String name;
 
-    NameImpl(final String name) {
-        Checks.nonNull(name, "name");
+    NameImpl(@NonNull final String name) {
         this.name = name;
     }
 

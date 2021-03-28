@@ -1,25 +1,13 @@
 package com.validator4j.codegen;
 
-import com.validator4j.util.Checks;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public class PlaceholderReplacement {
 
-    private final TemplatePlaceholder placeholder;
-    private final String replacement;
-
-    public PlaceholderReplacement(TemplatePlaceholder placeholder, String replacement) {
-        Checks.nonNull(placeholder, "placeholder");
-        Checks.nonNull(replacement, "replacement");
-
-        this.placeholder = placeholder;
-        this.replacement = replacement;
-    }
-
-    public TemplatePlaceholder getPlaceholder() {
-        return placeholder;
-    }
-
-    public String getReplacement() {
-        return replacement;
-    }
+    @NonNull private final TemplatePlaceholder placeholder;
+    @NonNull private final String replacement;
 }

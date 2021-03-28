@@ -1,6 +1,6 @@
 package com.validator4j.codegen;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,9 +15,7 @@ public final class VObjectGenerator extends AbstractCodeGenerator {
     private final GetterGenerator getterGenerator = new GetterGenerator();
     private final ImportGenerator importGenerator = new ImportGenerator();
 
-    public String generate(final SourceSpec sourceSpec) {
-        Checks.nonNull(sourceSpec, "sourceSpec");
-
+    public String generate(@NonNull final SourceSpec sourceSpec) {
         final var sourceType = sourceSpec.getSourceType().getSimpleName().toString();
         final var fields = generateFields(sourceSpec);
         final var getters = generateGetters(sourceSpec);
@@ -36,26 +34,26 @@ public final class VObjectGenerator extends AbstractCodeGenerator {
         return result;
     }
 
-    private String generateAssignments(final SourceSpec sourceSpec) {
+    private String generateAssignments(@NonNull final SourceSpec sourceSpec) {
         return sourceSpec.getGetters().stream()
             .map(getterDetails -> CodeGenUtils
                 .indent(assignmentGenerator.generate(getterDetails), IndentLevel.LEVEL_TWO)
             ).collect(Collectors.joining(LINE_SEPARATOR));
     }
 
-    private String generateFields(final SourceSpec sourceSpec) {
+    private String generateFields(@NonNull final SourceSpec sourceSpec) {
         return sourceSpec.getGetters().stream()
             .map(getterDetails -> CodeGenUtils.indent(fieldGenerator.generate(getterDetails), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(LINE_SEPARATOR + LINE_SEPARATOR));
     }
 
-    private String generateGetters(final SourceSpec sourceSpec) {
+    private String generateGetters(@NonNull final SourceSpec sourceSpec) {
         return sourceSpec.getGetters().stream()
             .map(getterDetails -> CodeGenUtils.indent(getterGenerator.generate(getterDetails), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(LINE_SEPARATOR + LINE_SEPARATOR));
     }
 
-    private String generateImports(final SourceSpec sourceSpec) {
+    private String generateImports(@NonNull final SourceSpec sourceSpec) {
         return sourceSpec.getImports().stream()
             .map(importGenerator::generate)
             .sorted()

@@ -1,5 +1,7 @@
 package com.validator4j.codegen;
 
+import lombok.NonNull;
+
 import java.util.stream.Stream;
 
 final class GetterGenerator extends GeneratorByGetter {
@@ -10,8 +12,8 @@ final class GetterGenerator extends GeneratorByGetter {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(final ValidatableType vType,
-                                                                 final GetterDetails getterDetails)
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final ValidatableType vType,
+                                                                 @NonNull final GetterDetails getterDetails)
     {
         return Stream.of(
             new PlaceholderReplacement(GetterTemplatePlaceholderType.NAME, getterDetails.getName()),

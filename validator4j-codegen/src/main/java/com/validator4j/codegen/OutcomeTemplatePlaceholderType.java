@@ -1,5 +1,9 @@
 package com.validator4j.codegen;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 enum OutcomeTemplatePlaceholderType implements TemplatePlaceholder {
 
     ASSIGNMENTS("outcome.constructor.assignments"),
@@ -9,14 +13,5 @@ enum OutcomeTemplatePlaceholderType implements TemplatePlaceholder {
     PACKAGE("outcome.package"),
     TYPE_ROOT("outcome.type.root");
 
-    private final String value;
-
-    OutcomeTemplatePlaceholderType(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
+    @Getter private final String value;
 }

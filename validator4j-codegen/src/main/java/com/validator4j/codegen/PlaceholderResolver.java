@@ -1,6 +1,6 @@
 package com.validator4j.codegen;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -10,7 +10,7 @@ class PlaceholderResolver {
 
     private static final BinaryOperator<String> NOOP_COMBINER = (a, b) -> null;
 
-    public String resolve(final String template, final Stream<Function<String, String>> resolvers) {
+    public String resolve(@NonNull final String template, @NonNull final Stream<Function<String, String>> resolvers) {
         return resolvers.reduce(
             template,
             (intermediateResult, resolver) -> resolver.apply(intermediateResult),
@@ -18,16 +18,13 @@ class PlaceholderResolver {
         );
     }
 
-    public String resolve(final String source, final PlaceholderReplacement placeholderReplacement) {
-        Checks.nonNull(source, "source");
-        Checks.nonNull(placeholderReplacement, "placeholderReplacement");
-
+    public String resolve(@NonNull final String source, @NonNull final PlaceholderReplacement placeholderReplacement) {
         final var placeholder = buildPlaceholder(placeholderReplacement.getPlaceholder());
         final var result = source.replaceAll(placeholder, placeholderReplacement.getReplacement());
         return result;
     }
 
-    private String buildPlaceholder(final TemplatePlaceholder placeholderName) {
+    private String buildPlaceholder(@NonNull final TemplatePlaceholder placeholderName) {
         return String.format("\\$\\{%s\\}", placeholderName.getValue());
     }
 }

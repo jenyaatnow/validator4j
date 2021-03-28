@@ -1,5 +1,6 @@
 plugins {
     java
+    id("io.freefair.lombok") version("5.3.0")
 }
 
 group = "com.validator4j"
@@ -14,6 +15,7 @@ dependencies {
 
 subprojects {
     apply<JavaPlugin>()
+    apply(plugin = "io.freefair.lombok")
 
     repositories {
         mavenCentral()

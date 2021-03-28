@@ -1,25 +1,23 @@
 package com.validator4j.core;
 
-import com.validator4j.util.Checks;
+import lombok.NonNull;
 
 import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class ValidatableObject<Target> extends ValidatableReference<Target> {
 
-    public ValidatableObject(final String path, final Target value, final ErrorsContainer errors) {
+    public ValidatableObject(@NonNull final String path, final Target value, @NonNull final ErrorsContainer errors) {
         super(path, value, errors);
     }
 
-    protected <Source, Value> Value safeGet(final Source source, final Function<Source, Value> valueExtractor) {
-        Checks.nonNull(valueExtractor, "valueExtractor");
-
+    protected <Source, Value> Value safeGet(final Source source,
+                                            @NonNull final Function<Source, Value> valueExtractor)
+    {
         return Optional.ofNullable(source).map(valueExtractor).orElse(null);
     }
 
-    protected String appendPath(final String pathPart) {
-        Checks.nonNull(pathPart, "pathPart");
-
+    protected String appendPath(@NonNull final String pathPart) {
         return path.equals(PATH_ROOT)
             ? pathPart
             : path + "." + pathPart;
