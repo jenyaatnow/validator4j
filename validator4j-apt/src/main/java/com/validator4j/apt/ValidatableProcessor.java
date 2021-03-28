@@ -3,10 +3,8 @@ package com.validator4j.apt;
 import com.validator4j.codegen.GetterDetails;
 import com.validator4j.codegen.SourceSpec;
 import com.validator4j.codegen.VObjectGenerator;
-import com.validator4j.codegen.ValidatableType;
 import com.validator4j.core.ErrorsContainer;
 import com.validator4j.core.Validatable;
-import com.validator4j.core.ValidatableInteger;
 import com.validator4j.core.ValidatableObject;
 import com.validator4j.core.ValidatableReference;
 import com.validator4j.util.Checks;
@@ -20,6 +18,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ExecutableType;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,7 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private void bootstrap() {
-        ElementUtils.initProcessingEnv(processingEnv);
+        TypeUtils.initProcessingEnv(processingEnv);
     }
 
     private void generate(@NonNull final RoundEnvironment roundEnv) {
@@ -53,11 +52,12 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private void generate(@NonNull final TypeElement annotatedClass) {
+        final var getterDetails = getGetterDetails(annotatedClass);
         final var sourceSpec = new SourceSpec(
             getPackageName(annotatedClass),
-            getImports(annotatedClass),
+            getImports(annotatedClass, getterDetails),
             annotatedClass,
-            getGetterDetails(annotatedClass)
+            getterDetails
         );
 
         final var vObjectGenerator = new VObjectGenerator();
@@ -66,29 +66,39 @@ public class ValidatableProcessor extends AbstractProcessor {
         write(annotatedClass.getSimpleName(), sourceContent);
     }
 
-    private Set<TypeElement> getImports(@NonNull final TypeElement annotatedClass) {
-        final var typeElements = ElementUtils.getTypeElements(
+    private Set<TypeElement> getImports(@NonNull final TypeElement annotatedClassType,
+                                        @NonNull final List<GetterDetails> getterDetails)
+    {
+        final var requiredImportTypes = TypeUtils.getTypeElements(
             ValidatableObject.class,
             ValidatableReference.class,
-            ValidatableInteger.class,
             Checks.class,
             ErrorsContainer.class
         );
 
-        typeElements.add(annotatedClass);
+        final var gettersImportTypes = getterDetails.stream()
+            .map(it -> TypeUtils.getTypeElement(it.getVType().getVClass()))
+            .collect(Collectors.toSet());
 
-        return typeElements;
+        requiredImportTypes.add(annotatedClassType);
+        requiredImportTypes.addAll(gettersImportTypes);
+
+        return requiredImportTypes;
     }
 
     private List<GetterDetails> getGetterDetails(@NonNull final TypeElement annotatedClass) {
         final var getterDetails = annotatedClass.getEnclosedElements().stream()
-            .filter(element -> element.getSimpleName().toString().startsWith("get"))
-            .map(element ->
-                new GetterDetails(
+            .filter(element -> element.getSimpleName().toString().startsWith("get")) // TODO Check getter correctness: method with no args
+            .map(element -> {
+                final var executableType = (ExecutableType) element.asType();
+                final var returnType = executableType.getReturnType();
+
+                return new GetterDetails(
                     element.getSimpleName().toString(),
-                    ValidatableType.INTEGER,
+                    TypeUtils.getVType(returnType),
                     (TypeElement) element.getEnclosingElement()
-                ))
+                );
+            })
             .collect(Collectors.toList());
         return getterDetails;
     }

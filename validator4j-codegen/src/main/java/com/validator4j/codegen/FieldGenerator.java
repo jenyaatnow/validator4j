@@ -16,7 +16,7 @@ final class FieldGenerator extends GeneratorByGetter {
                                                                  @NonNull final GetterDetails getterDetails)
     {
         return Stream.of(
-            new PlaceholderReplacement(FieldTemplatePlaceholderType.V_TYPE, vType.getSimpleName()),
+            new PlaceholderReplacement(FieldTemplatePlaceholderType.V_TYPE, vType.getVTypeSimpleName()),
             new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName())
         );
     }

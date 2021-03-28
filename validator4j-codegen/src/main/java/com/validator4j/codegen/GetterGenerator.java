@@ -18,7 +18,7 @@ final class GetterGenerator extends GeneratorByGetter {
         return Stream.of(
             new PlaceholderReplacement(GetterTemplatePlaceholderType.NAME, getterDetails.getName()),
             new PlaceholderReplacement(GetterTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName()),
-            new PlaceholderReplacement(GetterTemplatePlaceholderType.RETURN_TYPE, vType.getSimpleName())
+            new PlaceholderReplacement(GetterTemplatePlaceholderType.RETURN_TYPE, vType.getVTypeSimpleName())
         );
     }
 }

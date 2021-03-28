@@ -10,8 +10,16 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
         final var vType = getterDetails.getVType();
 
         switch (vType) {
-            case INTEGER: return resolvePlaceholders(vType, getterDetails);
-            // TODO Collections
+            case BOOLEAN:
+            case BYTE:
+            case SHORT:
+            case INTEGER:
+            case LONG:
+            case FLOAT:
+            case DOUBLE:
+            case STRING:
+                return resolvePlaceholders(vType, getterDetails);
+            // TODO Collections, maps
             // TODO User defined types
             // TODO User defined generic types
 

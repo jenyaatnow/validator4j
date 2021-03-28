@@ -16,7 +16,7 @@ final class AssignmentGenerator extends GeneratorByGetter {
                                                                  @NonNull final GetterDetails getterDetails)
     {
         return Stream.of(
-            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.V_TYPE, vType.getSimpleName()),
+            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.V_TYPE, vType.getVTypeSimpleName()),
             new PlaceholderReplacement(AssignmentTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName()),
             new PlaceholderReplacement(AssignmentTemplatePlaceholderType.SOURCE_GETTER_NAME, getterDetails.getName()),
             new PlaceholderReplacement(
