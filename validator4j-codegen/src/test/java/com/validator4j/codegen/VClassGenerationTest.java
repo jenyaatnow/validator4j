@@ -1,6 +1,5 @@
 package com.validator4j.codegen;
 
-import com.validator4j.codegen.model.TypeElementImpl;
 import com.validator4j.core.ErrorsContainer;
 import com.validator4j.core.ValidatableInteger;
 import com.validator4j.core.ValidatableObject;
@@ -9,9 +8,9 @@ import com.validator4j.util.Checks;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 class VClassGenerationTest {
 
@@ -19,28 +18,27 @@ class VClassGenerationTest {
 
     @Test
     void generate() {
-        final var packageName = "com.validator4j.sample.generated";
-        final var sourceClass = TypeElementImpl.of(TestPojo.class);
+        final var enclosingType = TypeDescriptors.getUserType(TestPojo.class);
 
         final var getters = List.of(
-            new GetterDetails("getId", ValidatableType.INTEGER, sourceClass),
-            new GetterDetails("getAnotherId", ValidatableType.INTEGER, sourceClass)
+            new GetterDescriptor("getId", TypeDescriptors.INTEGER, enclosingType),
+            new GetterDescriptor("getAnotherId", TypeDescriptors.INTEGER, enclosingType)
         );
 
-        final var imports = Set.of(
-            ErrorsContainer.class,
-            ValidatableInteger.class,
-            ValidatableObject.class,
-            ValidatableReference.class,
-            TestPojo.class,
-            Checks.class
-        ).stream()
-            .map(TypeElementImpl::of)
-            .collect(Collectors.toSet());
+        final var imports = new HashSet<>(Set.of(
+            new TypeDescriptor(ErrorsContainer.class.getName(), ValidatableType.NON_V_TYPE),
+            new TypeDescriptor(ValidatableInteger.class.getName(), ValidatableType.NON_V_TYPE),
+            new TypeDescriptor(ValidatableObject.class.getName(), ValidatableType.NON_V_TYPE),
+            new TypeDescriptor(ValidatableReference.class.getName(), ValidatableType.NON_V_TYPE),
+            new TypeDescriptor(Checks.class.getName(), ValidatableType.NON_V_TYPE),
+            new TypeDescriptor(TestPojo.class.getName(), ValidatableType.USER_TYPE)
+        ));
 
-        final var sourceSpec = new SourceSpec(packageName, imports, sourceClass, getters);
+        final var sourceType = new ExtendedTypeDescriptor(
+            TestPojo.class.getName(), ValidatableType.USER_TYPE, imports, getters
+        );
 
-        final var actual = generator.generate(sourceSpec);
+        final var actual = generator.generate(sourceType);
         final var expected = ResourceReader.instance.readResourceAsString(TestTemplateResource.V_OBJECT);
 
         Assertions.assertEquals(expected, actual);

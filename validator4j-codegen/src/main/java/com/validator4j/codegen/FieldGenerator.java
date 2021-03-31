@@ -13,11 +13,11 @@ final class FieldGenerator extends GeneratorByGetter {
 
     @Override
     Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final ValidatableType vType,
-                                                                 @NonNull final GetterDetails getterDetails)
+                                                                 @NonNull final GetterDescriptor getterDescriptor)
     {
         return Stream.of(
             new PlaceholderReplacement(FieldTemplatePlaceholderType.V_TYPE, vType.getVTypeSimpleName()),
-            new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName())
+            new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, getterDescriptor.getFieldName())
         );
     }
 }

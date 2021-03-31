@@ -8,4 +8,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface Validatable {
+
+    String NAME = "com.validator4j.core.Validatable";
 }

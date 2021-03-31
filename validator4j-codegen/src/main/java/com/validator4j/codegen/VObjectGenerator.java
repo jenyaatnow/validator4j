@@ -15,16 +15,20 @@ public final class VObjectGenerator extends AbstractCodeGenerator {
     private final GetterGenerator getterGenerator = new GetterGenerator();
     private final ImportGenerator importGenerator = new ImportGenerator();
 
-    public String generate(@NonNull final SourceSpec sourceSpec) {
-        final var sourceType = sourceSpec.getSourceType().getSimpleName().toString();
-        final var fields = generateFields(sourceSpec);
-        final var getters = generateGetters(sourceSpec);
-        final var assignments = generateAssignments(sourceSpec);
+    public String generate(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+        final var sourceType = typeDescriptor.getSimpleName();
+        final var fields = generateFields(typeDescriptor);
+        final var getters = generateGetters(typeDescriptor);
+        final var assignments = generateAssignments(typeDescriptor);
 
         final var placeholderReplacements = Stream.of(
-            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.PACKAGE, sourceSpec.getPackageName()),
+            // FIXME We can have no package
+            new PlaceholderReplacement(
+                OutcomeTemplatePlaceholderType.PACKAGE,
+                typeDescriptor.getPackageName().orElseThrow()
+            ),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.TYPE_ROOT, sourceType),
-            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.IMPORTS, generateImports(sourceSpec)),
+            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.IMPORTS, generateImports(typeDescriptor)),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.FIELDS, fields),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.GETTERS, getters),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.ASSIGNMENTS, assignments)
@@ -34,27 +38,27 @@ public final class VObjectGenerator extends AbstractCodeGenerator {
         return result;
     }
 
-    private String generateAssignments(@NonNull final SourceSpec sourceSpec) {
-        return sourceSpec.getGetters().stream()
+    private String generateAssignments(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+        return typeDescriptor.getGetters().stream()
             .map(getterDetails -> CodeGenUtils
                 .indent(assignmentGenerator.generate(getterDetails), IndentLevel.LEVEL_TWO)
             ).collect(Collectors.joining(LINE_SEPARATOR));
     }
 
-    private String generateFields(@NonNull final SourceSpec sourceSpec) {
-        return sourceSpec.getGetters().stream()
+    private String generateFields(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+        return typeDescriptor.getGetters().stream()
             .map(getterDetails -> CodeGenUtils.indent(fieldGenerator.generate(getterDetails), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(LINE_SEPARATOR + LINE_SEPARATOR));
     }
 
-    private String generateGetters(@NonNull final SourceSpec sourceSpec) {
-        return sourceSpec.getGetters().stream()
+    private String generateGetters(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+        return typeDescriptor.getGetters().stream()
             .map(getterDetails -> CodeGenUtils.indent(getterGenerator.generate(getterDetails), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(LINE_SEPARATOR + LINE_SEPARATOR));
     }
 
-    private String generateImports(@NonNull final SourceSpec sourceSpec) {
-        return sourceSpec.getImports().stream()
+    private String generateImports(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+        return typeDescriptor.getImports().stream()
             .map(importGenerator::generate)
             .sorted()
             .collect(Collectors.joining(LINE_SEPARATOR));

@@ -6,8 +6,8 @@ import java.util.stream.Stream;
 
 abstract class GeneratorByGetter extends AbstractCodeGenerator {
 
-    public String generate(@NonNull final GetterDetails getterDetails) {
-        final var vType = getterDetails.getVType();
+    public String generate(@NonNull final GetterDescriptor getterDescriptor) {
+        final var vType = getterDescriptor.getReturnType().getVType();
 
         switch (vType) {
             case BOOLEAN:
@@ -18,7 +18,8 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
             case FLOAT:
             case DOUBLE:
             case STRING:
-                return resolvePlaceholders(vType, getterDetails);
+            case COLLECTION:
+                return resolvePlaceholders(vType, getterDescriptor);
             // TODO Collections, maps
             // TODO User defined types
             // TODO User defined generic types
@@ -28,11 +29,11 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
     }
 
     private String resolvePlaceholders(@NonNull final ValidatableType vType,
-                                       @NonNull final GetterDetails getterDetails)
+                                       @NonNull final GetterDescriptor getterDescriptor)
     {
         final var template = getTemplate(supplyTemplateResource());
 
-        final var placeholderReplacements = supplyPlaceholderReplacements(vType, getterDetails);
+        final var placeholderReplacements = supplyPlaceholderReplacements(vType, getterDescriptor);
         final var result = resolvePlaceholders(template, placeholderReplacements);
         return result;
     }
@@ -40,5 +41,5 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
     abstract TemplateResource supplyTemplateResource();
 
     abstract Stream<PlaceholderReplacement> supplyPlaceholderReplacements(final ValidatableType vType,
-                                                                          final GetterDetails getterDetails);
+                                                                          final GetterDescriptor getterDescriptor);
 }

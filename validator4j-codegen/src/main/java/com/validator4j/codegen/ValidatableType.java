@@ -29,7 +29,8 @@ public enum ValidatableType {
     DOUBLE(ValidatableDouble.class, Double.class),
     STRING(ValidatableString.class, String.class),
     COLLECTION(ValidatableCollection.class, Collection.class),
-    USER_TYPE(ValidatableObject.class, Object.class)
+    USER_TYPE(ValidatableObject.class, Object.class),
+    NON_V_TYPE(null, Object.class),
     ;
 
     @Getter private final Class<? extends ValidatableReference> vClass;

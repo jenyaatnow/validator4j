@@ -13,15 +13,15 @@ final class AssignmentGenerator extends GeneratorByGetter {
 
     @Override
     Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final ValidatableType vType,
-                                                                 @NonNull final GetterDetails getterDetails)
+                                                                 @NonNull final GetterDescriptor getterDescriptor)
     {
         return Stream.of(
             new PlaceholderReplacement(AssignmentTemplatePlaceholderType.V_TYPE, vType.getVTypeSimpleName()),
-            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName()),
-            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.SOURCE_GETTER_NAME, getterDetails.getName()),
+            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.FIELD_NAME, getterDescriptor.getFieldName()),
+            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.SOURCE_GETTER_NAME, getterDescriptor.getName()),
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.SOURCE_TYPE,
-                getterDetails.getEnclosingType().getSimpleName().toString()
+                getterDescriptor.getEnclosingType().getSimpleName()
             )
         );
     }

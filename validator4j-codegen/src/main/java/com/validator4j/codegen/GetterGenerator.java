@@ -13,11 +13,11 @@ final class GetterGenerator extends GeneratorByGetter {
 
     @Override
     Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final ValidatableType vType,
-                                                                 @NonNull final GetterDetails getterDetails)
+                                                                 @NonNull final GetterDescriptor getterDescriptor)
     {
         return Stream.of(
-            new PlaceholderReplacement(GetterTemplatePlaceholderType.NAME, getterDetails.getName()),
-            new PlaceholderReplacement(GetterTemplatePlaceholderType.FIELD_NAME, getterDetails.getFieldName()),
+            new PlaceholderReplacement(GetterTemplatePlaceholderType.NAME, getterDescriptor.getName()),
+            new PlaceholderReplacement(GetterTemplatePlaceholderType.FIELD_NAME, getterDescriptor.getFieldName()),
             new PlaceholderReplacement(GetterTemplatePlaceholderType.RETURN_TYPE, vType.getVTypeSimpleName())
         );
     }
