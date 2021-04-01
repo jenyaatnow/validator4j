@@ -47,7 +47,9 @@ public class GetterDescriptor {
     }
 
     /**
-     * @return name of the field whose contents are returned by the current getter.
+     * Returns the name of the field whose contents are returned by the current getter.
+     *
+     * @return field name.
      */
     public String getFieldName() {
         final var fieldName = name.substring(3);

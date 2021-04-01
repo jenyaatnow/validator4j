@@ -11,13 +11,15 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ValidatableCollection<T, VT extends ValidatableReference<T>> extends ValidatableReference<List<VT>> {
+public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<TARGET>>
+    extends ValidatableReference<List<VTARGET>>
+{
 
     /**
      * Simple values collection constructor.
      */
     public ValidatableCollection(@NonNull final String path,
-                                 final Collection<T> value,
+                                 final Collection<TARGET> value,
                                  @NonNull final ErrorsContainer errors)
     {
         super(path, toValidatableList(value, path, mapSimpleValue(errors)), errors);
@@ -27,22 +29,23 @@ public class ValidatableCollection<T, VT extends ValidatableReference<T>> extend
      * Objects collection constructor.
      */
     public ValidatableCollection(@NonNull final String path,
-                                 final Collection<T> value,
-                                 @NonNull final BiFunction<String, T, VT> valueMapper,
+                                 final Collection<TARGET> value,
+                                 @NonNull final BiFunction<String, TARGET, VTARGET> valueMapper,
                                  @NonNull final ErrorsContainer errors)
     {
         super(path, toValidatableList(value, path, valueMapper), errors);
     }
 
-    public void forEach(@NonNull final Consumer<VT> validationHandler) {
+    public void forEach(@NonNull final Consumer<VTARGET> validationHandler) {
         value.forEach(validationHandler);
     }
 
     // TODO Implement iterable, flatMap analogue
 
-    private static <T1, VT1 extends ValidatableReference<T1>> List<VT1> toValidatableList(
-        final Collection<T1> source, @NonNull final String path, @NonNull final BiFunction<String, T1, VT1> valueMapper
-    ) {
+    private static <T, V extends ValidatableReference<T>> List<V> toValidatableList(
+        final Collection<T> source, @NonNull final String path, @NonNull final BiFunction<String, T, V> valueMapper
+    )
+    {
         return Optional.ofNullable(source)
             .map(s -> {
                 final var sourceList = new ArrayList<>(s);
@@ -55,12 +58,13 @@ public class ValidatableCollection<T, VT extends ValidatableReference<T>> extend
     }
 
     @SuppressWarnings("unchecked")
-    private static <T1, VT1 extends ValidatableReference<T1>> BiFunction<String, T1, VT1> mapSimpleValue(
+    private static <T, V extends ValidatableReference<T>> BiFunction<String, T, V> mapSimpleValue(
         @NonNull final ErrorsContainer errors
-    ) {
+    )
+    {
         return (p, v) -> {
             if (v instanceof Integer) {
-                return (VT1) new ValidatableInteger(p, (Integer) v, errors);
+                return (V) new ValidatableInteger(p, (Integer) v, errors);
             }
 
             throw new IllegalArgumentException(String.format("Value of unsupported type '%s'", v.getClass().getName()));

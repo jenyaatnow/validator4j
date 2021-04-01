@@ -5,15 +5,13 @@ import lombok.NonNull;
 import java.util.Optional;
 import java.util.function.Function;
 
-public abstract class ValidatableObject<Target> extends ValidatableReference<Target> {
+public abstract class ValidatableObject<TARGET> extends ValidatableReference<TARGET> {
 
-    public ValidatableObject(@NonNull final String path, final Target value, @NonNull final ErrorsContainer errors) {
+    public ValidatableObject(@NonNull final String path, final TARGET value, @NonNull final ErrorsContainer errors) {
         super(path, value, errors);
     }
 
-    protected <Source, Value> Value safeGet(final Source source,
-                                            @NonNull final Function<Source, Value> valueExtractor)
-    {
+    protected <S, V> V safeGet(final S source, @NonNull final Function<S, V> valueExtractor) {
         return Optional.ofNullable(source).map(valueExtractor).orElse(null);
     }
 

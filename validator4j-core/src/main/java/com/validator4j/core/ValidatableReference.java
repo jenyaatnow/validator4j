@@ -5,20 +5,20 @@ import lombok.NonNull;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public abstract class ValidatableReference<Target> {
+public abstract class ValidatableReference<TARGET> {
 
     protected static final String PATH_ROOT = "";
 
     protected final String path;
 
-    protected final Target value;
+    protected final TARGET value;
 
     protected final ErrorsContainer errors;
 
     private final Consumer<String> reject;
 
     protected ValidatableReference(@NonNull final String path,
-                                   final Target value,
+                                   final TARGET value,
                                    @NonNull final ErrorsContainer errors)
     {
         this.path = path;
@@ -31,7 +31,7 @@ public abstract class ValidatableReference<Target> {
         };
     }
 
-    public void validate(@NonNull final BiConsumer<Target, Consumer<String>> validationHandler) {
+    public void validate(@NonNull final BiConsumer<TARGET, Consumer<String>> validationHandler) {
         validationHandler.accept(value, reject);
     }
 }

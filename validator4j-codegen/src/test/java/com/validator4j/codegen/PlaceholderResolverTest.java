@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class PlaceholderResolverTest {
 
     private PlaceholderResolver testable;

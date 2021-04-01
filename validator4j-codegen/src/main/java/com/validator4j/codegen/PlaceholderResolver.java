@@ -14,6 +14,8 @@ class PlaceholderResolver {
     private static final BinaryOperator<String> NOOP_COMBINER = (a, b) -> null;
 
     /**
+     * Resolves template's placeholders with given resolver functions.
+     *
      * @param template template string with placeholders to resolve.
      * @param resolvers resolver functions stream. Resolver function - is a function returning the same {@code template}
      *                  with all occurrences of the specific placeholder replaced with the corresponding replacement.
@@ -30,6 +32,9 @@ class PlaceholderResolver {
     }
 
     /**
+     * Resolves all occurrences of {@link PlaceholderReplacement#getPlaceholder()} within given template
+     * with {@link PlaceholderReplacement#getReplacement()}.
+     *
      * @param template template string with placeholders to resolve.
      * @param placeholderReplacement single placeholder replacement configuration.
      * @return the same {@code template} with all occurrences of {@link PlaceholderReplacement#getPlaceholder()}

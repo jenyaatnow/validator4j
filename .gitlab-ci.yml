@@ -25,6 +25,16 @@ assemble:
     - merge_requests
 
 
+checkstyle:
+  stage: check
+  script:
+    - ./gradlew checkstyleMain
+    - ./gradlew checkstyleTest
+  only:
+    - branches
+    - merge_requests
+
+
 test:
   stage: check
   script:

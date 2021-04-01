@@ -9,6 +9,7 @@ import com.validator4j.sample.source.NestedPojo;
 import com.validator4j.sample.source.TestPojo;
 import com.validator4j.util.Checks;
 
+@SuppressWarnings("checkstyle:LineLength")
 public final class VTestPojo extends ValidatableObject<TestPojo> {
 
     private final ValidatableInteger id;

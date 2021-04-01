@@ -6,7 +6,6 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Type descriptor.
@@ -47,13 +46,17 @@ public class TypeDescriptor {
     }
 
     /**
-     * @return is this type generic.
+     * Determines whether the type represented by this class instance is generic.
+     *
+     * @return true if this type generic, otherwise - false.
      */
     boolean isGeneric() {
         return !typeParameters.isEmpty();
     }
 
     /**
+     * Returns the simple name of the type represented by this class instance.
+     *
      * @return simple class name.
      */
     String getSimpleName() {
@@ -62,6 +65,8 @@ public class TypeDescriptor {
     }
 
     /**
+     * Returns the package name of the type represented by this class instance.
+     *
      * @return package name.
      */
     String getPackageName() {

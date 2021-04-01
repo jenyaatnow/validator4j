@@ -16,5 +16,6 @@ abstract class AbstractCodeGeneratorIntegrationTest {
     }
 
     abstract String generate();
+
     abstract TestTemplateResource getExpectedResource();
 }

@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 enum IndentLevel {
-    LEVEL_ONE  ("    "),
-    LEVEL_TWO  ("        "),
+    LEVEL_ONE("    "),
+    LEVEL_TWO("        "),
     LEVEL_THREE("            ");
 
     @Getter private final String indent;
