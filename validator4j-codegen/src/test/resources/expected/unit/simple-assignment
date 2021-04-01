@@ -1,1 +1,1 @@
-this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), errors);
+this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), errors);

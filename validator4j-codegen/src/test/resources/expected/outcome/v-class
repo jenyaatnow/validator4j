@@ -1,6 +1,5 @@
-package com.validator4j.codegen;
+package com.validator4j.codegen.testutils;
 
-import com.validator4j.codegen.TestPojo;
 import com.validator4j.core.ErrorsContainer;
 import com.validator4j.core.ValidatableInteger;
 import com.validator4j.core.ValidatableObject;
@@ -8,7 +7,7 @@ import com.validator4j.core.ValidatableReference;
 import com.validator4j.util.Checks;
 
 
-public final class VTestPojo extends ValidatableObject<TestPojo> {
+public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {
 
     private final ValidatableInteger id;
 
@@ -17,7 +16,7 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
     /**
      * Root object constructor.
      */
-    public VTestPojo(final TestPojo value) {
+    public VTestCodeGenPojo(final TestCodeGenPojo value) {
         this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
 
         Checks.nonNull(value, "value");
@@ -26,11 +25,11 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
     /**
      * Nested object constructor.
      */
-    VTestPojo(final String path, final TestPojo value, final ErrorsContainer errors) {
+    VTestCodeGenPojo(final String path, final TestCodeGenPojo value, final ErrorsContainer errors) {
         super(path, value, errors);
 
-        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), errors);
-        this.anotherId = new ValidatableInteger(appendPath("anotherId"), safeGet(value, TestPojo::getAnotherId), errors);
+        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), errors);
+        this.anotherId = new ValidatableInteger(appendPath("anotherId"), safeGet(value, TestCodeGenPojo::getAnotherId), errors);
     }
 
     public ValidatableInteger getId() {

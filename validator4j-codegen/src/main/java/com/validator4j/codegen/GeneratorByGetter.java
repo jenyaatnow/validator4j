@@ -24,7 +24,7 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
             // TODO User defined types
             // TODO User defined generic types
 
-            default: throw new RuntimeException(String.format("Unsupported type '%s'", vType));
+            default: throw new CodeGenException(String.format("Unsupported type '%s'", vType));
         }
     }
 

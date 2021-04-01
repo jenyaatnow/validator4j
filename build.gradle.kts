@@ -24,6 +24,7 @@ subprojects {
     dependencies {
         testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
         testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+        testImplementation("org.jmockit:jmockit:1.49")
     }
 
     tasks.test {

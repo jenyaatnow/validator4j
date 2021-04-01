@@ -1,8 +1,8 @@
-package com.validator4j.codegen;
+package com.validator4j.util.resource;
 
 public interface ResourceReader {
 
-    ResourceReader instance = new ResourceReaderImpl();
+    ResourceReader instance = new BaseResourceReader();
 
     String readResourceAsString(ResourcePath resourcePath);
 }

@@ -1,0 +1,74 @@
+package com.validator4j.sample.source;
+
+import com.validator4j.core.ErrorsContainer;
+import com.validator4j.core.ValidatableBoolean;
+import com.validator4j.core.ValidatableCollection;
+import com.validator4j.core.ValidatableDouble;
+import com.validator4j.core.ValidatableInteger;
+import com.validator4j.core.ValidatableObject;
+import com.validator4j.core.ValidatableReference;
+import com.validator4j.core.ValidatableString;
+import com.validator4j.util.Checks;
+
+
+public final class VGenerationSourcePojo extends ValidatableObject<GenerationSourcePojo> {
+
+    private final ValidatableInteger id;
+
+    private final ValidatableInteger anotherId;
+
+    private final ValidatableString name;
+
+    private final ValidatableDouble amount;
+
+    private final ValidatableBoolean readyToGo;
+
+    private final ValidatableCollection articleIds;
+
+    /**
+     * Root object constructor.
+     */
+    public VGenerationSourcePojo(final GenerationSourcePojo value) {
+        this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
+
+        Checks.nonNull(value, "value");
+    }
+
+    /**
+     * Nested object constructor.
+     */
+    VGenerationSourcePojo(final String path, final GenerationSourcePojo value, final ErrorsContainer errors) {
+        super(path, value, errors);
+
+        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, GenerationSourcePojo::getId), errors);
+        this.anotherId = new ValidatableInteger(appendPath("anotherId"), safeGet(value, GenerationSourcePojo::getAnotherId), errors);
+        this.name = new ValidatableString(appendPath("name"), safeGet(value, GenerationSourcePojo::getName), errors);
+        this.amount = new ValidatableDouble(appendPath("amount"), safeGet(value, GenerationSourcePojo::getAmount), errors);
+        this.readyToGo = new ValidatableBoolean(appendPath("readyToGo"), safeGet(value, GenerationSourcePojo::getReadyToGo), errors);
+        this.articleIds = new ValidatableCollection(appendPath("articleIds"), safeGet(value, GenerationSourcePojo::getArticleIds), errors);
+    }
+
+    public ValidatableInteger getId() {
+        return id;
+    }
+
+    public ValidatableInteger getAnotherId() {
+        return anotherId;
+    }
+
+    public ValidatableString getName() {
+        return name;
+    }
+
+    public ValidatableDouble getAmount() {
+        return amount;
+    }
+
+    public ValidatableBoolean getReadyToGo() {
+        return readyToGo;
+    }
+
+    public ValidatableCollection getArticleIds() {
+        return articleIds;
+    }
+}

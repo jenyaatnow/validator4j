@@ -1,5 +1,6 @@
 package com.validator4j.codegen;
 
+import com.validator4j.util.resource.ResourceReader;
 import lombok.NonNull;
 
 import java.util.function.Function;

@@ -1,11 +1,12 @@
 package com.validator4j.codegen;
 
+import com.validator4j.util.resource.ResourcePath;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-enum TemplateResource implements ResourcePath {
+public enum TemplateResource implements ResourcePath {
 
-    V_OBJECT("outcome/v-object-template"),
+    V_CLASS("outcome/v-class-template"),
     V_COLLECTION("outcome/v-collection-template"),
     IMPORT("unit/import-template"),
     SIMPLE_V_FIELD("unit/simple-v-field-template"),

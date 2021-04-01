@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import static com.validator4j.codegen.CodeGenUtils.LINE_SEPARATOR;
 
 
-public final class VObjectGenerator extends AbstractCodeGenerator {
+public final class VClassGenerator extends AbstractCodeGenerator {
 
     private final AssignmentGenerator assignmentGenerator = new AssignmentGenerator();
     private final FieldGenerator fieldGenerator = new FieldGenerator();
@@ -34,7 +34,7 @@ public final class VObjectGenerator extends AbstractCodeGenerator {
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.ASSIGNMENTS, assignments)
         );
 
-        final var result = resolvePlaceholders(getTemplate(TemplateResource.V_OBJECT), placeholderReplacements);
+        final var result = resolvePlaceholders(getTemplate(TemplateResource.V_CLASS), placeholderReplacements);
         return result;
     }
 

@@ -1,9 +1,11 @@
-package com.validator4j.codegen;
+package com.validator4j.codegen.testutils;
 
+import com.validator4j.codegen.TypeDescriptor;
+import com.validator4j.codegen.ValidatableType;
 import com.validator4j.core.ValidatableInteger;
 import lombok.NonNull;
 
-final class TypeDescriptors {
+public final class TypeDescriptors {
     public static TypeDescriptor INTEGER = new TypeDescriptor(Integer.class.getName(), ValidatableType.INTEGER);
     public static TypeDescriptor V_INTEGER =
         new TypeDescriptor(ValidatableInteger.class.getName(), ValidatableType.NON_V_TYPE);

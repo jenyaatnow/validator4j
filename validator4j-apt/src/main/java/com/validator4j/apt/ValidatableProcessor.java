@@ -3,7 +3,7 @@ package com.validator4j.apt;
 import com.validator4j.codegen.ExtendedTypeDescriptor;
 import com.validator4j.codegen.GetterDescriptor;
 import com.validator4j.codegen.TypeDescriptor;
-import com.validator4j.codegen.VObjectGenerator;
+import com.validator4j.codegen.VClassGenerator;
 import com.validator4j.codegen.ValidatableType;
 import com.validator4j.core.ErrorsContainer;
 import com.validator4j.core.Validatable;
@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
 public class ValidatableProcessor extends AbstractProcessor {
 
     private static final String GENERATED_CLASS_PREFIX = "V";
-    private static final String GETTER_NAME_PREFIX = "get";
-    private static final char PACKAGE_NAME_SEPARATOR = '.';
 
     @Override
     public boolean process(@NonNull final Set<? extends TypeElement> annotations,
@@ -67,7 +65,7 @@ public class ValidatableProcessor extends AbstractProcessor {
             getterDetails
         );
 
-        final var vObjectGenerator = new VObjectGenerator();
+        final var vObjectGenerator = new VClassGenerator();
         final var sourceContent = vObjectGenerator.generate(typeDescriptor);
 
         write(annotatedClass.getSimpleName(), sourceContent);
@@ -87,7 +85,6 @@ public class ValidatableProcessor extends AbstractProcessor {
             .map(it -> TypeUtils.getTypeElement(it.getReturnType().getVType().getVClass()))
             .collect(Collectors.toSet());
 
-        requiredImportTypes.add(annotatedClassType);
         requiredImportTypes.addAll(gettersImportTypes);
 
         final var importTypes = requiredImportTypes.stream()
@@ -103,7 +100,7 @@ public class ValidatableProcessor extends AbstractProcessor {
     private List<GetterDescriptor> getGetterDetails(@NonNull final TypeElement annotatedClass) {
         final var getterDetails = annotatedClass.getEnclosedElements().stream()
             // TODO Check getter correctness: method with no args
-            .filter(element -> element.getSimpleName().toString().startsWith(GETTER_NAME_PREFIX))
+            .filter(element -> element.getSimpleName().toString().startsWith(GetterDescriptor.GETTER_NAME_PREFIX))
             .map(element -> {
                 final var returnTypeMirror = ((ExecutableType) element.asType()).getReturnType();
                 final var enclosingElement = (TypeElement) element.getEnclosingElement();

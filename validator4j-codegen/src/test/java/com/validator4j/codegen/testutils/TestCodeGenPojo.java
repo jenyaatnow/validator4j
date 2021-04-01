@@ -1,10 +1,10 @@
-package com.validator4j.codegen;
+package com.validator4j.codegen.testutils;
 
-public class TestPojo {
+public class TestCodeGenPojo {
 
     private final Integer id;
 
-    public TestPojo(Integer id) {
+    public TestCodeGenPojo(Integer id) {
         this.id = id;
     }
 

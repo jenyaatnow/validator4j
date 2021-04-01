@@ -8,9 +8,20 @@ import java.util.stream.Stream;
 
 class PlaceholderResolver {
 
+    /**
+     * We do not process stream in parallel, so we don't need any combiner.
+     */
     private static final BinaryOperator<String> NOOP_COMBINER = (a, b) -> null;
 
-    public String resolve(@NonNull final String template, @NonNull final Stream<Function<String, String>> resolvers) {
+    /**
+     * @param template template string with placeholders to resolve.
+     * @param resolvers resolver functions stream. Resolver function - is a function returning the same {@code template}
+     *                  with all occurrences of the specific placeholder replaced with the corresponding replacement.
+     * @return the same {@code template} with all resolver functions applied to given {@code template}.
+     */
+    public String resolve(@NonNull final String template,
+                          @NonNull final Stream<Function<String, String>> resolvers)
+    {
         return resolvers.reduce(
             template,
             (intermediateResult, resolver) -> resolver.apply(intermediateResult),
@@ -18,9 +29,17 @@ class PlaceholderResolver {
         );
     }
 
-    public String resolve(@NonNull final String source, @NonNull final PlaceholderReplacement placeholderReplacement) {
+    /**
+     * @param template template string with placeholders to resolve.
+     * @param placeholderReplacement single placeholder replacement configuration.
+     * @return the same {@code template} with all occurrences of {@link PlaceholderReplacement#getPlaceholder()}
+     *         replaced with {@link PlaceholderReplacement#getReplacement()}.
+     */
+    public String resolve(@NonNull final String template,
+                          @NonNull final PlaceholderReplacement placeholderReplacement)
+    {
         final var placeholder = buildPlaceholder(placeholderReplacement.getPlaceholder());
-        final var result = source.replaceAll(placeholder, placeholderReplacement.getReplacement());
+        final var result = template.replaceAll(placeholder, placeholderReplacement.getReplacement());
         return result;
     }
 
