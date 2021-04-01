@@ -1,6 +1,7 @@
 package com.validator4j.apt;
 
 import com.validator4j.codegen.ValidatableType;
+import com.validator4j.core.Validatable;
 import com.validator4j.util.Checks;
 import lombok.NonNull;
 
@@ -28,10 +29,24 @@ final class TypeUtils {
         checkInitialization();
 
         return Arrays.stream(ValidatableType.values())
-            // TODO check @Validatable presence on USER_TYPE
-            .filter(vType -> TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(vType.getJClass()).asType()))
+            .filter(vType -> {
+                if (vType == ValidatableType.USER_TYPE) {
+                    return isValidatableAnnotationPresent(typeMirror) && isAssignable(typeMirror, vType);
+                }
+
+                return isAssignable(typeMirror, vType);
+            })
             .findFirst()
             .orElseThrow(() -> new RuntimeException(String.format("Unexpected type '%s'", typeMirror.toString())));
+    }
+
+    private static boolean isValidatableAnnotationPresent(@NonNull final TypeMirror typeMirror) {
+        final var annotation = TYPES.asElement(typeMirror).getAnnotation(Validatable.class);
+        return annotation != null;
+    }
+
+    private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final ValidatableType vType) {
+        return TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(vType.getJClass()).asType());
     }
 
     public static TypeElement getTypeElement(@NonNull final Class<?> clazz) {

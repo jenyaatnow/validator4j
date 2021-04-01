@@ -6,8 +6,14 @@ import lombok.NonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Basic validation errors storage implementation.
+ */
 final class ValidationErrors implements ErrorsContainer {
 
+    /**
+     * Validation errors storage itself.
+     */
     @Getter
     private final Collection<ValidationError> errors = new ArrayList<>();
 
