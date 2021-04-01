@@ -11,10 +11,18 @@ class TypeDescriptorTest {
     private static final String fullName = "com.validator4j.test.TestClass";
 
     @Test
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     void testGetPackageName() {
         final var typeDescriptor = new TypeDescriptor(fullName, ValidatableType.NON_V_TYPE);
-        Assertions.assertEquals("com.validator4j.test", typeDescriptor.getPackageName().get());
+        Assertions.assertEquals("com.validator4j.test", typeDescriptor.getPackageName());
+    }
+
+    @Test
+    void testGetPackageNameFailure() {
+        final var typeDescriptor = new TypeDescriptor("TestClass", ValidatableType.NON_V_TYPE);
+        Assertions.assertThrows(CodeGenException.class, typeDescriptor::getPackageName);
+
+        final var typeDescriptor1 = new TypeDescriptor(".TestClass", ValidatableType.NON_V_TYPE);
+        Assertions.assertThrows(CodeGenException.class, typeDescriptor1::getPackageName);
     }
 
     @Test

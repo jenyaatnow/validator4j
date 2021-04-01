@@ -22,10 +22,9 @@ public final class VClassGenerator extends AbstractCodeGenerator {
         final var assignments = generateAssignments(typeDescriptor);
 
         final var placeholderReplacements = Stream.of(
-            // FIXME We can have no package
             new PlaceholderReplacement(
                 OutcomeTemplatePlaceholderType.PACKAGE,
-                typeDescriptor.getPackageName().orElseThrow()
+                typeDescriptor.getPackageName()
             ),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.TYPE_ROOT, sourceType),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.IMPORTS, generateImports(typeDescriptor)),
@@ -35,7 +34,7 @@ public final class VClassGenerator extends AbstractCodeGenerator {
         );
 
         final var result = resolvePlaceholders(getTemplate(TemplateResource.V_CLASS), placeholderReplacements);
-        return result;
+        return result.trim();
     }
 
     private String generateAssignments(@NonNull final ExtendedTypeDescriptor typeDescriptor) {

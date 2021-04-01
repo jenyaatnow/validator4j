@@ -26,8 +26,7 @@ class VClassGeneratorTest {
         final var enclosingType = TypeDescriptors.getUserType(TestCodeGenPojo.class);
 
         final var getters = List.of(
-            new GetterDescriptor("getId", TypeDescriptors.INTEGER, enclosingType),
-            new GetterDescriptor("getAnotherId", TypeDescriptors.INTEGER, enclosingType)
+            new GetterDescriptor("getId", TypeDescriptors.INTEGER, enclosingType)
         );
 
         final var imports = new HashSet<>(Set.of(

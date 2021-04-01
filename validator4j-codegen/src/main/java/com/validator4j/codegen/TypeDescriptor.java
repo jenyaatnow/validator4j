@@ -64,13 +64,13 @@ public class TypeDescriptor {
     /**
      * @return package name.
      */
-    Optional<String> getPackageName() {
+    String getPackageName() {
         final var lastDotIdx = name.lastIndexOf('.');
 
         if (lastDotIdx > 0) {
-            return Optional.of(name.substring(0, lastDotIdx));
+            return name.substring(0, lastDotIdx);
         } else {
-            return Optional.empty();
+            throw new CodeGenException(String.format("Couldn't determine package name of '%s'", name));
         }
     }
 }

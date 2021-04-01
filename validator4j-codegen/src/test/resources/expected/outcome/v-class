@@ -11,8 +11,6 @@ public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {
 
     private final ValidatableInteger id;
 
-    private final ValidatableInteger anotherId;
-
     /**
      * Root object constructor.
      */
@@ -29,14 +27,9 @@ public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {
         super(path, value, errors);
 
         this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), errors);
-        this.anotherId = new ValidatableInteger(appendPath("anotherId"), safeGet(value, TestCodeGenPojo::getAnotherId), errors);
     }
 
     public ValidatableInteger getId() {
         return id;
-    }
-
-    public ValidatableInteger getAnotherId() {
-        return anotherId;
     }
 }
