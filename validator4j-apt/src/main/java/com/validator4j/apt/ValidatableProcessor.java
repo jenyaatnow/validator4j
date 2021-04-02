@@ -18,9 +18,9 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ExecutableType;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
@@ -99,16 +99,15 @@ public class ValidatableProcessor extends AbstractProcessor {
 
     private List<GetterDescriptor> getGetterDetails(@NonNull final TypeElement annotatedClass) {
         final var getterDetails = annotatedClass.getEnclosedElements().stream()
-            // TODO Check getter correctness: method with no args
-            .filter(element -> element.getSimpleName().toString().startsWith(GetterDescriptor.GETTER_NAME_PREFIX))
+            .filter(element -> element.getKind() == ElementKind.FIELD)
             .map(element -> {
-                final var returnTypeMirror = ((ExecutableType) element.asType()).getReturnType();
+                final var fieldType = element.asType();
                 final var enclosingElement = (TypeElement) element.getEnclosingElement();
 
-                final var getterName = element.getSimpleName().toString();
+                final var fieldName = element.getSimpleName().toString();
                 final var returnType = new TypeDescriptor(
-                    returnTypeMirror.toString(),
-                    TypeUtils.getVType(returnTypeMirror)
+                    fieldType.toString(),
+                    TypeUtils.getVType(fieldType)
                 );
 
                 final var enclosingType = new TypeDescriptor(
@@ -116,7 +115,7 @@ public class ValidatableProcessor extends AbstractProcessor {
                     TypeUtils.getVType(enclosingElement.asType())
                 );
 
-                return new GetterDescriptor(getterName, returnType, enclosingType);
+                return new GetterDescriptor(fieldName, returnType, enclosingType);
             })
             .collect(Collectors.toList());
         return getterDetails;

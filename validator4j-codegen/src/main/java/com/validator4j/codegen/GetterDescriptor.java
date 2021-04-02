@@ -9,12 +9,12 @@ import lombok.NonNull;
 @Getter
 public class GetterDescriptor {
 
-    public static final String GETTER_NAME_PREFIX = "get";
+    private static final String GETTER_NAME_PREFIX = "get";
 
     /**
      * Getter name.
      */
-    @NonNull private final String name;
+    @NonNull private final String fieldName;
 
     /**
      * Getter return type descriptor.
@@ -26,24 +26,13 @@ public class GetterDescriptor {
      */
     @NonNull private final TypeDescriptor enclosingType;
 
-    public GetterDescriptor(@NonNull final String name,
+    public GetterDescriptor(@NonNull final String fieldName,
                             @NonNull final TypeDescriptor returnType,
                             @NonNull final TypeDescriptor enclosingType)
     {
-        validateName(name);
-
-        this.name = name;
+        this.fieldName = fieldName;
         this.returnType = returnType;
         this.enclosingType = enclosingType;
-    }
-
-    private void validateName(@NonNull final String name) {
-        final var isGetterName = name.startsWith(GETTER_NAME_PREFIX);
-        if (isGetterName) return;
-
-        throw new CodeGenException(
-            String.format("Getter name should starts with 'get' but current name is '%s'", name)
-        );
     }
 
     /**
@@ -51,10 +40,9 @@ public class GetterDescriptor {
      *
      * @return field name.
      */
-    public String getFieldName() {
-        final var fieldName = name.substring(3);
-        final var firstCharacter = fieldName.substring(0, 1).toLowerCase();
+    public String getName() {
+        final var firstCharacter = fieldName.substring(0, 1).toUpperCase();
         final var rest = fieldName.substring(1);
-        return firstCharacter + rest;
+        return GETTER_NAME_PREFIX + firstCharacter + rest;
     }
 }

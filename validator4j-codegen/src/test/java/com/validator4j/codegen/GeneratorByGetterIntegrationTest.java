@@ -6,7 +6,7 @@ import com.validator4j.codegen.testutils.TypeDescriptors;
 abstract class GeneratorByGetterIntegrationTest extends AbstractCodeGeneratorIntegrationTest {
 
     final GetterDescriptor getterDescriptor = new GetterDescriptor(
-        "getId",
+        "id",
         TypeDescriptors.INTEGER,
         TypeDescriptors.getUserType(TestCodeGenPojo.class)
     );

@@ -9,16 +9,8 @@ class GetterDescriptorTest {
     private static final TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptors.INTEGER;
 
     @Test
-    void incorrectGetterNameShouldCauseException() {
-        Assertions.assertThrows(
-            CodeGenException.class,
-            () -> new GetterDescriptor("wrongName", TYPE_DESCRIPTOR, TYPE_DESCRIPTOR)
-        );
-    }
-
-    @Test
-    void testGetFieldName() {
-        final var getterDescriptor = new GetterDescriptor("getName", TYPE_DESCRIPTOR, TYPE_DESCRIPTOR);
-        Assertions.assertEquals("name", getterDescriptor.getFieldName());
+    void testGetName() {
+        final var getterDescriptor = new GetterDescriptor("getterName", TYPE_DESCRIPTOR, TYPE_DESCRIPTOR);
+        Assertions.assertEquals("getGetterName", getterDescriptor.getName());
     }
 }

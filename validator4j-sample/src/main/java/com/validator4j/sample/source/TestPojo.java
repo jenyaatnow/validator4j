@@ -1,7 +1,10 @@
 package com.validator4j.sample.source;
 
+import lombok.Getter;
+
 import java.util.Collection;
 
+@Getter
 public class TestPojo {
 
     private final Integer id;
@@ -17,21 +20,5 @@ public class TestPojo {
         this.nested = nested;
         this.articleIds = articleIds;
         this.pojos = pojos;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public NestedPojo getNested() {
-        return nested;
-    }
-
-    public Collection<Integer> getArticleIds() {
-        return articleIds;
-    }
-
-    public Collection<NestedPojo> getPojos() {
-        return pojos;
     }
 }
