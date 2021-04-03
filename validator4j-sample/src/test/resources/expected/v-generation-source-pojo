@@ -13,17 +13,13 @@ import com.validator4j.util.Checks;
 
 public final class VGenerationSourcePojo extends ValidatableObject<GenerationSourcePojo> {
 
-    private final ValidatableInteger id;
-
-    private final ValidatableInteger anotherId;
-
     private final ValidatableString name;
 
     private final ValidatableDouble amount;
 
     private final ValidatableBoolean readyToGo;
 
-    private final ValidatableCollection articleIds;
+    private final ValidatableCollection<Integer, ValidatableInteger> ids;
 
     /**
      * Root object constructor.
@@ -40,20 +36,10 @@ public final class VGenerationSourcePojo extends ValidatableObject<GenerationSou
     VGenerationSourcePojo(final String path, final GenerationSourcePojo value, final ErrorsContainer errors) {
         super(path, value, errors);
 
-        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, GenerationSourcePojo::getId), errors);
-        this.anotherId = new ValidatableInteger(appendPath("anotherId"), safeGet(value, GenerationSourcePojo::getAnotherId), errors);
         this.name = new ValidatableString(appendPath("name"), safeGet(value, GenerationSourcePojo::getName), errors);
         this.amount = new ValidatableDouble(appendPath("amount"), safeGet(value, GenerationSourcePojo::getAmount), errors);
         this.readyToGo = new ValidatableBoolean(appendPath("readyToGo"), safeGet(value, GenerationSourcePojo::getReadyToGo), errors);
-        this.articleIds = new ValidatableCollection(appendPath("articleIds"), safeGet(value, GenerationSourcePojo::getArticleIds), errors);
-    }
-
-    public ValidatableInteger getId() {
-        return id;
-    }
-
-    public ValidatableInteger getAnotherId() {
-        return anotherId;
+        this.ids = new ValidatableCollection<>(appendPath("ids"), safeGet(value, GenerationSourcePojo::getIds), errors);
     }
 
     public ValidatableString getName() {
@@ -68,7 +54,7 @@ public final class VGenerationSourcePojo extends ValidatableObject<GenerationSou
         return readyToGo;
     }
 
-    public ValidatableCollection getArticleIds() {
-        return articleIds;
+    public ValidatableCollection<Integer, ValidatableInteger> getIds() {
+        return ids;
     }
 }

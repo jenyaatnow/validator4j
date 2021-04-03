@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 abstract class AbstractCodeGeneratorIntegrationTest {
 
     @Test
-    void testGeneration() {
-        final var actual = generate();
+    void testGenerateSimple() {
+        final var actual = generateSimple();
         final var expected = ResourceReader.instance.readResourceAsString(getExpectedResource());
 
         Assertions.assertEquals(expected, actual);
     }
 
-    abstract String generate();
+    abstract String generateSimple();
 
     abstract TestTemplateResource getExpectedResource();
 }

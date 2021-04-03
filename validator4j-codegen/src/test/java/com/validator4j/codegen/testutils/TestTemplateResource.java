@@ -10,7 +10,10 @@ public enum TestTemplateResource implements ResourcePath {
     IMPORT("unit/import"),
     SIMPLE_V_FIELD("unit/simple-v-field"),
     SIMPLE_ASSIGNMENT("unit/simple-assignment"),
-    SIMPLE_VALUE_GETTER("unit/simple-value-getter");
+    SIMPLE_VALUE_GETTER("unit/simple-value-getter"),
+    GENERIC_V_FIELD("unit/generic-v-field"),
+    GENERIC_ASSIGNMENT("unit/generic-assignment"),
+    GENERIC_VALUE_GETTER("unit/generic-value-getter");
 
     private final String relativePath;
 

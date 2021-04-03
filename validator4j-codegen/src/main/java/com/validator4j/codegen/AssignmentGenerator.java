@@ -12,16 +12,23 @@ final class AssignmentGenerator extends GeneratorByGetter {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final ValidatableType vType,
-                                                                 @NonNull final GetterDescriptor getterDescriptor)
-    {
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final GetterDescriptor getterDescriptor) {
         return Stream.of(
-            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.V_TYPE, vType.getVTypeSimpleName()),
-            new PlaceholderReplacement(AssignmentTemplatePlaceholderType.FIELD_NAME, getterDescriptor.getFieldName()),
+            new PlaceholderReplacement(
+                AssignmentTemplatePlaceholderType.FIELD_NAME,
+                getterDescriptor.getFieldName()
+
+            ),
+            new PlaceholderReplacement(
+                AssignmentTemplatePlaceholderType.V_TYPE,
+                generateTypeNameDiamond(getterDescriptor)
+            ),
+
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.SOURCE_GETTER_NAME,
                 getterDescriptor.getName()
             ),
+
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.SOURCE_TYPE,
                 getterDescriptor.getEnclosingType().getSimpleName()

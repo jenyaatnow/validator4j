@@ -11,15 +11,11 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class GenerationSourcePojo {
 
-    private final Integer id;
-
-    private final Integer anotherId;
-
     private final String name;
 
     private final Double amount;
 
     private final Boolean readyToGo;
 
-    private final ArrayList<Integer> articleIds;
+    private final ArrayList<Integer> ids;
 }

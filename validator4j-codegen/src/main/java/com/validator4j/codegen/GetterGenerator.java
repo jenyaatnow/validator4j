@@ -12,13 +12,11 @@ final class GetterGenerator extends GeneratorByGetter {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final ValidatableType vType,
-                                                                 @NonNull final GetterDescriptor getterDescriptor)
-    {
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final GetterDescriptor getterDescriptor) {
         return Stream.of(
             new PlaceholderReplacement(GetterTemplatePlaceholderType.NAME, getterDescriptor.getName()),
             new PlaceholderReplacement(GetterTemplatePlaceholderType.FIELD_NAME, getterDescriptor.getFieldName()),
-            new PlaceholderReplacement(GetterTemplatePlaceholderType.RETURN_TYPE, vType.getVTypeSimpleName())
+            new PlaceholderReplacement(GetterTemplatePlaceholderType.RETURN_TYPE, generateTypeName(getterDescriptor))
         );
     }
 }

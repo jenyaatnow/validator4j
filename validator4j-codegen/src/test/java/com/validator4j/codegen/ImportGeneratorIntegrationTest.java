@@ -8,7 +8,7 @@ import com.validator4j.util.test.IntegrationTest;
 class ImportGeneratorIntegrationTest extends AbstractCodeGeneratorIntegrationTest {
 
     @Override
-    String generate() {
+    String generateSimple() {
         return new ImportGenerator().generate(TypeDescriptors.V_INTEGER);
     }
 

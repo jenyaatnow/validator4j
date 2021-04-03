@@ -1,0 +1,3 @@
+public ValidatableCollection<Integer, ValidatableInteger> getIds() {
+    return ids;
+}

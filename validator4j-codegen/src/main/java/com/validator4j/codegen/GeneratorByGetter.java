@@ -2,6 +2,9 @@ package com.validator4j.codegen;
 
 import lombok.NonNull;
 
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 abstract class GeneratorByGetter extends AbstractCodeGenerator {
@@ -19,7 +22,7 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
             case DOUBLE:
             case STRING:
             case COLLECTION:
-                return resolvePlaceholders(vType, getterDescriptor);
+                return resolvePlaceholders(getterDescriptor);
             // TODO Collections, maps
             // TODO User defined types
             // TODO User defined generic types
@@ -28,18 +31,52 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
         }
     }
 
-    private String resolvePlaceholders(@NonNull final ValidatableType vType,
-                                       @NonNull final GetterDescriptor getterDescriptor)
-    {
+    private String resolvePlaceholders(@NonNull final GetterDescriptor getterDescriptor) {
         final var template = getTemplate(supplyTemplateResource());
 
-        final var placeholderReplacements = supplyPlaceholderReplacements(vType, getterDescriptor);
+        final var placeholderReplacements = supplyPlaceholderReplacements(getterDescriptor);
         final var result = resolvePlaceholders(template, placeholderReplacements);
         return result;
     }
 
+    String generateTypeName(@NonNull final GetterDescriptor getterDescriptor) {
+        return getVTypeSimpleNameOrMapIfGeneric(
+            getterDescriptor,
+            type -> {
+                final var simpleName = type.getVType().getVTypeSimpleName();
+                final var typeParams = type.getTypeParameters().stream()
+                    .map(typeDescriptor -> {
+                        final var typeName = typeDescriptor.getSimpleName();
+                        final var vTypeName = typeDescriptor.getVType().getVTypeSimpleName();
+                        return String.format("%s, %s", typeName, vTypeName);
+                    })
+                    .collect(Collectors.joining(", ", "<", ">"));
+
+                return simpleName + typeParams;
+            }
+        );
+    }
+
+    String generateTypeNameDiamond(@NonNull final GetterDescriptor getterDescriptor) {
+        return getVTypeSimpleNameOrMapIfGeneric(
+            getterDescriptor,
+            type -> type.getVType().getVTypeSimpleName() + "<>"
+        );
+    }
+
+    private String getVTypeSimpleNameOrMapIfGeneric(@NonNull final GetterDescriptor getterDescriptor,
+                                                    @NonNull final Function<TypeDescriptor, String> mapper)
+    {
+        final var vType = getterDescriptor.getReturnType().getVType();
+
+        return Optional
+            .of(getterDescriptor.getReturnType())
+            .filter(TypeDescriptor::isGeneric)
+            .map(mapper)
+            .orElse(vType.getVTypeSimpleName());
+    }
+
     abstract TemplateResource supplyTemplateResource();
 
-    abstract Stream<PlaceholderReplacement> supplyPlaceholderReplacements(final ValidatableType vType,
-                                                                          final GetterDescriptor getterDescriptor);
+    abstract Stream<PlaceholderReplacement> supplyPlaceholderReplacements(final GetterDescriptor getterDescriptor);
 }

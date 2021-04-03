@@ -1,11 +1,12 @@
 package com.validator4j.codegen;
 
-import com.validator4j.util.Checks;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Type descriptor.
@@ -38,11 +39,16 @@ public class TypeDescriptor {
                           @NonNull final ValidatableType vType,
                           @NonNull final List<TypeDescriptor> typeParameters)
     {
-        Checks.nonEmpty(typeParameters, "typeParameters");
-
         this.name = name;
         this.vType = vType;
         this.typeParameters = typeParameters;
+    }
+
+    public Set<TypeDescriptor> getAllRelatedTypes() {
+        final var types = new HashSet<>(getTypeParameters());
+        types.add(this);
+        return types;
+
     }
 
     /**

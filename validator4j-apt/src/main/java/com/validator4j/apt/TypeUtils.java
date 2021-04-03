@@ -1,5 +1,6 @@
 package com.validator4j.apt;
 
+import com.validator4j.codegen.TypeDescriptor;
 import com.validator4j.codegen.ValidatableType;
 import com.validator4j.core.Validatable;
 import com.validator4j.util.Checks;
@@ -7,10 +8,14 @@ import lombok.NonNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,9 +30,37 @@ final class TypeUtils {
         ELEMENTS = processingEnvironment.getElementUtils();
     }
 
-    public static ValidatableType getVType(@NonNull final TypeMirror typeMirror) {
+    public static TypeElement getTypeElement(@NonNull final Class<?> clazz) {
         checkInitialization();
 
+        return ELEMENTS.getTypeElement(clazz.getName());
+    }
+
+    public static Set<TypeElement> getTypeElements(@NonNull final Class<?>... classes) {
+        checkInitialization();
+
+        return Stream.of(classes)
+            .map(clazz -> ELEMENTS.getTypeElement(clazz.getName()))
+            .collect(Collectors.toSet());
+    }
+
+    public static TypeDescriptor getTypeDescriptor(@NonNull final TypeMirror typeMirror) {
+        checkInitialization();
+
+        final var typeParamsDescriptors = Optional.of(typeMirror)
+            .filter(type -> type instanceof DeclaredType)
+            .map(type -> {
+                final List<? extends TypeMirror> typeArguments = ((DeclaredType) typeMirror).getTypeArguments();
+                return typeArguments.stream()
+                    .map(TypeUtils::getTypeDescriptor)
+                    .collect(Collectors.toList());
+            })
+            .orElse(Collections.emptyList());
+
+        return new TypeDescriptor(TYPES.erasure(typeMirror).toString(), getVType(typeMirror), typeParamsDescriptors);
+    }
+
+    private static ValidatableType getVType(@NonNull final TypeMirror typeMirror) {
         return Arrays.stream(ValidatableType.values())
             .filter(vType -> {
                 if (vType == ValidatableType.USER_TYPE) {
@@ -47,20 +80,6 @@ final class TypeUtils {
 
     private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final ValidatableType vType) {
         return TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(vType.getJClass()).asType());
-    }
-
-    public static TypeElement getTypeElement(@NonNull final Class<?> clazz) {
-        checkInitialization();
-
-        return ELEMENTS.getTypeElement(clazz.getName());
-    }
-
-    public static Set<TypeElement> getTypeElements(@NonNull final Class<?>... classes) {
-        checkInitialization();
-
-        return Stream.of(classes)
-            .map(clazz -> ELEMENTS.getTypeElement(clazz.getName()))
-            .collect(Collectors.toSet());
     }
 
     private static void checkInitialization() {

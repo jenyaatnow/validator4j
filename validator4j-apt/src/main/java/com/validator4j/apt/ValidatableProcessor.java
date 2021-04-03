@@ -61,7 +61,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         final var typeDescriptor = new ExtendedTypeDescriptor(
             annotatedClass.getQualifiedName().toString(),
             ValidatableType.USER_TYPE,
-            getImports(annotatedClass, getterDetails),
+            getImports(getterDetails),
             getterDetails
         );
 
@@ -71,9 +71,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         write(annotatedClass.getSimpleName(), sourceContent);
     }
 
-    private Set<TypeDescriptor> getImports(@NonNull final TypeElement annotatedClassType,
-                                           @NonNull final List<GetterDescriptor> getterDetails)
-    {
+    private Set<TypeDescriptor> getImports(@NonNull final List<GetterDescriptor> getterDetails) {
         final var requiredImportTypes = TypeUtils.getTypeElements(
             ValidatableObject.class,
             ValidatableReference.class,
@@ -82,16 +80,14 @@ public class ValidatableProcessor extends AbstractProcessor {
         );
 
         final var gettersImportTypes = getterDetails.stream()
-            .map(it -> TypeUtils.getTypeElement(it.getReturnType().getVType().getVClass()))
+            .flatMap(getter -> getter.getReturnType().getAllRelatedTypes().stream())
+            .map(typeDescriptor -> TypeUtils.getTypeElement(typeDescriptor.getVType().getVClass()))
             .collect(Collectors.toSet());
 
         requiredImportTypes.addAll(gettersImportTypes);
 
         final var importTypes = requiredImportTypes.stream()
-            .map(typeElement -> new TypeDescriptor(
-                typeElement.getQualifiedName().toString(),
-                TypeUtils.getVType(typeElement.asType())
-            ))
+            .map(typeElement -> TypeUtils.getTypeDescriptor(typeElement.asType()))
             .collect(Collectors.toSet());
 
         return importTypes;
@@ -105,15 +101,8 @@ public class ValidatableProcessor extends AbstractProcessor {
                 final var enclosingElement = (TypeElement) element.getEnclosingElement();
 
                 final var fieldName = element.getSimpleName().toString();
-                final var returnType = new TypeDescriptor(
-                    fieldType.toString(),
-                    TypeUtils.getVType(fieldType)
-                );
-
-                final var enclosingType = new TypeDescriptor(
-                    enclosingElement.getQualifiedName().toString(),
-                    TypeUtils.getVType(enclosingElement.asType())
-                );
+                final var returnType = TypeUtils.getTypeDescriptor(fieldType);
+                final var enclosingType = TypeUtils.getTypeDescriptor(enclosingElement.asType());
 
                 return new GetterDescriptor(fieldName, returnType, enclosingType);
             })
