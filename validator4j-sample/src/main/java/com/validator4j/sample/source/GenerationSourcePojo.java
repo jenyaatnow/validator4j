@@ -1,6 +1,7 @@
 package com.validator4j.sample.source;
 
 import com.validator4j.core.Validatable;
+import com.validator4j.sample.source.nested.GenerationSourceNestedPojo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,4 +19,6 @@ public class GenerationSourcePojo {
     private final Boolean readyToGo;
 
     private final ArrayList<Integer> ids;
+
+    private final GenerationSourceNestedPojo nested;
 }

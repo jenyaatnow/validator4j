@@ -19,7 +19,7 @@ ${outcome.fields}
     /**
      * Nested object constructor.
      */
-    V${outcome.type.root}(final String path, final ${outcome.type.root} value, final ErrorsContainer errors) {
+    public V${outcome.type.root}(final String path, final ${outcome.type.root} value, final ErrorsContainer errors) {
         super(path, value, errors);
 
 ${outcome.constructor.assignments}

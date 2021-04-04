@@ -23,7 +23,7 @@ public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {
     /**
      * Nested object constructor.
      */
-    VTestCodeGenPojo(final String path, final TestCodeGenPojo value, final ErrorsContainer errors) {
+    public VTestCodeGenPojo(final String path, final TestCodeGenPojo value, final ErrorsContainer errors) {
         super(path, value, errors);
 
         this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), errors);

@@ -17,4 +17,9 @@ public @interface Validatable {
      * {@link Validatable} annotation fully qualified name.
      */
     String NAME = "com.validator4j.core.Validatable";
+
+    /**
+     * The prefix of the generated validation classes.
+     */
+    String GENERATED_CLASS_PREFIX = "V";
 }

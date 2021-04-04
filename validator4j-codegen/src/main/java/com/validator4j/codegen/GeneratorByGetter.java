@@ -1,5 +1,6 @@
 package com.validator4j.codegen;
 
+import com.validator4j.core.Validatable;
 import lombok.NonNull;
 
 import java.util.Optional;
@@ -12,6 +13,7 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
     public String generate(@NonNull final GetterDescriptor getterDescriptor) {
         final var vType = getterDescriptor.getReturnType().getVType();
 
+        // TODO Suppose this switch/case doesn't necessary here
         switch (vType) {
             case BOOLEAN:
             case BYTE:
@@ -22,10 +24,8 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
             case DOUBLE:
             case STRING:
             case COLLECTION:
+            case USER_TYPE:
                 return resolvePlaceholders(getterDescriptor);
-            // TODO Collections, maps
-            // TODO User defined types
-            // TODO User defined generic types
 
             default: throw new CodeGenException(String.format("Unsupported type '%s'", vType));
         }
@@ -73,7 +73,13 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
             .of(getterDescriptor.getReturnType())
             .filter(TypeDescriptor::isGeneric)
             .map(mapper)
-            .orElse(vType.getVTypeSimpleName());
+            .orElseGet(() -> {
+                if (vType == ValidatableType.USER_TYPE) {
+                    return Validatable.GENERATED_CLASS_PREFIX + getterDescriptor.getReturnType().getSimpleName();
+                } else {
+                    return vType.getVTypeSimpleName();
+                }
+            });
     }
 
     abstract TemplateResource supplyTemplateResource();

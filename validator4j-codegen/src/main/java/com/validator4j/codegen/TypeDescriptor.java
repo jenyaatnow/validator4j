@@ -1,5 +1,6 @@
 package com.validator4j.codegen;
 
+import com.validator4j.core.Validatable;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -44,6 +45,11 @@ public class TypeDescriptor {
         this.typeParameters = typeParameters;
     }
 
+    /**
+     * Recursively collects type descriptors of all types related to this getter.
+     *
+     * @return set of type descriptors.
+     */
     public Set<TypeDescriptor> getAllRelatedTypes() {
         final var types = new HashSet<>(getTypeParameters());
         types.add(this);
@@ -82,6 +88,25 @@ public class TypeDescriptor {
             return name.substring(0, lastDotIdx);
         } else {
             throw new CodeGenException(String.format("Couldn't determine package name of '%s'", name));
+        }
+    }
+
+    /**
+     * Returns the fully qualified name of v-type corresponding to type, represented by this class instance.
+     * If particular instance represents a {@link ValidatableType#NON_V_TYPE} this method call throws an exception.
+     * If particular instance represents a {@link ValidatableType#USER_TYPE} then the original class name will be
+     * prepended with {@link Validatable#GENERATED_CLASS_PREFIX}. Other types returns the fully qualified name of the
+     * {@link ValidatableType#getVClass()}.
+     *
+     * @return v-type fully qualified name.
+     */
+    public String getVClassName() {
+        if (vType == ValidatableType.USER_TYPE) {
+            return getPackageName() + '.' + Validatable.GENERATED_CLASS_PREFIX + getSimpleName();
+        } else if (vType == ValidatableType.NON_V_TYPE) {
+            throw new CodeGenException(String.format("Type of '%s' is not v-type", name));
+        } else {
+            return vType.getVClass().getName();
         }
     }
 }

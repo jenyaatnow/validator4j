@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class ValidatableProcessor extends AbstractProcessor {
 
-    private static final String GENERATED_CLASS_PREFIX = "V";
-
     @Override
     public boolean process(@NonNull final Set<? extends TypeElement> annotations,
                            @NonNull final RoundEnvironment roundEnv)
@@ -72,24 +70,32 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private Set<TypeDescriptor> getImports(@NonNull final List<GetterDescriptor> getterDetails) {
-        final var requiredImportTypes = TypeUtils.getTypeElements(
+        final var generalTypes = TypeUtils.getTypeElements(
             ValidatableObject.class,
             ValidatableReference.class,
             Checks.class,
             ErrorsContainer.class
         );
 
-        final var gettersImportTypes = getterDetails.stream()
+        final var gettersTypes = getterDetails.stream()
             .flatMap(getter -> getter.getReturnType().getAllRelatedTypes().stream())
             .map(typeDescriptor -> TypeUtils.getTypeElement(typeDescriptor.getVType().getVClass()))
             .collect(Collectors.toSet());
 
-        requiredImportTypes.addAll(gettersImportTypes);
+        generalTypes.addAll(gettersTypes);
 
-        final var importTypes = requiredImportTypes.stream()
+        final var importTypes = generalTypes.stream()
             .map(typeElement -> TypeUtils.getTypeDescriptor(typeElement.asType()))
             .collect(Collectors.toSet());
 
+        final var userTypes = getterDetails.stream()
+            .filter(getter -> getter.getReturnType().getVType() == ValidatableType.USER_TYPE)
+            .map(getter -> new TypeDescriptor(
+                getter.getReturnType().getVClassName(),
+                getter.getReturnType().getVType()
+            )).collect(Collectors.toSet());
+
+        importTypes.addAll(userTypes);
         return importTypes;
     }
 
@@ -112,7 +118,7 @@ public class ValidatableProcessor extends AbstractProcessor {
 
     @SneakyThrows
     private void write(@NonNull final Name className, @NonNull final String sourceContent) {
-        final var file = processingEnv.getFiler().createSourceFile(GENERATED_CLASS_PREFIX + className);
+        final var file = processingEnv.getFiler().createSourceFile(Validatable.GENERATED_CLASS_PREFIX + className);
 
         try (final var out = new PrintWriter(file.openWriter())) {
             out.print(sourceContent);
