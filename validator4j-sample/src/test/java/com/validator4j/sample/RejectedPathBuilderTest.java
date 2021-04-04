@@ -61,23 +61,23 @@ public class RejectedPathBuilderTest {
             ),
 
             Arguments.of(
-                (Runnable) () -> vTestPojo.getArticleIds().forEach(id -> id.validate(validationHandler)),
+                (Runnable) () -> vTestPojo.getArticleIds().validateEach(validationHandler),
                 "articleIds[0]"
             ),
 
             Arguments.of(
-                (Runnable) () -> vTestPojo.getNested().getIds().forEach(id -> id.validate(validationHandler)),
+                (Runnable) () -> vTestPojo.getNested().getIds().validateEach(validationHandler),
                 "nested.ids[0]"
             ),
 
             Arguments.of(
                 (Runnable) () -> vTestPojo.getPojos().forEach(
-                    vNestedPojo -> vNestedPojo.getIds().forEach(
-                        vId -> vId.validate((id, reject) -> {
+                    vNestedPojo -> vNestedPojo.getIds().validateEach(
+                        (id, reject) -> {
                             if (id == 666) {
                                 reject.accept(ERROR_MESSAGE);
                             }
-                        })
+                        }
                     )
                 ),
                 "pojos[1].ids[2]"

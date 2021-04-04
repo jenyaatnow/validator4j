@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -36,12 +37,6 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
         super(path, toValidatableList(value, path, valueMapper), errors);
     }
 
-    public void forEach(@NonNull final Consumer<VTARGET> validationHandler) {
-        value.forEach(validationHandler);
-    }
-
-    // TODO Implement iterable, flatMap analogue
-
     private static <T, V extends ValidatableReference<T>> List<V> toValidatableList(
         final Collection<T> source, @NonNull final String path, @NonNull final BiFunction<String, T, V> valueMapper
     )
@@ -70,4 +65,14 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
             throw new IllegalArgumentException(String.format("Value of unsupported type '%s'", v.getClass().getName()));
         };
     }
+
+    public void forEach(@NonNull final Consumer<VTARGET> validationHandler) {
+        value.forEach(validationHandler);
+    }
+
+    public void validateEach(@NonNull final BiConsumer<TARGET, Consumer<String>> validationHandler) {
+        value.forEach(vEntry -> vEntry.validate(validationHandler));
+    }
+
+    // TODO Implement iterable, flatMap analogue
 }
