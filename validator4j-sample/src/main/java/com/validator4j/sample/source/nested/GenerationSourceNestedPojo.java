@@ -8,5 +8,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class GenerationSourceNestedPojo {
+
     private final Integer id;
 }

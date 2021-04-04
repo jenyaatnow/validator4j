@@ -15,6 +15,13 @@ public interface ErrorsContainer {
     void add(ValidationError error);
 
     /**
+     * Adds all passed validation errors to the storage.
+     *
+     * @param errors validation errors.
+     */
+    void addAll(Collection<ValidationError> errors);
+
+    /**
      * Returns all errors collected by the storage.
      *
      * @return errors collection.

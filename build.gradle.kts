@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     checkstyle
     id("io.freefair.lombok") version("5.3.0")
 }
@@ -11,11 +11,8 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-}
-
 subprojects {
-    apply<JavaPlugin>()
+    apply(plugin = "java-library")
     apply(plugin = "checkstyle")
     apply(plugin = "io.freefair.lombok")
 

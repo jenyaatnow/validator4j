@@ -41,7 +41,7 @@ public class RejectedPathBuilderTest {
     public void testValidation(final Runnable runnable, final String path) {
         runnable.run();
 
-        final var errors = vTestPojo.getValidationResult().getErrors();
+        final var errors = vTestPojo.validate().getErrors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals(path, errors.iterator().next().getPath());
     }

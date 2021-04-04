@@ -3,6 +3,7 @@ package com.validator4j.core;
 import lombok.NonNull;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class ValidatableObject<TARGET> extends ValidatableReference<TARGET> {
@@ -21,8 +22,21 @@ public abstract class ValidatableObject<TARGET> extends ValidatableReference<TAR
             : path + "." + pathPart;
     }
 
-    public ErrorsContainer getValidationResult() {
-        // TODO This method should be available only in root object
+    /**
+     * Performs constraints validation and joins it's result with errors collected by user-defined rules validation.
+     *
+     * @implNote At this point validation by user-defined rules happens at the moment
+     *           of {@link ValidatableReference#validate(BiConsumer)} call. Probably better to shift this validation
+     *           to the moment of the invocation of this method and use
+     *           {@link ValidatableReference#validate(BiConsumer)} just to define validation rules for future use.
+     *
+     * @return container with entire validation errors report.
+     */
+    // TODO This method should be available only in root object
+    public final ErrorsContainer validate() {
+        final var constraintViolations = ConstraintValidator.instance.validate(value);
+        errors.addAll(constraintViolations);
+
         return errors;
     }
 }
