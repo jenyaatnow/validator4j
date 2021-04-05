@@ -3,21 +3,28 @@ package io.github.jenyaatnow.validator4j.core;
 import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Basic implementation of validatable collections. For each collection of user-defined {@link Validatable} types
+ * will be generated an inheritor of this class.
+ *
+ * @param <TARGET> original type of validated collection's elements.
+ * @param <VTARGET> v-type corresponding to {@code TARGET} type.
+ */
 public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<TARGET>>
     extends ValidatableReference<List<VTARGET>>
 {
 
     /**
-     * Simple values collection constructor.
+     * Used to instantiate {@link ValidatableCollection} of simple values.
      */
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
@@ -27,7 +34,7 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
     }
 
     /**
-     * Objects collection constructor.
+     * Used to instantiate {@link ValidatableCollection} of {@link Validatable} objects.
      */
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
@@ -66,12 +73,46 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
         };
     }
 
-    public void forEach(@NonNull final Consumer<VTARGET> validationHandler) {
+    /**
+     * Iterates over collection and performs validation on each element by passed handler.
+     * Use it to get access to each element of this collection in form of {@link ValidatableReference} implementation
+     * and perform validation using {@link ValidatableReference#validate(ValidationRule...)}. Example:
+     *     <pre>
+     *     {@code
+     *     final VUser vUser = ...;
+     *     vUser.getIds().forEach(vInt -> vInt.validate((id, reject) -> {
+     *         if (id < 1) {
+     *             reject.accept("Id should be positive number");
+     *         }
+     *     }))
+     *     }
+     *     </pre>
+     *
+     * @param validationHandler validation handler whose only argument is a {@link ValidatableReference} instance.
+     */
+    public final void forEach(@NonNull final Consumer<VTARGET> validationHandler) {
         value.forEach(validationHandler);
     }
 
-    public void validateEach(@NonNull final BiConsumer<TARGET, Consumer<String>> validationHandler) {
-        value.forEach(vEntry -> vEntry.validate(validationHandler));
+    /**
+     * Simplified alternative of {@link ValidatableCollection#forEach(Consumer)}. Iterates over collection and performs
+     * validation on each element by passed rules directly bypassing v-type interaction. Example:
+     *     <pre>
+     *     {@code
+     *     final VUser vUser = ...;
+     *     vUser.getIds().validateEach((id, reject) -> {
+     *         if (id < 1) {
+     *             reject.accept("Id should be positive number");
+     *         }
+     *     })
+     *     }
+     *     </pre>
+     *
+     * @param validationRules validation rules.
+     */
+    @SafeVarargs
+    public final void validateEach(@NonNull final ValidationRule<TARGET>... validationRules) {
+        value.forEach(vEntry -> Arrays.stream(validationRules).forEach(vEntry::validate));
     }
 
     // TODO Implement iterable, flatMap analogue

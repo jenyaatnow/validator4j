@@ -2,7 +2,7 @@ package io.github.jenyaatnow.validator4j.core;
 
 import lombok.NonNull;
 
-import java.util.function.BiConsumer;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -54,11 +54,7 @@ public abstract class ValidatableReference<TARGET> {
     }
 
     /**
-     * Performs a validation by user-defined rule.
-     *
-     * @param validationHandler user-defined validation rule in form of {@link BiConsumer} where
-     *                          1st argument is the validated value and 2nd argument is a {@link Consumer}
-     *                          that should be used to reject invalid value. Example:
+     * Performs a validation by passed rules. Example:
      *     <pre>
      *     {@code
      *     final VUser vUser = ...;
@@ -70,9 +66,12 @@ public abstract class ValidatableReference<TARGET> {
      *     }
      *     </pre>
      *
+     * @param validationRules validation rules.
+     *
      * @see ValidatableObject#validate()
      */
-    public final void validate(@NonNull final BiConsumer<TARGET, Consumer<String>> validationHandler) {
-        validationHandler.accept(value, reject);
+    @SafeVarargs
+    public final void validate(@NonNull final ValidationRule<TARGET>... validationRules) {
+        Arrays.stream(validationRules).forEach(rule -> rule.validate(value, reject));
     }
 }

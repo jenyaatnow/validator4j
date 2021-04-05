@@ -3,6 +3,8 @@ package io.github.jenyaatnow.validator4j.util.resource;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 
+import java.nio.charset.StandardCharsets;
+
 public class BaseResourceReader implements ResourceReader {
 
     @SneakyThrows
@@ -15,7 +17,7 @@ public class BaseResourceReader implements ResourceReader {
             }
 
             final var bytes = inputStream.readAllBytes();
-            final var resourceContent = new String(bytes);
+            final var resourceContent = new String(bytes, StandardCharsets.UTF_8);
 
             return resourceContent;
         }

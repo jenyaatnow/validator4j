@@ -1,5 +1,6 @@
 package io.github.jenyaatnow.validator4j.sample;
 
+import io.github.jenyaatnow.validator4j.core.ValidationRule;
 import io.github.jenyaatnow.validator4j.sample.generated.VTestPojo;
 import io.github.jenyaatnow.validator4j.sample.source.NestedPojo;
 import io.github.jenyaatnow.validator4j.sample.source.TestPojo;
@@ -10,8 +11,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class RejectedPathBuilderTest {
@@ -47,7 +46,7 @@ public class RejectedPathBuilderTest {
     }
 
     private static Stream<Arguments> validationCaseProvider() {
-        final BiConsumer<Integer, Consumer<String>> validationHandler = (value, reject) -> reject.accept(ERROR_MESSAGE);
+        final ValidationRule<Integer> validationHandler = (value, reject) -> reject.accept(ERROR_MESSAGE);
 
         return Stream.of(
             Arguments.of(

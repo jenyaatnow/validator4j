@@ -10,13 +10,13 @@ import java.util.List;
 
 public final class TypeDescriptors {
 
-    public static TypeDescriptor INTEGER =
+    public static final TypeDescriptor INTEGER =
         new TypeDescriptor(Integer.class.getName(), ValidatableType.INTEGER);
 
-    public static TypeDescriptor V_INTEGER =
+    public static final TypeDescriptor V_INTEGER =
         new TypeDescriptor(ValidatableInteger.class.getName(), ValidatableType.NON_V_TYPE);
 
-    public static TypeDescriptor INT_LIST =
+    public static final TypeDescriptor INT_LIST =
         new TypeDescriptor(ArrayList.class.getName(), ValidatableType.COLLECTION, List.of(INTEGER));
 
 
