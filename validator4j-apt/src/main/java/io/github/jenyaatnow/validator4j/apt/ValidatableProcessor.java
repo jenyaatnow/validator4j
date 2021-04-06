@@ -5,7 +5,7 @@ import io.github.jenyaatnow.validator4j.codegen.GetterDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.VClassGenerator;
 import io.github.jenyaatnow.validator4j.codegen.ValidatableType;
-import io.github.jenyaatnow.validator4j.core.ErrorsContainer;
+import io.github.jenyaatnow.validator4j.core.ErrorsCollector;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
@@ -74,7 +74,7 @@ public class ValidatableProcessor extends AbstractProcessor {
             ValidatableObject.class,
             ValidatableReference.class,
             Checks.class,
-            ErrorsContainer.class
+            ErrorsCollector.class
         );
 
         final var gettersTypes = getterDetails.stream()

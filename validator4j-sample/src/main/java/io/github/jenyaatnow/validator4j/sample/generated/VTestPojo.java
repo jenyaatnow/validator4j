@@ -1,6 +1,6 @@
 package io.github.jenyaatnow.validator4j.sample.generated;
 
-import io.github.jenyaatnow.validator4j.core.ErrorsContainer;
+import io.github.jenyaatnow.validator4j.core.ErrorsCollector;
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
 import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
@@ -24,7 +24,7 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
      * Root object constructor.
      */
     public VTestPojo(final TestPojo value) {
-        this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
+        this(ValidatableReference.PATH_ROOT, value, ErrorsCollector.getErrorsCollector());
 
         Checks.nonNull(value, "value");
     }
@@ -32,7 +32,7 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
     /**
      * Nested object constructor.
      */
-    VTestPojo(final String path, final TestPojo value, final ErrorsContainer errors) {
+    VTestPojo(final String path, final TestPojo value, final ErrorsCollector errors) {
         super(path, value, errors);
 
         this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), errors);

@@ -5,7 +5,7 @@ ${outcome.imports}
 
 public final class V${outcome.type.root}Collection extends ValidatableCollection<${outcome.type.root}, V${outcome.type.root}> {
 
-    public V${outcome.type.root}Collection(final String path, final Collection<${outcome.type.root}> value, final ErrorsContainer errors) {
+    public V${outcome.type.root}Collection(final String path, final Collection<${outcome.type.root}> value, final ErrorsCollector errors) {
         super(
             path,
             value,

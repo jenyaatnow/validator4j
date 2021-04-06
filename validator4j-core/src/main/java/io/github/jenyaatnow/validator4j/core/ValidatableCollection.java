@@ -28,7 +28,7 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
      */
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
-                                 @NonNull final ErrorsContainer errors)
+                                 @NonNull final ErrorsCollector errors)
     {
         super(path, toValidatableList(value, path, mapSimpleValue(errors)), errors);
     }
@@ -39,7 +39,7 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
                                  @NonNull final BiFunction<String, TARGET, VTARGET> valueMapper,
-                                 @NonNull final ErrorsContainer errors)
+                                 @NonNull final ErrorsCollector errors)
     {
         super(path, toValidatableList(value, path, valueMapper), errors);
     }
@@ -61,7 +61,7 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
 
     @SuppressWarnings("unchecked")
     private static <T, V extends ValidatableReference<T>> BiFunction<String, T, V> mapSimpleValue(
-        @NonNull final ErrorsContainer errors
+        @NonNull final ErrorsCollector errors
     )
     {
         return (p, v) -> {

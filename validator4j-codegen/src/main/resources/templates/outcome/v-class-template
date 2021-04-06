@@ -11,7 +11,7 @@ ${outcome.fields}
      * Root object constructor.
      */
     public V${outcome.type.root}(final ${outcome.type.root} value) {
-        this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
+        this(ValidatableReference.PATH_ROOT, value, ErrorsCollector.getErrorsCollector());
 
         Checks.nonNull(value, "value");
     }
@@ -19,7 +19,7 @@ ${outcome.fields}
     /**
      * Nested object constructor.
      */
-    public V${outcome.type.root}(final String path, final ${outcome.type.root} value, final ErrorsContainer errors) {
+    public V${outcome.type.root}(final String path, final ${outcome.type.root} value, final ErrorsCollector errors) {
         super(path, value, errors);
 
 ${outcome.constructor.assignments}

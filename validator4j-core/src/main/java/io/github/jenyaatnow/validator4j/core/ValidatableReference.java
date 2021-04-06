@@ -32,7 +32,7 @@ public abstract class ValidatableReference<TARGET> {
     /**
      * Validation errors container.
      */
-    protected final ErrorsContainer errors;
+    protected final ErrorsCollector errors;
 
     /**
      * Operation that uses in order to reject invalid value and put {@link ValidationError} to errors container.
@@ -41,7 +41,7 @@ public abstract class ValidatableReference<TARGET> {
 
     protected ValidatableReference(@NonNull final String path,
                                    final TARGET value,
-                                   @NonNull final ErrorsContainer errors)
+                                   @NonNull final ErrorsCollector errors)
     {
         this.path = path;
         this.value = value;

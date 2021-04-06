@@ -1,6 +1,6 @@
 package io.github.jenyaatnow.validator4j.codegen.testutils;
 
-import io.github.jenyaatnow.validator4j.core.ErrorsContainer;
+import io.github.jenyaatnow.validator4j.core.ErrorsCollector;
 import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
@@ -15,7 +15,7 @@ public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {
      * Root object constructor.
      */
     public VTestCodeGenPojo(final TestCodeGenPojo value) {
-        this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
+        this(ValidatableReference.PATH_ROOT, value, ErrorsCollector.getErrorsCollector());
 
         Checks.nonNull(value, "value");
     }
@@ -23,7 +23,7 @@ public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {
     /**
      * Nested object constructor.
      */
-    public VTestCodeGenPojo(final String path, final TestCodeGenPojo value, final ErrorsContainer errors) {
+    public VTestCodeGenPojo(final String path, final TestCodeGenPojo value, final ErrorsCollector errors) {
         super(path, value, errors);
 
         this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), errors);

@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public abstract class ValidatableObject<TARGET> extends ValidatableReference<TARGET> {
 
-    public ValidatableObject(@NonNull final String path, final TARGET value, @NonNull final ErrorsContainer errors) {
+    public ValidatableObject(@NonNull final String path, final TARGET value, @NonNull final ErrorsCollector errors) {
         super(path, value, errors);
     }
 
@@ -33,10 +33,10 @@ public abstract class ValidatableObject<TARGET> extends ValidatableReference<TAR
      * @return container with entire validation errors report.
      */
     // TODO This method should be available only in root object
-    public final ErrorsContainer validate() {
+    public final ErrorsReport validate() {
         final var constraintViolations = ConstraintValidator.instance.validate(value);
         errors.addAll(constraintViolations);
 
-        return errors;
+        return (ErrorsReport) errors;
     }
 }
