@@ -4,7 +4,7 @@ plugins {
     id("io.freefair.lombok") version("5.3.0")
 }
 
-group = "com.validator4j"
+group = "io.github.jenyaatnow"
 version = "1.0-SNAPSHOT"
 
 repositories {

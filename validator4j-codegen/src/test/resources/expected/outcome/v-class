@@ -1,10 +1,10 @@
-package com.validator4j.codegen.testutils;
+package io.github.jenyaatnow.validator4j.codegen.testutils;
 
-import com.validator4j.core.ErrorsContainer;
-import com.validator4j.core.ValidatableInteger;
-import com.validator4j.core.ValidatableObject;
-import com.validator4j.core.ValidatableReference;
-import com.validator4j.util.Checks;
+import io.github.jenyaatnow.validator4j.core.ErrorsContainer;
+import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
+import io.github.jenyaatnow.validator4j.core.ValidatableObject;
+import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.util.Checks;
 
 
 public final class VTestCodeGenPojo extends ValidatableObject<TestCodeGenPojo> {

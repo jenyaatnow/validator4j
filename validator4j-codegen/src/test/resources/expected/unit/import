@@ -1,1 +1,1 @@
-import com.validator4j.core.ValidatableInteger;
+import io.github.jenyaatnow.validator4j.core.ValidatableInteger;

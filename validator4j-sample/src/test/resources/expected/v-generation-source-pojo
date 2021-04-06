@@ -1,15 +1,15 @@
-package com.validator4j.sample.source;
+package io.github.jenyaatnow.validator4j.sample.source;
 
-import com.validator4j.core.ErrorsContainer;
-import com.validator4j.core.ValidatableBoolean;
-import com.validator4j.core.ValidatableCollection;
-import com.validator4j.core.ValidatableDouble;
-import com.validator4j.core.ValidatableInteger;
-import com.validator4j.core.ValidatableObject;
-import com.validator4j.core.ValidatableReference;
-import com.validator4j.core.ValidatableString;
-import com.validator4j.sample.source.nested.VGenerationSourceNestedPojo;
-import com.validator4j.util.Checks;
+import io.github.jenyaatnow.validator4j.core.ErrorsContainer;
+import io.github.jenyaatnow.validator4j.core.ValidatableBoolean;
+import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
+import io.github.jenyaatnow.validator4j.core.ValidatableDouble;
+import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
+import io.github.jenyaatnow.validator4j.core.ValidatableObject;
+import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableString;
+import io.github.jenyaatnow.validator4j.sample.source.nested.VGenerationSourceNestedPojo;
+import io.github.jenyaatnow.validator4j.util.Checks;
 
 
 public final class VGenerationSourcePojo extends ValidatableObject<GenerationSourcePojo> {
