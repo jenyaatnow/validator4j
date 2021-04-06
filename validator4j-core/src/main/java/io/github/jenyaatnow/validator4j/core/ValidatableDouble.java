@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 public final class ValidatableDouble extends ValidatableReference<Double> {
 
-    public ValidatableDouble(@NonNull final String path, final Double value, @NonNull final ErrorsCollector errors) {
-        super(path, value, errors);
+    public ValidatableDouble(@NonNull final String path, final Double value, @NonNull final ValidationContext ctx) {
+        super(path, value, ctx);
     }
 }

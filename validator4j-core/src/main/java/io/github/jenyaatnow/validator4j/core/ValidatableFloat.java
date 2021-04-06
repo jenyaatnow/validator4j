@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 public final class ValidatableFloat extends ValidatableReference<Float> {
 
-    public ValidatableFloat(@NonNull final String path, final Float value, @NonNull final ErrorsCollector errors) {
-        super(path, value, errors);
+    public ValidatableFloat(@NonNull final String path, final Float value, @NonNull final ValidationContext ctx) {
+        super(path, value, ctx);
     }
 }

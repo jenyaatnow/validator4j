@@ -1,1 +1,1 @@
-this.ids = new ValidatableCollection<>(appendPath("ids"), safeGet(value, TestCodeGenPojo::getIds), errors);
+this.ids = new ValidatableCollection<>(appendPath("ids"), safeGet(value, TestCodeGenPojo::getIds), ctx);

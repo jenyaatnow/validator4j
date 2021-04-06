@@ -1,10 +1,10 @@
 package io.github.jenyaatnow.validator4j.sample.generated;
 
-import io.github.jenyaatnow.validator4j.core.ErrorsCollector;
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
 import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidationContext;
 import io.github.jenyaatnow.validator4j.sample.source.NestedPojo;
 import io.github.jenyaatnow.validator4j.sample.source.TestPojo;
 import io.github.jenyaatnow.validator4j.util.Checks;
@@ -24,7 +24,7 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
      * Root object constructor.
      */
     public VTestPojo(final TestPojo value) {
-        this(ValidatableReference.PATH_ROOT, value, ErrorsCollector.getErrorsCollector());
+        this(ValidatableReference.PATH_ROOT, value, ValidationContext.getInstance());
 
         Checks.nonNull(value, "value");
     }
@@ -32,13 +32,13 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
     /**
      * Nested object constructor.
      */
-    VTestPojo(final String path, final TestPojo value, final ErrorsCollector errors) {
-        super(path, value, errors);
+    VTestPojo(final String path, final TestPojo value, final ValidationContext ctx) {
+        super(path, value, ctx);
 
-        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), errors);
-        this.nested = new VNestedPojo(appendPath("nested"), safeGet(value, TestPojo::getNested), errors);
-        this.articleIds = new ValidatableCollection<>(appendPath("articleIds"), safeGet(value, TestPojo::getArticleIds), errors);
-        this.pojos = new VNestedPojoCollection(appendPath("pojos"), safeGet(value, TestPojo::getPojos), errors);
+        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), ctx);
+        this.nested = new VNestedPojo(appendPath("nested"), safeGet(value, TestPojo::getNested), ctx);
+        this.articleIds = new ValidatableCollection<>(appendPath("articleIds"), safeGet(value, TestPojo::getArticleIds), ctx);
+        this.pojos = new VNestedPojoCollection(appendPath("pojos"), safeGet(value, TestPojo::getPojos), ctx);
     }
 
     public ValidatableInteger getId() {

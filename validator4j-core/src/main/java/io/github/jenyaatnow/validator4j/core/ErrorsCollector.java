@@ -1,8 +1,8 @@
-package com.validator4j.core;
+package io.github.jenyaatnow.validator4j.core;
 
 import java.util.Collection;
 
-public interface ErrorsCollector {
+interface ErrorsCollector {
 
     /**
      * Adds a validation error to the storage.

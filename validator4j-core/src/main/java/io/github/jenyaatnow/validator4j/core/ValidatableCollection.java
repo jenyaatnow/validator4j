@@ -28,9 +28,9 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
      */
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
-                                 @NonNull final ErrorsCollector errors)
+                                 @NonNull final ValidationContext ctx)
     {
-        super(path, toValidatableList(value, path, mapSimpleValue(errors)), errors);
+        super(path, toValidatableList(value, path, mapSimpleValue(ctx)), ctx);
     }
 
     /**
@@ -39,9 +39,9 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
                                  @NonNull final BiFunction<String, TARGET, VTARGET> valueMapper,
-                                 @NonNull final ErrorsCollector errors)
+                                 @NonNull final ValidationContext ctx)
     {
-        super(path, toValidatableList(value, path, valueMapper), errors);
+        super(path, toValidatableList(value, path, valueMapper), ctx);
     }
 
     private static <T, V extends ValidatableReference<T>> List<V> toValidatableList(
@@ -61,12 +61,12 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
 
     @SuppressWarnings("unchecked")
     private static <T, V extends ValidatableReference<T>> BiFunction<String, T, V> mapSimpleValue(
-        @NonNull final ErrorsCollector errors
+        @NonNull final ValidationContext ctx
     )
     {
         return (p, v) -> {
             if (v instanceof Integer) {
-                return (V) new ValidatableInteger(p, (Integer) v, errors);
+                return (V) new ValidatableInteger(p, (Integer) v, ctx);
             }
 
             throw new IllegalArgumentException(String.format("Value of unsupported type '%s'", v.getClass().getName()));
@@ -74,9 +74,10 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
     }
 
     /**
-     * Iterates over collection and performs validation on each element by passed handler.
+     * Iterates over collection and prepares validation rules for each element with passed handler.
      * Use it to get access to each element of this collection in form of {@link ValidatableReference} implementation
-     * and perform validation using {@link ValidatableReference#validate(ValidationRule...)}. Example:
+     * and perform validation using {@link ValidatableReference#validate(ValidationRule...)}. Doesn't perform
+     * any validation itself. Example:
      *     <pre>
      *     {@code
      *     final VUser vUser = ...;
@@ -95,8 +96,9 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
     }
 
     /**
-     * Simplified alternative of {@link ValidatableCollection#forEach(Consumer)}. Iterates over collection and performs
-     * validation on each element by passed rules directly bypassing v-type interaction. Example:
+     * Simplified alternative of {@link ValidatableCollection#forEach(Consumer)}. Iterates over collection and prepares
+     * validation rules for each element with passed rules directly bypassing v-type interaction. Doesn't perform
+     * any validation itself. Example:
      *     <pre>
      *     {@code
      *     final VUser vUser = ...;

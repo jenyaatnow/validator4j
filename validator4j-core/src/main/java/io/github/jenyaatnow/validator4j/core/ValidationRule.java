@@ -1,4 +1,4 @@
-package com.validator4j.core;
+package io.github.jenyaatnow.validator4j.core;
 
 import java.util.function.Consumer;
 
