@@ -2,6 +2,38 @@
 **Validator4j** is attempt to make the bean validation most natural and close to OOP approach that we use to interact with our data classes. We try to reach this goal by code-generation at compilation phase. We generate so called **V-classes** providing validation API.
 
 ### Quickstart
+Add the following dependencies to your project:
+
+##### Gradle
+
+```kotlin
+implementation("io.github.jenyaatnow:validator4j-core:0.1.0")       // base validator4j functionality
+annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.1.0")   // annotation processor used to generate V-classes
+```
+
+<details><summary>Maven</summary>
+<p>
+  
+```xml
+<!-- base validator4j functionality -->
+<dependency>
+  <groupId>io.github.jenyaatnow</groupId>
+  <artifactId>validator4j-core</artifactId>
+  <version>0.1.0</version>
+</dependency>
+
+<!-- annotation processor used to generate V-classes -->
+<dependency>
+  <groupId>io.github.jenyaatnow</groupId>
+  <artifactId>validator4j-apt</artifactId>
+  <version>0.1.0</version>
+  <optional>true</optional>
+</dependency>
+```
+
+</p>
+</details>
+
 Suppose we have a `User` class. Among others, `User`-class contains an `address` field of type `Address`. We want to validate the data it contains using **validator4j**. For this purpose we need to annotate both `User` and `Address` classes with annotation **`@Validatable`**. Besides there are one strict requirement - source classes have to contain getters for all fields we want to validate (Lombok is allowed). At the compilation phase will be generated two specific classes - `VUser` and `VAddress`. We can interact with these classes in the similar fashion as with the original classes. These classes will contain all fields and getters which present in the original classes, but they will have special types, providing the validation API. Thus `Integer` fields will turn into `VaildatableInteger`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableCollection<String, ValidatableString>`, `Address` - `VAddress`. Also you'll see some constructors. You can find code examples below:
 
 ```java
