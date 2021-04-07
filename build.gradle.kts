@@ -47,8 +47,11 @@ configure(subprojects.filter { it.name in publicModules }) {
     }
 
     tasks.javadoc {
+        val opts = options as StandardJavadocDocletOptions
+        opts.addStringOption("Xdoclint:none", "-quiet")
+
         if (JavaVersion.current().isJava9Compatible) {
-            (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+            opts.addBooleanOption("html5", true)
         }
     }
 
@@ -98,8 +101,8 @@ configure(subprojects.filter { it.name in publicModules }) {
                 url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
 
                 credentials {
-                    username = "${property("sonatypeUsername")}"
-                    password = "${property("sonatypePassword")}"
+                    username = "${findProperty("sonatypeUsername")}"
+                    password = "${findProperty("sonatypePassword")}"
                 }
             }
         }

@@ -34,7 +34,10 @@ annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.1.0")   // annotatio
 </p>
 </details>
 
-Suppose we have a `User` class. Among others, `User`-class contains an `address` field of type `Address`. We want to validate the data it contains using **validator4j**. For this purpose we need to annotate both `User` and `Address` classes with annotation **`@Validatable`**. Besides there are one strict requirement - source classes have to contain getters for all fields we want to validate (Lombok is allowed). At the compilation phase will be generated two specific classes - `VUser` and `VAddress`. We can interact with these classes in the similar fashion as with the original classes. These classes will contain all fields and getters which present in the original classes, but they will have special types, providing the validation API. Thus `Integer` fields will turn into `VaildatableInteger`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableCollection<String, ValidatableString>`, `Address` - `VAddress`. Also you'll see some constructors. You can find code examples below:
+Suppose we have a `User` class. Among others, `User`-class contains an `address` field of type `Address`. We want to validate the data it contains using **validator4j**. For this purpose we need to annotate both `User` and `Address` classes with annotation **`@Validatable`**. Besides there are one strict requirement - source classes have to contain getters for all fields we want to validate (Lombok is allowed). At the compilation phase will be generated two specific classes - `VUser` and `VAddress`. We can interact with these classes in the similar fashion as with the original classes. These classes will contain all fields and getters which present in the original classes, but they will have special types, providing the validation API. Thus `Integer` fields will turn into `VaildatableInteger`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableCollection<String, ValidatableString>`, `Address` - `VAddress`. Also you'll see some constructors.
+You can find code examples below.
+
+[More about V-class generation](docs/GENERATION_RULES.md)
 
 ```java
 @Validatable
