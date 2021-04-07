@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class RejectedPathBuilderTest {
+public class ValidationTest {
 
     private static final String ERROR_MESSAGE = "ERROR";
 

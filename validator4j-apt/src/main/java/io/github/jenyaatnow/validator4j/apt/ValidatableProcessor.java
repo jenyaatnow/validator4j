@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SupportedAnnotationTypes(Validatable.NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
@@ -89,7 +90,12 @@ public class ValidatableProcessor extends AbstractProcessor {
 
         final var gettersTypes = getterDetails.stream()
             .flatMap(getter -> getter.getReturnType().getAllRelatedTypes().stream())
-            .map(typeDescriptor -> TypeUtils.getTypeElement(typeDescriptor.getVType().getVClass()))
+            .flatMap(typeDescriptor -> {
+                final var vType = TypeUtils.getTypeElement(typeDescriptor.getVType().getVClass());
+                final var jType = TypeUtils.getTypeElement(typeDescriptor.getVType().getJClass());
+                return Stream.of(vType, jType);
+            })
+            .filter(type -> !type.getQualifiedName().toString().startsWith("java.lang"))
             .collect(Collectors.toSet());
 
         generalTypes.addAll(gettersTypes);

@@ -1,0 +1,102 @@
+package io.github.jenyaatnow.validator4j.sample.source;
+
+import io.github.jenyaatnow.validator4j.core.ValidatableBoolean;
+import io.github.jenyaatnow.validator4j.core.ValidatableByte;
+import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
+import io.github.jenyaatnow.validator4j.core.ValidatableDate;
+import io.github.jenyaatnow.validator4j.core.ValidatableDouble;
+import io.github.jenyaatnow.validator4j.core.ValidatableFloat;
+import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
+import io.github.jenyaatnow.validator4j.core.ValidatableLong;
+import io.github.jenyaatnow.validator4j.core.ValidatableObject;
+import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableShort;
+import io.github.jenyaatnow.validator4j.core.ValidatableString;
+import io.github.jenyaatnow.validator4j.core.ValidationContext;
+import io.github.jenyaatnow.validator4j.util.Checks;
+import java.util.Collection;
+import java.util.Date;
+
+
+public final class VCollectionsOfJavaTypesPojo extends ValidatableObject<CollectionsOfJavaTypesPojo> {
+
+    private final ValidatableCollection<Boolean, ValidatableBoolean> booleans;
+
+    private final ValidatableCollection<Byte, ValidatableByte> bytes;
+
+    private final ValidatableCollection<Short, ValidatableShort> shorts;
+
+    private final ValidatableCollection<Integer, ValidatableInteger> integers;
+
+    private final ValidatableCollection<Long, ValidatableLong> longs;
+
+    private final ValidatableCollection<Float, ValidatableFloat> floats;
+
+    private final ValidatableCollection<Double, ValidatableDouble> doubles;
+
+    private final ValidatableCollection<String, ValidatableString> strings;
+
+    private final ValidatableCollection<Date, ValidatableDate> dates;
+
+    /**
+     * Root object constructor.
+     */
+    public VCollectionsOfJavaTypesPojo(final CollectionsOfJavaTypesPojo value) {
+        this(ValidatableReference.PATH_ROOT, value, ValidationContext.getInstance());
+
+        Checks.nonNull(value, "value");
+    }
+
+    /**
+     * Nested object constructor.
+     */
+    public VCollectionsOfJavaTypesPojo(final String path, final CollectionsOfJavaTypesPojo value, final ValidationContext ctx) {
+        super(path, value, ctx);
+
+        this.booleans = new ValidatableCollection<>(appendPath("booleans"), safeGet(value, CollectionsOfJavaTypesPojo::getBooleans), ctx);
+        this.bytes = new ValidatableCollection<>(appendPath("bytes"), safeGet(value, CollectionsOfJavaTypesPojo::getBytes), ctx);
+        this.shorts = new ValidatableCollection<>(appendPath("shorts"), safeGet(value, CollectionsOfJavaTypesPojo::getShorts), ctx);
+        this.integers = new ValidatableCollection<>(appendPath("integers"), safeGet(value, CollectionsOfJavaTypesPojo::getIntegers), ctx);
+        this.longs = new ValidatableCollection<>(appendPath("longs"), safeGet(value, CollectionsOfJavaTypesPojo::getLongs), ctx);
+        this.floats = new ValidatableCollection<>(appendPath("floats"), safeGet(value, CollectionsOfJavaTypesPojo::getFloats), ctx);
+        this.doubles = new ValidatableCollection<>(appendPath("doubles"), safeGet(value, CollectionsOfJavaTypesPojo::getDoubles), ctx);
+        this.strings = new ValidatableCollection<>(appendPath("strings"), safeGet(value, CollectionsOfJavaTypesPojo::getStrings), ctx);
+        this.dates = new ValidatableCollection<>(appendPath("dates"), safeGet(value, CollectionsOfJavaTypesPojo::getDates), ctx);
+    }
+
+    public ValidatableCollection<Boolean, ValidatableBoolean> getBooleans() {
+        return booleans;
+    }
+
+    public ValidatableCollection<Byte, ValidatableByte> getBytes() {
+        return bytes;
+    }
+
+    public ValidatableCollection<Short, ValidatableShort> getShorts() {
+        return shorts;
+    }
+
+    public ValidatableCollection<Integer, ValidatableInteger> getIntegers() {
+        return integers;
+    }
+
+    public ValidatableCollection<Long, ValidatableLong> getLongs() {
+        return longs;
+    }
+
+    public ValidatableCollection<Float, ValidatableFloat> getFloats() {
+        return floats;
+    }
+
+    public ValidatableCollection<Double, ValidatableDouble> getDoubles() {
+        return doubles;
+    }
+
+    public ValidatableCollection<String, ValidatableString> getStrings() {
+        return strings;
+    }
+
+    public ValidatableCollection<Date, ValidatableDate> getDates() {
+        return dates;
+    }
+}
