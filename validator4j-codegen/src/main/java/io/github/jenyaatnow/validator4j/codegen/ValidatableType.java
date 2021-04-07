@@ -3,6 +3,7 @@ package io.github.jenyaatnow.validator4j.codegen;
 import io.github.jenyaatnow.validator4j.core.ValidatableBoolean;
 import io.github.jenyaatnow.validator4j.core.ValidatableByte;
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
+import io.github.jenyaatnow.validator4j.core.ValidatableDate;
 import io.github.jenyaatnow.validator4j.core.ValidatableDouble;
 import io.github.jenyaatnow.validator4j.core.ValidatableFloat;
 import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.Date;
 
 @RequiredArgsConstructor
 @SuppressWarnings("rawtypes")
@@ -28,6 +30,7 @@ public enum ValidatableType {
     FLOAT(ValidatableFloat.class, Float.class),
     DOUBLE(ValidatableDouble.class, Double.class),
     STRING(ValidatableString.class, String.class),
+    DATE(ValidatableDate.class, Date.class),
     COLLECTION(ValidatableCollection.class, Collection.class),
     USER_TYPE(ValidatableObject.class, Object.class),
     NON_V_TYPE(null, Object.class),

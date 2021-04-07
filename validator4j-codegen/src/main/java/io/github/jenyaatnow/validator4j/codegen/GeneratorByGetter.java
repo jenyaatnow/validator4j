@@ -11,24 +11,14 @@ import java.util.stream.Stream;
 abstract class GeneratorByGetter extends AbstractCodeGenerator {
 
     public String generate(@NonNull final GetterDescriptor getterDescriptor) {
-        final var vType = getterDescriptor.getReturnType().getVType();
+        final var returnType = getterDescriptor.getReturnType();
+        final var vType = returnType.getVType();
 
-        // TODO Suppose this switch/case doesn't necessary here
-        switch (vType) {
-            case BOOLEAN:
-            case BYTE:
-            case SHORT:
-            case INTEGER:
-            case LONG:
-            case FLOAT:
-            case DOUBLE:
-            case STRING:
-            case COLLECTION:
-            case USER_TYPE:
-                return resolvePlaceholders(getterDescriptor);
-
-            default: throw new CodeGenException(String.format("Unsupported type '%s'", vType));
+        if (vType == ValidatableType.NON_V_TYPE) {
+            throw new CodeGenException(String.format("Unsupported type '%s'", returnType.getName()));
         }
+
+        return resolvePlaceholders(getterDescriptor);
     }
 
     private String resolvePlaceholders(@NonNull final GetterDescriptor getterDescriptor) {
