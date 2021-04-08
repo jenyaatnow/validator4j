@@ -1,6 +1,5 @@
 package io.github.jenyaatnow.validator4j.codegen;
 
-import io.github.jenyaatnow.validator4j.codegen.testutils.TypeDescriptors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

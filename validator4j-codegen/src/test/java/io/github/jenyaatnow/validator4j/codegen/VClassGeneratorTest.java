@@ -2,7 +2,6 @@ package io.github.jenyaatnow.validator4j.codegen;
 
 import io.github.jenyaatnow.validator4j.codegen.testutils.TestCodeGenPojo;
 import io.github.jenyaatnow.validator4j.codegen.testutils.TestTemplateResource;
-import io.github.jenyaatnow.validator4j.codegen.testutils.TypeDescriptors;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
 import io.github.jenyaatnow.validator4j.core.ValidatableValue;

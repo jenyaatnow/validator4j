@@ -2,7 +2,6 @@ package io.github.jenyaatnow.validator4j.codegen;
 
 import io.github.jenyaatnow.validator4j.codegen.testutils.TestCodeGenPojo;
 import io.github.jenyaatnow.validator4j.codegen.testutils.TestTemplateResource;
-import io.github.jenyaatnow.validator4j.codegen.testutils.TypeDescriptors;
 import io.github.jenyaatnow.validator4j.util.resource.ResourceReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

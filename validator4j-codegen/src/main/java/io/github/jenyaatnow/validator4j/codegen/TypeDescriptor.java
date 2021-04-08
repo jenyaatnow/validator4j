@@ -73,7 +73,7 @@ public class TypeDescriptor {
      *
      * @return simple class name.
      */
-    String getSimpleName() {
+    public String getSimpleName() {
         final var lastDotIdx = name.lastIndexOf('.');
         return name.substring(lastDotIdx + 1);
     }
@@ -83,7 +83,7 @@ public class TypeDescriptor {
      *
      * @return package name.
      */
-    String getPackageName() {
+    public String getPackageName() {
         final var lastDotIdx = name.lastIndexOf('.');
 
         if (lastDotIdx > 0) {
