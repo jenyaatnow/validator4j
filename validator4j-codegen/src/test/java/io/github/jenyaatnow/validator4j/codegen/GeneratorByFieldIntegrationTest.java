@@ -7,15 +7,15 @@ import io.github.jenyaatnow.validator4j.util.resource.ResourceReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-abstract class GeneratorByGetterIntegrationTest extends AbstractCodeGeneratorIntegrationTest {
+abstract class GeneratorByFieldIntegrationTest extends AbstractCodeGeneratorIntegrationTest {
 
-    final GetterDescriptor getterDescriptor = new GetterDescriptor(
+    final FieldDescriptor fieldDescriptor = new FieldDescriptor(
         "id",
         TypeDescriptors.INTEGER,
         TypeDescriptors.getUserType(TestCodeGenPojo.class)
     );
 
-    final GetterDescriptor listGetterDescriptor = new GetterDescriptor(
+    final FieldDescriptor listFieldDescriptor = new FieldDescriptor(
         "ids",
         TypeDescriptors.INT_LIST,
         TypeDescriptors.getUserType(TestCodeGenPojo.class)
@@ -23,7 +23,7 @@ abstract class GeneratorByGetterIntegrationTest extends AbstractCodeGeneratorInt
 
     @Test
     void testGenerateGeneric() {
-        final var actual = generate(listGetterDescriptor);
+        final var actual = generate(listFieldDescriptor);
         final var expected = ResourceReader.instance.readResourceAsString(getExpectedGenericResource());
 
         Assertions.assertEquals(expected, actual);
@@ -31,10 +31,10 @@ abstract class GeneratorByGetterIntegrationTest extends AbstractCodeGeneratorInt
 
     @Override
     String generateSimple() {
-        return generate(getterDescriptor);
+        return generate(fieldDescriptor);
     }
 
-    abstract String generate(GetterDescriptor getterDescriptor);
+    abstract String generate(FieldDescriptor fieldDescriptor);
 
     abstract TestTemplateResource getExpectedGenericResource();
 }

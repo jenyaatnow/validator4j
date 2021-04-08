@@ -1,6 +1,7 @@
 package io.github.jenyaatnow.validator4j.codegen;
 
 import io.github.jenyaatnow.validator4j.core.Validatable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -13,6 +14,7 @@ import java.util.Set;
  * Type descriptor.
  */
 @Getter
+@EqualsAndHashCode
 public class TypeDescriptor {
 
     /**
@@ -21,27 +23,27 @@ public class TypeDescriptor {
     private final String name;
 
     /**
-     * Corresponding {@link ValidatableType}.
+     * Corresponding {@link DataType}.
      */
-    private final ValidatableType vType;
+    private final DataType dataType;
 
     /**
      * Generic type parameter descriptors.
      */
     private final List<TypeDescriptor> typeParameters;
 
-    public TypeDescriptor(@NonNull final String name, @NonNull final ValidatableType vType) {
+    public TypeDescriptor(@NonNull final String name, @NonNull final DataType dataType) {
         this.name = name;
-        this.vType = vType;
+        this.dataType = dataType;
         this.typeParameters = new ArrayList<>();
     }
 
     public TypeDescriptor(@NonNull final String name,
-                          @NonNull final ValidatableType vType,
+                          @NonNull final DataType dataType,
                           @NonNull final List<TypeDescriptor> typeParameters)
     {
         this.name = name;
-        this.vType = vType;
+        this.dataType = dataType;
         this.typeParameters = typeParameters;
     }
 
@@ -93,20 +95,20 @@ public class TypeDescriptor {
 
     /**
      * Returns the fully qualified name of v-type corresponding to type, represented by this class instance.
-     * If particular instance represents a {@link ValidatableType#NON_V_TYPE} this method call throws an exception.
-     * If particular instance represents a {@link ValidatableType#USER_TYPE} then the original class name will be
+     * If particular instance represents a {@link DataType#OTHER} this method call throws an exception.
+     * If particular instance represents a {@link DataType#VALIDATABLE} then the original class name will be
      * prepended with {@link Validatable#GENERATED_CLASS_PREFIX}. Other types returns the fully qualified name of the
-     * {@link ValidatableType#getVClass()}.
+     * {@link DataType#getVClass()}.
      *
      * @return v-type fully qualified name.
      */
     public String getVClassName() {
-        if (vType == ValidatableType.USER_TYPE) {
+        if (dataType == DataType.VALIDATABLE) {
             return getPackageName() + '.' + Validatable.GENERATED_CLASS_PREFIX + getSimpleName();
-        } else if (vType == ValidatableType.NON_V_TYPE) {
+        } else if (dataType == DataType.OTHER) {
             throw new CodeGenException(String.format("Type of '%s' is not v-type", name));
         } else {
-            return vType.getVClass().getName();
+            return dataType.getVClass().getName();
         }
     }
 }

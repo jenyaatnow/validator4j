@@ -36,21 +36,23 @@ public final class VClassGenerator extends AbstractCodeGenerator {
     }
 
     private String generateAssignments(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
-        return typeDescriptor.getGetters().stream()
-            .map(getterDetails -> CodeGenUtils
-                .indent(assignmentGenerator.generate(getterDetails), IndentLevel.LEVEL_TWO)
+        return typeDescriptor.getFields().stream()
+            .map(fieldDescriptor -> CodeGenUtils
+                .indent(assignmentGenerator.generate(fieldDescriptor), IndentLevel.LEVEL_TWO)
             ).collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR));
     }
 
     private String generateFields(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
-        return typeDescriptor.getGetters().stream()
-            .map(getterDetails -> CodeGenUtils.indent(fieldGenerator.generate(getterDetails), IndentLevel.LEVEL_ONE))
+        return typeDescriptor.getFields().stream()
+            .map(fieldDescriptor ->
+                CodeGenUtils.indent(fieldGenerator.generate(fieldDescriptor), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR + CodeGenUtils.LINE_SEPARATOR));
     }
 
     private String generateGetters(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
-        return typeDescriptor.getGetters().stream()
-            .map(getterDetails -> CodeGenUtils.indent(getterGenerator.generate(getterDetails), IndentLevel.LEVEL_ONE))
+        return typeDescriptor.getFields().stream()
+            .map(fieldDescriptor ->
+                CodeGenUtils.indent(getterGenerator.generate(fieldDescriptor), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR + CodeGenUtils.LINE_SEPARATOR));
     }
 

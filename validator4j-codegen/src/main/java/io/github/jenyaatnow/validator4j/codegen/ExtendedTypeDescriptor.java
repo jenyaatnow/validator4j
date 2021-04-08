@@ -10,26 +10,26 @@ import java.util.List;
 public class ExtendedTypeDescriptor extends TypeDescriptor {
 
     private final Collection<TypeDescriptor> imports;
-    private final List<GetterDescriptor> getters;
+    private final List<FieldDescriptor> fields;
 
     public ExtendedTypeDescriptor(@NonNull final String name,
-                                  @NonNull final ValidatableType vType,
+                                  @NonNull final DataType dataType,
                                   @NonNull final Collection<TypeDescriptor> imports,
-                                  @NonNull final List<GetterDescriptor> getters)
+                                  @NonNull final List<FieldDescriptor> fields)
     {
-        super(name, vType);
+        super(name, dataType);
         this.imports = imports;
-        this.getters = getters;
+        this.fields = fields;
     }
 
     public ExtendedTypeDescriptor(@NonNull final String name,
-                                  @NonNull final ValidatableType vType,
+                                  @NonNull final DataType dataType,
                                   @NonNull final List<TypeDescriptor> typeParameters,
                                   @NonNull final Collection<TypeDescriptor> imports,
-                                  @NonNull final List<GetterDescriptor> getters)
+                                  @NonNull final List<FieldDescriptor> fields)
     {
-        super(name, vType, typeParameters);
+        super(name, dataType, typeParameters);
         this.imports = imports;
-        this.getters = getters;
+        this.fields = fields;
     }
 }

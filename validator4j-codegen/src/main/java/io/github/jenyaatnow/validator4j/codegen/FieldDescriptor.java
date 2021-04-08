@@ -7,31 +7,31 @@ import lombok.NonNull;
  * Getter descriptor.
  */
 @Getter
-public class GetterDescriptor {
+public class FieldDescriptor {
 
     private static final String GETTER_NAME_PREFIX = "get";
 
     /**
-     * Getter name.
+     * Field name.
      */
     @NonNull private final String fieldName;
 
     /**
-     * Getter return type descriptor.
+     * Getter field type descriptor.
      */
-    @NonNull private final TypeDescriptor returnType;
+    @NonNull private final TypeDescriptor type;
 
     /**
      * Descriptor of the class containing current getter.
      */
     @NonNull private final TypeDescriptor enclosingType;
 
-    public GetterDescriptor(@NonNull final String fieldName,
-                            @NonNull final TypeDescriptor returnType,
-                            @NonNull final TypeDescriptor enclosingType)
+    public FieldDescriptor(@NonNull final String fieldName,
+                           @NonNull final TypeDescriptor type,
+                           @NonNull final TypeDescriptor enclosingType)
     {
         this.fieldName = fieldName;
-        this.returnType = returnType;
+        this.type = type;
         this.enclosingType = enclosingType;
     }
 
@@ -40,7 +40,7 @@ public class GetterDescriptor {
      *
      * @return field name.
      */
-    public String getName() {
+    public String getGetterName() {
         final var firstCharacter = fieldName.substring(0, 1).toUpperCase();
         final var rest = fieldName.substring(1);
         return GETTER_NAME_PREFIX + firstCharacter + rest;

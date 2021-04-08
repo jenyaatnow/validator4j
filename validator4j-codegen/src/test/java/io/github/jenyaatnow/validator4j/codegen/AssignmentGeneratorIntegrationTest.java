@@ -5,11 +5,11 @@ import io.github.jenyaatnow.validator4j.util.test.IntegrationTest;
 import lombok.NonNull;
 
 @IntegrationTest
-class AssignmentGeneratorIntegrationTest extends GeneratorByGetterIntegrationTest {
+class AssignmentGeneratorIntegrationTest extends GeneratorByFieldIntegrationTest {
 
     @Override
-    String generate(@NonNull final GetterDescriptor getterDescriptor) {
-        return new AssignmentGenerator().generate(getterDescriptor);
+    String generate(@NonNull final FieldDescriptor fieldDescriptor) {
+        return new AssignmentGenerator().generate(fieldDescriptor);
     }
 
     @Override

@@ -26,19 +26,19 @@ class VClassGeneratorTest {
         final var enclosingType = TypeDescriptors.getUserType(TestCodeGenPojo.class);
 
         final var getters = List.of(
-            new GetterDescriptor("id", TypeDescriptors.INTEGER, enclosingType)
+            new FieldDescriptor("id", TypeDescriptors.INTEGER, enclosingType)
         );
 
         final var imports = new HashSet<>(Set.of(
-            new TypeDescriptor(ValidationContext.class.getName(), ValidatableType.NON_V_TYPE),
-            new TypeDescriptor(ValidatableValue.class.getName(), ValidatableType.NON_V_TYPE),
-            new TypeDescriptor(ValidatableObject.class.getName(), ValidatableType.NON_V_TYPE),
-            new TypeDescriptor(ValidatableReference.class.getName(), ValidatableType.NON_V_TYPE),
-            new TypeDescriptor(Checks.class.getName(), ValidatableType.NON_V_TYPE)
+            new TypeDescriptor(ValidationContext.class.getName(), DataType.OTHER),
+            new TypeDescriptor(ValidatableValue.class.getName(), DataType.OTHER),
+            new TypeDescriptor(ValidatableObject.class.getName(), DataType.OTHER),
+            new TypeDescriptor(ValidatableReference.class.getName(), DataType.OTHER),
+            new TypeDescriptor(Checks.class.getName(), DataType.OTHER)
         ));
 
         final var sourceType = new ExtendedTypeDescriptor(
-            TestCodeGenPojo.class.getName(), ValidatableType.USER_TYPE, imports, getters
+            TestCodeGenPojo.class.getName(), DataType.VALIDATABLE, imports, getters
         );
 
         final var actual = generator.generate(sourceType);

@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 import java.util.stream.Stream;
 
-final class FieldGenerator extends GeneratorByGetter {
+final class FieldGenerator extends GeneratorByField {
 
     @Override
     TemplateResource supplyTemplateResource() {
@@ -12,10 +12,10 @@ final class FieldGenerator extends GeneratorByGetter {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final GetterDescriptor getterDescriptor) {
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final FieldDescriptor fieldDescriptor) {
         return Stream.of(
-            new PlaceholderReplacement(FieldTemplatePlaceholderType.V_TYPE, generateTypeName(getterDescriptor)),
-            new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, getterDescriptor.getFieldName())
+            new PlaceholderReplacement(FieldTemplatePlaceholderType.V_TYPE, generateTypeName(fieldDescriptor)),
+            new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, fieldDescriptor.getFieldName())
         );
     }
 }

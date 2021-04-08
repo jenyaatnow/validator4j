@@ -1,7 +1,7 @@
 package io.github.jenyaatnow.validator4j.apt;
 
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
-import io.github.jenyaatnow.validator4j.codegen.ValidatableType;
+import io.github.jenyaatnow.validator4j.codegen.DataType;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
@@ -64,21 +64,21 @@ final class TypeUtils {
             })
             .orElse(Collections.emptyList());
 
-        return new TypeDescriptor(TYPES.erasure(typeMirror).toString(), getVType(typeMirror), typeParamsDescriptors);
+        return new TypeDescriptor(TYPES.erasure(typeMirror).toString(), getDataType(typeMirror), typeParamsDescriptors);
     }
 
-    private static ValidatableType getVType(@NonNull final TypeMirror typeMirror) {
+    private static DataType getDataType(@NonNull final TypeMirror typeMirror) {
         if (TYPES.asElement(typeMirror).getKind() == ElementKind.ENUM) {
-            return ValidatableType.VALUE;
+            return DataType.VALUE;
         }
 
-        return Arrays.stream(ValidatableType.values())
-            .filter(vType -> {
-                if (vType == ValidatableType.USER_TYPE) {
-                    return isValidatableAnnotationPresent(typeMirror) && isAssignable(typeMirror, vType);
+        return Arrays.stream(DataType.values())
+            .filter(dataType -> {
+                if (dataType == DataType.VALIDATABLE) {
+                    return isValidatableAnnotationPresent(typeMirror) && isAssignable(typeMirror, dataType);
                 }
 
-                return isAssignable(typeMirror, vType);
+                return isAssignable(typeMirror, dataType);
             })
             .findFirst()
             .orElseThrow(() -> new RuntimeException(String.format("Unexpected type '%s'", typeMirror)));
@@ -89,8 +89,8 @@ final class TypeUtils {
         return annotation != null;
     }
 
-    private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final ValidatableType vType) {
-        return vType.getJClasses().stream()
+    private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final DataType dataType) {
+        return dataType.getJClasses().stream()
             .anyMatch(
                 jClass -> TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(jClass).asType())
             );

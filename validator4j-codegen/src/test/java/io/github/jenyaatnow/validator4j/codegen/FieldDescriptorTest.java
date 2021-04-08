@@ -4,13 +4,13 @@ import io.github.jenyaatnow.validator4j.codegen.testutils.TypeDescriptors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class GetterDescriptorTest {
+class FieldDescriptorTest {
 
     private static final TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptors.INTEGER;
 
     @Test
     void testGetName() {
-        final var getterDescriptor = new GetterDescriptor("getterName", TYPE_DESCRIPTOR, TYPE_DESCRIPTOR);
-        Assertions.assertEquals("getGetterName", getterDescriptor.getName());
+        final var getterDescriptor = new FieldDescriptor("getterName", TYPE_DESCRIPTOR, TYPE_DESCRIPTOR);
+        Assertions.assertEquals("getGetterName", getterDescriptor.getGetterName());
     }
 }

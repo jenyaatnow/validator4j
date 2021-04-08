@@ -13,12 +13,13 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @SuppressWarnings("rawtypes")
-public enum ValidatableType {
+public enum DataType {
 
     VALUE(ValidatableValue.class, Set.of(Boolean.class, Number.class, String.class, Date.class, Enum.class)),
     COLLECTION(ValidatableCollection.class, Set.of(Collection.class)),
-    USER_TYPE(ValidatableObject.class, Set.of(Object.class)),
-    NON_V_TYPE(null, Set.of(Object.class))
+    VALIDATABLE(ValidatableObject.class, Set.of(Object.class)),
+    V4J(null, Set.of(ValidatableReference.class)),
+    OTHER(null, Set.of(Object.class))
     ;
 
     @Getter private final Class<? extends ValidatableReference> vClass;

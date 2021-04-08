@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 import java.util.stream.Stream;
 
-final class AssignmentGenerator extends GeneratorByGetter {
+final class AssignmentGenerator extends GeneratorByField {
 
     @Override
     TemplateResource supplyTemplateResource() {
@@ -12,26 +12,26 @@ final class AssignmentGenerator extends GeneratorByGetter {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final GetterDescriptor getterDescriptor) {
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final FieldDescriptor fieldDescriptor) {
         return Stream.of(
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.FIELD_NAME,
-                getterDescriptor.getFieldName()
+                fieldDescriptor.getFieldName()
 
             ),
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.V_TYPE,
-                generateTypeNameDiamond(getterDescriptor)
+                generateTypeNameDiamond(fieldDescriptor)
             ),
 
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.SOURCE_GETTER_NAME,
-                getterDescriptor.getName()
+                fieldDescriptor.getGetterName()
             ),
 
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.SOURCE_TYPE,
-                getterDescriptor.getEnclosingType().getSimpleName()
+                fieldDescriptor.getEnclosingType().getSimpleName()
             )
         );
     }
