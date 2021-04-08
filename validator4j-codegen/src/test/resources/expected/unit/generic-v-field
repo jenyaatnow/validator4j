@@ -1,1 +1,1 @@
-private final ValidatableCollection<Integer, ValidatableInteger> ids;
+private final ValidatableCollection<Integer> ids;

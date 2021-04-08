@@ -34,7 +34,7 @@ annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.1.0")   // annotatio
 </p>
 </details>
 
-Suppose we have a `User` class. Among others, `User`-class contains an `address` field of type `Address`. We want to validate the data it contains using **validator4j**. For this purpose we need to annotate both `User` and `Address` classes with annotation **`@Validatable`**. Besides there are one strict requirement - source classes have to contain getters for all fields we want to validate (Lombok is allowed). At the compilation phase will be generated two specific classes - `VUser` and `VAddress`. We can interact with these classes in the similar fashion as with the original classes. These classes will contain all fields and getters which present in the original classes, but they will have special types, providing the validation API. Thus `Integer` fields will turn into `VaildatableInteger`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableCollection<String, ValidatableString>`, `Address` - `VAddress`. Also you'll see some constructors.
+Suppose we have a `User` class. Among others, `User`-class contains an `address` field of type `Address`. We want to validate the data it contains using **validator4j**. For this purpose we need to annotate both `User` and `Address` classes with annotation **`@Validatable`**. Besides there are one strict requirement - source classes have to contain getters for all fields we want to validate (Lombok is allowed). At the compilation phase will be generated two specific classes - `VUser` and `VAddress`. We can interact with these classes in the similar fashion as with the original classes. These classes will contain all fields and getters which present in the original classes, but they will have special types, providing the validation API. Thus `Integer` fields will turn into `VaildatableValue<Integer>`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableCollection<String>`, `Address` - `VAddress`. Also you'll see some constructors.
 You can find code examples below.
 
 [More about V-class generation](docs/GENERATION_RULES.md)
@@ -63,9 +63,9 @@ public class Address {
 ```java
 public final class VUser extends ValidatableObject<User> {
 
-    private final ValidatableInteger id;
+    private final ValidatableValue<Integer> id;
 
-    private final ValidatableCollection<String, ValidatableString> roles;
+    private final ValidatableCollection<String> roles;
 
     private final VAddress address;
 
@@ -78,16 +78,16 @@ public final class VUser extends ValidatableObject<User> {
     public VUser(final String path, final User value, final ErrorsContainer errors) {
         super(path, value, errors);
 
-        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, User::getId), errors);
+        this.id = new ValidatableValue<>(appendPath("id"), safeGet(value, User::getId), errors);
         this.roles = new ValidatableCollection<>(appendPath("roles"), safeGet(value, User::getRoles), errors);
         this.address = new VAddress(appendPath("address"), safeGet(value, User::getAddress), errors);
     }
 
-    public ValidatableInteger getId() {
+    public ValidatableValue<Integer> getId() {
         return id;
     }
 
-    public ValidatableCollection<String, ValidatableString> getRoles() {
+    public ValidatableCollection<String> getRoles() {
         return roles;
     }
 
@@ -100,7 +100,7 @@ public final class VUser extends ValidatableObject<User> {
 
 public final class VAddress extends ValidatableObject<Address> {
 
-    private final ValidatableString street;
+    private final ValidatableValue<String> street;
 
     public VAddress(final Address value) {
         this(ValidatableReference.PATH_ROOT, value, ErrorsContainer.getErrorsContainer());
@@ -111,10 +111,10 @@ public final class VAddress extends ValidatableObject<Address> {
     public VAddress(final String path, final Address value, final ErrorsContainer errors) {
         super(path, value, errors);
 
-        this.street = new ValidatableString(appendPath("street"), safeGet(value, Address::getStreet), errors);
+        this.street = new ValidatableValue<>(appendPath("street"), safeGet(value, Address::getStreet), errors);
     }
 
-    public ValidatableString getStreet() {
+    public ValidatableValue<String> getStreet() {
         return street;
     }
 }

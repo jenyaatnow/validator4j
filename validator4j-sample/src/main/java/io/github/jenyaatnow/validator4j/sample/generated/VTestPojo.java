@@ -1,24 +1,21 @@
 package io.github.jenyaatnow.validator4j.sample.generated;
 
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
-import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableValue;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
-import io.github.jenyaatnow.validator4j.sample.source.NestedPojo;
 import io.github.jenyaatnow.validator4j.sample.source.TestPojo;
 import io.github.jenyaatnow.validator4j.util.Checks;
 
 @SuppressWarnings("checkstyle:LineLength")
 public final class VTestPojo extends ValidatableObject<TestPojo> {
 
-    private final ValidatableInteger id;
+    private final ValidatableValue<Integer> id;
 
     private final VNestedPojo nested;
 
-    private final ValidatableCollection<Integer, ValidatableInteger> articleIds;
-
-    private final VNestedPojoCollection pojos;
+    private final ValidatableCollection<Integer> articleIds;
 
     /**
      * Root object constructor.
@@ -35,13 +32,12 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
     VTestPojo(final String path, final TestPojo value, final ValidationContext ctx) {
         super(path, value, ctx);
 
-        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, TestPojo::getId), ctx);
+        this.id = new ValidatableValue<>(appendPath("id"), safeGet(value, TestPojo::getId), ctx);
         this.nested = new VNestedPojo(appendPath("nested"), safeGet(value, TestPojo::getNested), ctx);
         this.articleIds = new ValidatableCollection<>(appendPath("articleIds"), safeGet(value, TestPojo::getArticleIds), ctx);
-        this.pojos = new VNestedPojoCollection(appendPath("pojos"), safeGet(value, TestPojo::getPojos), ctx);
     }
 
-    public ValidatableInteger getId() {
+    public ValidatableValue<Integer> getId() {
         return id;
     }
 
@@ -49,11 +45,7 @@ public final class VTestPojo extends ValidatableObject<TestPojo> {
         return nested;
     }
 
-    public ValidatableCollection<Integer, ValidatableInteger> getArticleIds() {
+    public ValidatableCollection<Integer> getArticleIds() {
         return articleIds;
-    }
-
-    public ValidatableCollection<NestedPojo, VNestedPojo> getPojos() {
-        return pojos;
     }
 }

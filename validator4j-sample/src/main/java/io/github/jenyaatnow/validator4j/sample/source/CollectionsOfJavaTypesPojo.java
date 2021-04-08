@@ -28,4 +28,5 @@ public class CollectionsOfJavaTypesPojo {
     private LinkedHashSet<Double> doubles;
     private Queue<String> strings;
     private Stack<Date> dates;
+    private Collection<SampleEnum> enums;
 }

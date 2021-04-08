@@ -6,7 +6,7 @@ import io.github.jenyaatnow.validator4j.sample.source.NestedPojo;
 
 import java.util.Collection;
 
-public final class VNestedPojoCollection extends ValidatableCollection<NestedPojo, VNestedPojo> {
+public final class VNestedPojoCollection extends ValidatableCollection<NestedPojo> {
 
     public VNestedPojoCollection(final String path, final Collection<NestedPojo> value, final ValidationContext ctx) {
         super(

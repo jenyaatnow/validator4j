@@ -17,11 +17,8 @@ import java.util.stream.IntStream;
  * will be generated an inheritor of this class.
  *
  * @param <TARGET> original type of validated collection's elements.
- * @param <VTARGET> v-type corresponding to {@code TARGET} type.
  */
-public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<TARGET>>
-    extends ValidatableReference<List<VTARGET>>
-{
+public class ValidatableCollection<TARGET> extends ValidatableReference<List<ValidatableReference<TARGET>>> {
 
     /**
      * Used to instantiate {@link ValidatableCollection} of simple values.
@@ -38,7 +35,7 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
      */
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
-                                 @NonNull final BiFunction<String, TARGET, VTARGET> valueMapper,
+                                 @NonNull final BiFunction<String, TARGET, ValidatableReference<TARGET>> valueMapper,
                                  @NonNull final ValidationContext ctx)
     {
         super(path, toValidatableList(value, path, valueMapper), ctx);
@@ -59,17 +56,13 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
             .orElse(null);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T, V extends ValidatableReference<T>> BiFunction<String, T, V> mapSimpleValue(
+    private static <T> BiFunction<String, T, ValidatableReference<T>> mapSimpleValue(
         @NonNull final ValidationContext ctx
     )
     {
         return (p, v) -> {
-            if (v instanceof Integer) {
-                return (V) new ValidatableInteger(p, (Integer) v, ctx);
-            }
-
-            throw new IllegalArgumentException(String.format("Value of unsupported type '%s'", v.getClass().getName()));
+            // todo implement for user defined classes
+            return new ValidatableValue<>(p, v, ctx);
         };
     }
 
@@ -91,7 +84,7 @@ public class ValidatableCollection<TARGET, VTARGET extends ValidatableReference<
      *
      * @param validationHandler validation handler whose only argument is a {@link ValidatableReference} instance.
      */
-    public final void forEach(@NonNull final Consumer<VTARGET> validationHandler) {
+    public final void forEach(@NonNull final Consumer<ValidatableReference<TARGET>> validationHandler) {
         value.forEach(validationHandler);
     }
 

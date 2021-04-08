@@ -34,11 +34,15 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
             getterDescriptor,
             type -> {
                 final var simpleName = type.getVType().getVTypeSimpleName();
+
+                if (type.getVType() == ValidatableType.VALUE) {
+                    return simpleName + "<" + type.getSimpleName() + ">";
+                }
+
                 final var typeParams = type.getTypeParameters().stream()
                     .map(typeDescriptor -> {
                         final var typeName = typeDescriptor.getSimpleName();
-                        final var vTypeName = typeDescriptor.getVType().getVTypeSimpleName();
-                        return String.format("%s, %s", typeName, vTypeName);
+                        return String.format("%s", typeName);
                     })
                     .collect(Collectors.joining(", ", "<", ">"));
 
@@ -61,7 +65,7 @@ abstract class GeneratorByGetter extends AbstractCodeGenerator {
 
         return Optional
             .of(getterDescriptor.getReturnType())
-            .filter(TypeDescriptor::isGeneric)
+            .filter(typeDescriptor -> typeDescriptor.isGeneric() || typeDescriptor.getVType() == ValidatableType.VALUE)
             .map(mapper)
             .orElseGet(() -> {
                 if (vType == ValidatableType.USER_TYPE) {

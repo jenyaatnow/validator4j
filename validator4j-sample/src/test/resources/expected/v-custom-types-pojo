@@ -3,6 +3,7 @@ package io.github.jenyaatnow.validator4j.sample.source;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
+import io.github.jenyaatnow.validator4j.sample.source.nested.NestedPojo;
 import io.github.jenyaatnow.validator4j.sample.source.nested.VNestedPojo;
 import io.github.jenyaatnow.validator4j.util.Checks;
 

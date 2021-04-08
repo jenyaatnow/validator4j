@@ -1,18 +1,22 @@
 package io.github.jenyaatnow.validator4j.sample.generated;
 
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
-import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableValue;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
 import io.github.jenyaatnow.validator4j.sample.source.NestedPojo;
 import io.github.jenyaatnow.validator4j.util.Checks;
 
+import java.lang.annotation.ElementType;
+
 public final class VNestedPojo extends ValidatableObject<NestedPojo> {
 
-    private final ValidatableInteger id;
+    private final ValidatableValue<Integer> id;
 
-    private final ValidatableCollection<Integer, ValidatableInteger> ids;
+    private final ValidatableCollection<Integer> ids;
+
+    private final ValidatableValue<ElementType> type;
 
     /**
      * Root object constructor.
@@ -29,15 +33,20 @@ public final class VNestedPojo extends ValidatableObject<NestedPojo> {
     VNestedPojo(final String path, final NestedPojo value, final ValidationContext ctx) {
         super(path, value, ctx);
 
-        this.id = new ValidatableInteger(appendPath("id"), safeGet(value, NestedPojo::getId), ctx);
+        this.id = new ValidatableValue<>(appendPath("id"), safeGet(value, NestedPojo::getId), ctx);
         this.ids = new ValidatableCollection<>(appendPath("ids"), safeGet(value, NestedPojo::getIds), ctx);
+        this.type = new ValidatableValue<>(appendPath("type"), safeGet(value, NestedPojo::getType), ctx);
     }
 
-    public ValidatableInteger getId() {
+    public ValidatableValue<Integer> getId() {
         return id;
     }
 
-    public ValidatableCollection<Integer, ValidatableInteger> getIds() {
+    public ValidatableCollection<Integer> getIds() {
         return ids;
+    }
+
+    public ValidatableValue<ElementType> getType() {
+        return type;
     }
 }

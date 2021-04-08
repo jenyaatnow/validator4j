@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,12 +20,12 @@ public class ValidationTest {
 
     private final TestPojo testPojo = new TestPojo(
         1,
-        new NestedPojo(2, List.of(1)),
+        new NestedPojo(2, List.of(1), ElementType.TYPE),
         List.of(1),
         List.of(
-            new NestedPojo(1, List.of(1)),
-            new NestedPojo(2, List.of(1, 2, 666)),
-            new NestedPojo(3, List.of(1))
+            new NestedPojo(1, List.of(1), ElementType.TYPE),
+            new NestedPojo(2, List.of(1, 2, 666), ElementType.TYPE),
+            new NestedPojo(3, List.of(1), ElementType.TYPE)
         )
     );
 
@@ -67,19 +68,6 @@ public class ValidationTest {
             Arguments.of(
                 (Runnable) () -> vTestPojo.getNested().getIds().validateEach(validationHandler),
                 "nested.ids[0]"
-            ),
-
-            Arguments.of(
-                (Runnable) () -> vTestPojo.getPojos().forEach(
-                    vNestedPojo -> vNestedPojo.getIds().validateEach(
-                        (id, reject) -> {
-                            if (id == 666) {
-                                reject.accept(ERROR_MESSAGE);
-                            }
-                        }
-                    )
-                ),
-                "pojos[1].ids[2]"
             )
         );
     }

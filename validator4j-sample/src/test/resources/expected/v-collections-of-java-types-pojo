@@ -1,42 +1,45 @@
 package io.github.jenyaatnow.validator4j.sample.source;
 
-import io.github.jenyaatnow.validator4j.core.ValidatableBoolean;
-import io.github.jenyaatnow.validator4j.core.ValidatableByte;
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
-import io.github.jenyaatnow.validator4j.core.ValidatableDate;
-import io.github.jenyaatnow.validator4j.core.ValidatableDouble;
-import io.github.jenyaatnow.validator4j.core.ValidatableFloat;
-import io.github.jenyaatnow.validator4j.core.ValidatableInteger;
-import io.github.jenyaatnow.validator4j.core.ValidatableLong;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
-import io.github.jenyaatnow.validator4j.core.ValidatableShort;
-import io.github.jenyaatnow.validator4j.core.ValidatableString;
+import io.github.jenyaatnow.validator4j.core.ValidatableValue;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
+import io.github.jenyaatnow.validator4j.sample.source.SampleEnum;
 import io.github.jenyaatnow.validator4j.util.Checks;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
 
 
 public final class VCollectionsOfJavaTypesPojo extends ValidatableObject<CollectionsOfJavaTypesPojo> {
 
-    private final ValidatableCollection<Boolean, ValidatableBoolean> booleans;
+    private final ValidatableCollection<Boolean> booleans;
 
-    private final ValidatableCollection<Byte, ValidatableByte> bytes;
+    private final ValidatableCollection<Byte> bytes;
 
-    private final ValidatableCollection<Short, ValidatableShort> shorts;
+    private final ValidatableCollection<Short> shorts;
 
-    private final ValidatableCollection<Integer, ValidatableInteger> integers;
+    private final ValidatableCollection<Integer> integers;
 
-    private final ValidatableCollection<Long, ValidatableLong> longs;
+    private final ValidatableCollection<Long> longs;
 
-    private final ValidatableCollection<Float, ValidatableFloat> floats;
+    private final ValidatableCollection<Float> floats;
 
-    private final ValidatableCollection<Double, ValidatableDouble> doubles;
+    private final ValidatableCollection<Double> doubles;
 
-    private final ValidatableCollection<String, ValidatableString> strings;
+    private final ValidatableCollection<String> strings;
 
-    private final ValidatableCollection<Date, ValidatableDate> dates;
+    private final ValidatableCollection<Date> dates;
+
+    private final ValidatableCollection<SampleEnum> enums;
 
     /**
      * Root object constructor.
@@ -62,41 +65,46 @@ public final class VCollectionsOfJavaTypesPojo extends ValidatableObject<Collect
         this.doubles = new ValidatableCollection<>(appendPath("doubles"), safeGet(value, CollectionsOfJavaTypesPojo::getDoubles), ctx);
         this.strings = new ValidatableCollection<>(appendPath("strings"), safeGet(value, CollectionsOfJavaTypesPojo::getStrings), ctx);
         this.dates = new ValidatableCollection<>(appendPath("dates"), safeGet(value, CollectionsOfJavaTypesPojo::getDates), ctx);
+        this.enums = new ValidatableCollection<>(appendPath("enums"), safeGet(value, CollectionsOfJavaTypesPojo::getEnums), ctx);
     }
 
-    public ValidatableCollection<Boolean, ValidatableBoolean> getBooleans() {
+    public ValidatableCollection<Boolean> getBooleans() {
         return booleans;
     }
 
-    public ValidatableCollection<Byte, ValidatableByte> getBytes() {
+    public ValidatableCollection<Byte> getBytes() {
         return bytes;
     }
 
-    public ValidatableCollection<Short, ValidatableShort> getShorts() {
+    public ValidatableCollection<Short> getShorts() {
         return shorts;
     }
 
-    public ValidatableCollection<Integer, ValidatableInteger> getIntegers() {
+    public ValidatableCollection<Integer> getIntegers() {
         return integers;
     }
 
-    public ValidatableCollection<Long, ValidatableLong> getLongs() {
+    public ValidatableCollection<Long> getLongs() {
         return longs;
     }
 
-    public ValidatableCollection<Float, ValidatableFloat> getFloats() {
+    public ValidatableCollection<Float> getFloats() {
         return floats;
     }
 
-    public ValidatableCollection<Double, ValidatableDouble> getDoubles() {
+    public ValidatableCollection<Double> getDoubles() {
         return doubles;
     }
 
-    public ValidatableCollection<String, ValidatableString> getStrings() {
+    public ValidatableCollection<String> getStrings() {
         return strings;
     }
 
-    public ValidatableCollection<Date, ValidatableDate> getDates() {
+    public ValidatableCollection<Date> getDates() {
         return dates;
+    }
+
+    public ValidatableCollection<SampleEnum> getEnums() {
+        return enums;
     }
 }

@@ -65,7 +65,7 @@ public class ValidatableProcessor extends AbstractProcessor {
 
         final var getterDetails = getGetterDetails(annotatedClass);
 
-        final var typeDescriptor = new ExtendedTypeDescriptor(
+        final var annotatedClassTypeDescriptor = new ExtendedTypeDescriptor(
             annotatedClass.getQualifiedName().toString(),
             ValidatableType.USER_TYPE,
             getImports(getterDetails),
@@ -73,7 +73,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         );
 
         final var vObjectGenerator = new VClassGenerator();
-        final var sourceContent = vObjectGenerator.generate(typeDescriptor);
+        final var sourceContent = vObjectGenerator.generate(annotatedClassTypeDescriptor);
 
         write(annotatedClass.getSimpleName(), sourceContent);
 
@@ -84,15 +84,15 @@ public class ValidatableProcessor extends AbstractProcessor {
         final var generalTypes = TypeUtils.getTypeElements(
             ValidatableObject.class,
             ValidatableReference.class,
-            Checks.class,
-            ValidationContext.class
+            ValidationContext.class,
+            Checks.class
         );
 
         final var gettersTypes = getterDetails.stream()
             .flatMap(getter -> getter.getReturnType().getAllRelatedTypes().stream())
             .flatMap(typeDescriptor -> {
                 final var vType = TypeUtils.getTypeElement(typeDescriptor.getVType().getVClass());
-                final var jType = TypeUtils.getTypeElement(typeDescriptor.getVType().getJClass());
+                final var jType = TypeUtils.getTypeElement(typeDescriptor.getName());
                 return Stream.of(vType, jType);
             })
             .filter(type -> !type.getQualifiedName().toString().startsWith("java.lang"))
@@ -116,17 +116,15 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private List<GetterDescriptor> getGetterDetails(@NonNull final TypeElement annotatedClass) {
+        final var enclosingType = TypeUtils.getTypeDescriptor(annotatedClass.asType());
+
         final var getterDetails = annotatedClass.getEnclosedElements().stream()
             .filter(element -> element.getKind() == ElementKind.FIELD)
             .map(element -> {
-                final var fieldType = element.asType();
-                final var returnType = TypeUtils.getTypeDescriptor(fieldType);
-
+                final var returnType = TypeUtils.getTypeDescriptor(element.asType());
                 if (checkIfFieldShouldBeIgnored(element, returnType)) return null;
 
                 final var fieldName = element.getSimpleName().toString();
-                final var enclosingElement = (TypeElement) element.getEnclosingElement();
-                final var enclosingType = TypeUtils.getTypeDescriptor(enclosingElement.asType());
                 return new GetterDescriptor(fieldName, returnType, enclosingType);
             })
             .filter(Objects::nonNull)

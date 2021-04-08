@@ -7,6 +7,7 @@ import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -36,6 +37,12 @@ final class TypeUtils {
         return ELEMENTS.getTypeElement(clazz.getName());
     }
 
+    public static TypeElement getTypeElement(@NonNull final String className) {
+        checkInitialization();
+
+        return ELEMENTS.getTypeElement(className);
+    }
+
     public static Set<TypeElement> getTypeElements(@NonNull final Class<?>... classes) {
         checkInitialization();
 
@@ -61,6 +68,10 @@ final class TypeUtils {
     }
 
     private static ValidatableType getVType(@NonNull final TypeMirror typeMirror) {
+        if (TYPES.asElement(typeMirror).getKind() == ElementKind.ENUM) {
+            return ValidatableType.VALUE;
+        }
+
         return Arrays.stream(ValidatableType.values())
             .filter(vType -> {
                 if (vType == ValidatableType.USER_TYPE) {
@@ -70,7 +81,7 @@ final class TypeUtils {
                 return isAssignable(typeMirror, vType);
             })
             .findFirst()
-            .orElseThrow(() -> new RuntimeException(String.format("Unexpected type '%s'", typeMirror.toString())));
+            .orElseThrow(() -> new RuntimeException(String.format("Unexpected type '%s'", typeMirror)));
     }
 
     private static boolean isValidatableAnnotationPresent(@NonNull final TypeMirror typeMirror) {
@@ -79,7 +90,10 @@ final class TypeUtils {
     }
 
     private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final ValidatableType vType) {
-        return TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(vType.getJClass()).asType());
+        return vType.getJClasses().stream()
+            .anyMatch(
+                jClass -> TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(jClass).asType())
+            );
     }
 
     private static void checkInitialization() {

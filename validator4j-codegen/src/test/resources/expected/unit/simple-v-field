@@ -1,1 +1,1 @@
-private final ValidatableInteger id;
+private final ValidatableValue<Integer> id;

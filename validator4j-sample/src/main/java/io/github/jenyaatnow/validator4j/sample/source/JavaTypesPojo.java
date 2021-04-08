@@ -19,4 +19,5 @@ public class JavaTypesPojo {
     private Double doubleField;
     private String stringField;
     private Date dateField;
+    private SampleEnum enumField;
 }

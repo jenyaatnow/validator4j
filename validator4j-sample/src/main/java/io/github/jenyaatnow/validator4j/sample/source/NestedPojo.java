@@ -1,18 +1,18 @@
 package io.github.jenyaatnow.validator4j.sample.source;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.lang.annotation.ElementType;
 import java.util.Collection;
 
 @Getter
+@RequiredArgsConstructor
 public class NestedPojo {
 
     private final Integer id;
 
     private final Collection<Integer> ids;
 
-    public NestedPojo(Integer id, Collection<Integer> ids) {
-        this.id = id;
-        this.ids = ids;
-    }
+    private final ElementType type;
 }
