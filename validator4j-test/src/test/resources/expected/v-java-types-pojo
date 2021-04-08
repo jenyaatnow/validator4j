@@ -1,0 +1,100 @@
+package io.github.jenyaatnow.validator4j.test.source;
+
+import io.github.jenyaatnow.validator4j.core.ValidatableObject;
+import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableValue;
+import io.github.jenyaatnow.validator4j.core.ValidationContext;
+import io.github.jenyaatnow.validator4j.test.source.SampleEnum;
+import io.github.jenyaatnow.validator4j.util.Checks;
+import java.util.Date;
+
+
+public final class VJavaTypesPojo extends ValidatableObject<JavaTypesPojo> {
+
+    private final ValidatableValue<Boolean> booleanField;
+
+    private final ValidatableValue<Byte> byteField;
+
+    private final ValidatableValue<Short> shortField;
+
+    private final ValidatableValue<Integer> integerField;
+
+    private final ValidatableValue<Long> longField;
+
+    private final ValidatableValue<Float> floatField;
+
+    private final ValidatableValue<Double> doubleField;
+
+    private final ValidatableValue<String> stringField;
+
+    private final ValidatableValue<Date> dateField;
+
+    private final ValidatableValue<SampleEnum> enumField;
+
+    /**
+     * Root object constructor.
+     */
+    public VJavaTypesPojo(final JavaTypesPojo value) {
+        this(ValidatableReference.PATH_ROOT, value, ValidationContext.getInstance());
+
+        Checks.nonNull(value, "value");
+    }
+
+    /**
+     * Nested object constructor.
+     */
+    public VJavaTypesPojo(final String path, final JavaTypesPojo value, final ValidationContext ctx) {
+        super(path, value, ctx);
+
+        this.booleanField = new ValidatableValue<Boolean>(appendPath("booleanField"), safeGet(value, JavaTypesPojo::getBooleanField), ctx);
+        this.byteField = new ValidatableValue<Byte>(appendPath("byteField"), safeGet(value, JavaTypesPojo::getByteField), ctx);
+        this.shortField = new ValidatableValue<Short>(appendPath("shortField"), safeGet(value, JavaTypesPojo::getShortField), ctx);
+        this.integerField = new ValidatableValue<Integer>(appendPath("integerField"), safeGet(value, JavaTypesPojo::getIntegerField), ctx);
+        this.longField = new ValidatableValue<Long>(appendPath("longField"), safeGet(value, JavaTypesPojo::getLongField), ctx);
+        this.floatField = new ValidatableValue<Float>(appendPath("floatField"), safeGet(value, JavaTypesPojo::getFloatField), ctx);
+        this.doubleField = new ValidatableValue<Double>(appendPath("doubleField"), safeGet(value, JavaTypesPojo::getDoubleField), ctx);
+        this.stringField = new ValidatableValue<String>(appendPath("stringField"), safeGet(value, JavaTypesPojo::getStringField), ctx);
+        this.dateField = new ValidatableValue<Date>(appendPath("dateField"), safeGet(value, JavaTypesPojo::getDateField), ctx);
+        this.enumField = new ValidatableValue<SampleEnum>(appendPath("enumField"), safeGet(value, JavaTypesPojo::getEnumField), ctx);
+    }
+
+    public ValidatableValue<Boolean> getBooleanField() {
+        return booleanField;
+    }
+
+    public ValidatableValue<Byte> getByteField() {
+        return byteField;
+    }
+
+    public ValidatableValue<Short> getShortField() {
+        return shortField;
+    }
+
+    public ValidatableValue<Integer> getIntegerField() {
+        return integerField;
+    }
+
+    public ValidatableValue<Long> getLongField() {
+        return longField;
+    }
+
+    public ValidatableValue<Float> getFloatField() {
+        return floatField;
+    }
+
+    public ValidatableValue<Double> getDoubleField() {
+        return doubleField;
+    }
+
+    public ValidatableValue<String> getStringField() {
+        return stringField;
+    }
+
+    public ValidatableValue<Date> getDateField() {
+        return dateField;
+    }
+
+    public ValidatableValue<SampleEnum> getEnumField() {
+        return enumField;
+    }
+}

@@ -1,0 +1,35 @@
+package io.github.jenyaatnow.validator4j.test.source;
+
+import io.github.jenyaatnow.validator4j.core.ValidatableObject;
+import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidationContext;
+import io.github.jenyaatnow.validator4j.test.source.nested.VNestedPojo;
+import io.github.jenyaatnow.validator4j.util.Checks;
+
+
+public final class VCustomTypesPojo extends ValidatableObject<CustomTypesPojo> {
+
+    private final VNestedPojo nested;
+
+    /**
+     * Root object constructor.
+     */
+    public VCustomTypesPojo(final CustomTypesPojo value) {
+        this(ValidatableReference.PATH_ROOT, value, ValidationContext.getInstance());
+
+        Checks.nonNull(value, "value");
+    }
+
+    /**
+     * Nested object constructor.
+     */
+    public VCustomTypesPojo(final String path, final CustomTypesPojo value, final ValidationContext ctx) {
+        super(path, value, ctx);
+
+        this.nested = new VNestedPojo(appendPath("nested"), safeGet(value, CustomTypesPojo::getNested), ctx);
+    }
+
+    public VNestedPojo getNested() {
+        return nested;
+    }
+}
