@@ -42,4 +42,9 @@ class TypeDescriptorTest {
             new TypeDescriptor(fullName, DataType.OTHER, List.of(TypeDescriptors.INTEGER));
         Assertions.assertTrue(typeDescriptor.isGeneric());
     }
+
+    @Test
+    void getAllRelatedTypes() {
+        // TODO
+    }
 }

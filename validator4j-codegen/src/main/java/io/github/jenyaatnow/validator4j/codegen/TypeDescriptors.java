@@ -1,7 +1,11 @@
 package io.github.jenyaatnow.validator4j.codegen;
 
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
+import io.github.jenyaatnow.validator4j.core.ValidatableObject;
+import io.github.jenyaatnow.validator4j.core.ValidatableReference;
 import io.github.jenyaatnow.validator4j.core.ValidatableValue;
+import io.github.jenyaatnow.validator4j.core.ValidationContext;
+import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
 
 import java.util.ArrayList;
@@ -10,6 +14,13 @@ import java.util.Date;
 import java.util.List;
 
 public final class TypeDescriptors {
+
+    public static final TypeDescriptor CHECKS = new TypeDescriptor(Checks.class, DataType.V4J);
+    public static final TypeDescriptor VALIDATABLE_OBJECT = new TypeDescriptor(ValidatableObject.class, DataType.V4J);
+    public static final TypeDescriptor VALIDATION_CONTEXT = new TypeDescriptor(ValidationContext.class, DataType.V4J);
+    public static final TypeDescriptor VALIDATABLE_REFERENCE =
+        new TypeDescriptor(ValidatableReference.class, DataType.V4J);
+
 
     public static final TypeDescriptor BOOLEAN = getValueType(Boolean.class);
     public static final TypeDescriptor V4J_BOOLEAN = getValidatableValueType(BOOLEAN);

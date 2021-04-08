@@ -15,11 +15,8 @@ class GenerationTest {
     @EnumSource(GenerationTestCase.class)
     @SneakyThrows
     void testCorrectVClassGeneration(@NonNull final GenerationTestCase testCase) {
-        final var actual =
-            ResourceReader.instance.readResourceAsString(testCase.getActual());
-
-        final var expected =
-            ResourceReader.instance.readResourceAsString(testCase.getExpected());
+        final var actual = ResourceReader.instance.readResourceAsString(testCase.getActual());
+        final var expected = ResourceReader.instance.readResourceAsString(testCase.getExpected());
 
         Assertions.assertEquals(expected, actual);
     }

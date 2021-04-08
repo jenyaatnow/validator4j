@@ -1,7 +1,7 @@
 package io.github.jenyaatnow.validator4j.apt;
 
-import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.DataType;
+import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
@@ -17,9 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 final class TypeUtils {
 
@@ -35,20 +33,6 @@ final class TypeUtils {
         checkInitialization();
 
         return ELEMENTS.getTypeElement(clazz.getName());
-    }
-
-    public static TypeElement getTypeElement(@NonNull final String className) {
-        checkInitialization();
-
-        return ELEMENTS.getTypeElement(className);
-    }
-
-    public static Set<TypeElement> getTypeElements(@NonNull final Class<?>... classes) {
-        checkInitialization();
-
-        return Stream.of(classes)
-            .map(clazz -> ELEMENTS.getTypeElement(clazz.getName()))
-            .collect(Collectors.toSet());
     }
 
     public static TypeDescriptor getTypeDescriptor(@NonNull final TypeMirror typeMirror) {

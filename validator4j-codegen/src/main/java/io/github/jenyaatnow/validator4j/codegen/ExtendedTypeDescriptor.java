@@ -1,5 +1,6 @@
 package io.github.jenyaatnow.validator4j.codegen;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -7,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class ExtendedTypeDescriptor extends TypeDescriptor {
 
     private final Collection<TypeDescriptor> imports;

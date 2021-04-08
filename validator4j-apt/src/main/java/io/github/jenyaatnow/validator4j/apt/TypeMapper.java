@@ -8,8 +8,17 @@ import lombok.NonNull;
 
 import java.util.List;
 
+/**
+ * Contains the logic for mapping between the original data types and their corresponding generated alternatives.
+ */
 class TypeMapper {
 
+    /**
+     * Finds out a corresponding generated type for given source type.
+     *
+     * @param sourceType source type descriptor
+     * @return source <-> generated types mapping.
+     */
     public TypeMapping mapToValidatable(@NonNull final TypeDescriptor sourceType) {
         final var sourceDataType = sourceType.getDataType();
         final var sourceV4jClassName = sourceDataType.getVClass().getName();

@@ -1,15 +1,13 @@
 package io.github.jenyaatnow.validator4j.apt;
 
+import io.github.jenyaatnow.validator4j.codegen.DataType;
 import io.github.jenyaatnow.validator4j.codegen.ExtendedTypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.FieldDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
+import io.github.jenyaatnow.validator4j.codegen.TypeDescriptors;
+import io.github.jenyaatnow.validator4j.codegen.TypeMapping;
 import io.github.jenyaatnow.validator4j.codegen.VClassGenerator;
-import io.github.jenyaatnow.validator4j.codegen.DataType;
 import io.github.jenyaatnow.validator4j.core.Validatable;
-import io.github.jenyaatnow.validator4j.core.ValidatableObject;
-import io.github.jenyaatnow.validator4j.core.ValidatableReference;
-import io.github.jenyaatnow.validator4j.core.ValidationContext;
-import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 
@@ -25,17 +23,21 @@ import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SupportedAnnotationTypes(Validatable.NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class ValidatableProcessor extends AbstractProcessor {
 
     public static final Boolean LET_OTHER_PROCESSORS_TO_DO_THE_WORK = Boolean.FALSE;
+
+    private final TypeMapper typeMapper = new TypeMapper();
+    private final VClassGenerator generator = new VClassGenerator();
 
     @Override
     public boolean process(@NonNull final Set<? extends TypeElement> annotations,
@@ -64,55 +66,22 @@ public class ValidatableProcessor extends AbstractProcessor {
         info(String.format("Starting to generate V-class for '%s'.", annotatedClass.getQualifiedName()));
 
         final var fieldDescriptors = getFieldDescriptors(annotatedClass);
+        final var typeMappings = fieldDescriptors.stream()
+            .map(field -> typeMapper.mapToValidatable(field.getType()))
+            .collect(Collectors.toSet());
 
         final var annotatedClassTypeDescriptor = new ExtendedTypeDescriptor(
             annotatedClass.getQualifiedName().toString(),
             DataType.VALIDATABLE,
-            getImports(fieldDescriptors),
+            getImports(typeMappings),
             fieldDescriptors
         );
 
-        final var vObjectGenerator = new VClassGenerator();
-        final var sourceContent = vObjectGenerator.generate(annotatedClassTypeDescriptor);
+        final var sourceContent = generator.generate(annotatedClassTypeDescriptor);
 
         write(annotatedClass.getSimpleName(), sourceContent);
 
         info(String.format("Successfully generated V-class for '%s'.", annotatedClass.getQualifiedName()));
-    }
-
-    private Set<TypeDescriptor> getImports(@NonNull final List<FieldDescriptor> fieldDescriptors) {
-        final var generalTypes = TypeUtils.getTypeElements(
-            ValidatableObject.class,
-            ValidatableReference.class,
-            ValidationContext.class,
-            Checks.class
-        );
-
-        final var fieldTypes = fieldDescriptors.stream()
-            .flatMap(fieldDescriptor -> fieldDescriptor.getType().getAllRelatedTypes().stream())
-            .flatMap(typeDescriptor -> {
-                final var vType = TypeUtils.getTypeElement(typeDescriptor.getDataType().getVClass());
-                final var jType = TypeUtils.getTypeElement(typeDescriptor.getName());
-                return Stream.of(vType, jType);
-            })
-            .filter(type -> !type.getQualifiedName().toString().startsWith("java.lang"))
-            .collect(Collectors.toSet());
-
-        generalTypes.addAll(fieldTypes);
-
-        final var importTypes = generalTypes.stream()
-            .map(typeElement -> TypeUtils.getTypeDescriptor(typeElement.asType()))
-            .collect(Collectors.toSet());
-
-        final var userTypes = fieldDescriptors.stream()
-            .filter(fieldDescriptor -> fieldDescriptor.getType().getDataType() == DataType.VALIDATABLE)
-            .map(fieldDescriptor -> new TypeDescriptor(
-                fieldDescriptor.getType().getVClassName(),
-                fieldDescriptor.getType().getDataType()
-            )).collect(Collectors.toSet());
-
-        importTypes.addAll(userTypes);
-        return importTypes;
     }
 
     private List<FieldDescriptor> getFieldDescriptors(@NonNull final TypeElement annotatedClass) {
@@ -130,6 +99,25 @@ public class ValidatableProcessor extends AbstractProcessor {
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
         return fieldDescriptors;
+    }
+
+    private Collection<TypeDescriptor> getImports(@NonNull final Set<TypeMapping> typeMappings) {
+        final var importTypes = typeMappings.stream()
+            .flatMap(mapping -> mapping.getValidatableType().getAllRelatedTypes().stream())
+            .filter(type -> !type.getName().startsWith("java.lang"))
+            .collect(Collectors.toMap(TypeDescriptor::getName, p -> p, (p, q) -> p))
+            .values();
+
+        final var generalImports = new HashSet<>(Set.of(
+            TypeDescriptors.CHECKS,
+            TypeDescriptors.VALIDATABLE_OBJECT,
+            TypeDescriptors.VALIDATION_CONTEXT,
+            TypeDescriptors.VALIDATABLE_REFERENCE
+        ));
+
+        generalImports.addAll(importTypes);
+
+        return generalImports;
     }
 
     private boolean checkIfFieldShouldBeIgnored(@NonNull final Element element,
