@@ -7,12 +7,14 @@ import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,8 +71,13 @@ final class TypeUtils {
     }
 
     private static boolean isValidatableAnnotationPresent(@NonNull final TypeMirror typeMirror) {
-        final var annotation = TYPES.asElement(typeMirror).getAnnotation(Validatable.class);
-        return annotation != null;
+        return TYPES.asElement(typeMirror).getAnnotation(Validatable.class) != null;
+    }
+
+    public static boolean isAnnotationPresent(@NonNull final Element element,
+                                              @NonNull final Class<? extends Annotation> annotation)
+    {
+        return element.getAnnotation(annotation) != null;
     }
 
     private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final DataType dataType) {

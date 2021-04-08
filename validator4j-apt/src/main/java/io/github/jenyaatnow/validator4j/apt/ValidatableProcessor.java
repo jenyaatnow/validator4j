@@ -7,6 +7,7 @@ import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptors;
 import io.github.jenyaatnow.validator4j.codegen.TypeMappings;
 import io.github.jenyaatnow.validator4j.codegen.VClassGenerator;
+import io.github.jenyaatnow.validator4j.core.V4jIgnore;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -125,6 +126,10 @@ public class ValidatableProcessor extends AbstractProcessor {
                                                 @NonNull final TypeDescriptor returnType)
     {
         if (element.getModifiers().contains(Modifier.STATIC)) {
+            return true;
+        }
+
+        if (TypeUtils.isAnnotationPresent(element, V4jIgnore.class)) {
             return true;
         }
 

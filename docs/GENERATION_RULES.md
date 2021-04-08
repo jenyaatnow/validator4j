@@ -16,4 +16,4 @@ Moreover, source class have to contain getters for all validated fields. Otherwi
 a compile-time error.
 
 In case you need to ignore particular field during generation process you have to mark this field with **`@V4jIgnore`**
-annotation *(not implemented)*.
+annotation.

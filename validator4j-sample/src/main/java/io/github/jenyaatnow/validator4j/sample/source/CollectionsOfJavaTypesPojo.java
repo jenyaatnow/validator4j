@@ -1,5 +1,6 @@
 package io.github.jenyaatnow.validator4j.sample.source;
 
+import io.github.jenyaatnow.validator4j.core.V4jIgnore;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import lombok.Getter;
 
@@ -17,7 +18,9 @@ import java.util.Stack;
 @Getter
 @Validatable
 public class CollectionsOfJavaTypesPojo {
-    private static Collection<String> ignored;
+    @V4jIgnore
+    private Collection<String> collectionIgnored;
+    private static Collection<String> staticIgnored;
 
     private Collection<Boolean> booleans;
     private List<Byte> bytes;
