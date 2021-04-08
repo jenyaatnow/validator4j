@@ -12,10 +12,14 @@ final class FieldGenerator extends GeneratorByField {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final FieldDescriptor fieldDescriptor) {
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final FieldDescriptor fieldDescriptor,
+                                                                 @NonNull final TypeMappings typeMappings)
+    {
         return Stream.of(
-            new PlaceholderReplacement(FieldTemplatePlaceholderType.V_TYPE, generateTypeName(fieldDescriptor)),
-            new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, fieldDescriptor.getFieldName())
+            new PlaceholderReplacement(FieldTemplatePlaceholderType.FIELD_NAME, fieldDescriptor.getFieldName()),
+            new PlaceholderReplacement(
+                FieldTemplatePlaceholderType.V_TYPE, generateTypeName(fieldDescriptor, typeMappings)
+            )
         );
     }
 }

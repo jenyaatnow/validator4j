@@ -13,25 +13,30 @@ public class ExtendedTypeDescriptor extends TypeDescriptor {
 
     private final Collection<TypeDescriptor> imports;
     private final List<FieldDescriptor> fields;
+    private final TypeMappings relatedTypeMappings;
 
     public ExtendedTypeDescriptor(@NonNull final String name,
                                   @NonNull final DataType dataType,
                                   @NonNull final Collection<TypeDescriptor> imports,
-                                  @NonNull final List<FieldDescriptor> fields)
+                                  @NonNull final List<FieldDescriptor> fields,
+                                  @NonNull final TypeMappings relatedTypeMappings)
     {
         super(name, dataType);
         this.imports = imports;
         this.fields = fields;
+        this.relatedTypeMappings = relatedTypeMappings;
     }
 
     public ExtendedTypeDescriptor(@NonNull final String name,
                                   @NonNull final DataType dataType,
                                   @NonNull final List<TypeDescriptor> typeParameters,
                                   @NonNull final Collection<TypeDescriptor> imports,
-                                  @NonNull final List<FieldDescriptor> fields)
+                                  @NonNull final List<FieldDescriptor> fields,
+                                  @NonNull final TypeMappings relatedTypeMappings)
     {
         super(name, dataType, typeParameters);
         this.imports = imports;
         this.fields = fields;
+        this.relatedTypeMappings = relatedTypeMappings;
     }
 }

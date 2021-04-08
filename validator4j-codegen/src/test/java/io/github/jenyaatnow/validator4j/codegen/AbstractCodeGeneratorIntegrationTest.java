@@ -9,13 +9,13 @@ abstract class AbstractCodeGeneratorIntegrationTest {
 
     @Test
     void testGenerateSimple() {
-        final var actual = generateSimple();
+        final var actual = generate();
         final var expected = ResourceReader.instance.readResourceAsString(getExpectedResource());
 
         Assertions.assertEquals(expected, actual);
     }
 
-    abstract String generateSimple();
+    abstract String generate();
 
     abstract TestTemplateResource getExpectedResource();
 }

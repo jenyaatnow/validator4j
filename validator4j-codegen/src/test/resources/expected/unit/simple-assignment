@@ -1,1 +1,1 @@
-this.id = new ValidatableValue<>(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), ctx);
+this.id = new ValidatableValue<Integer>(appendPath("id"), safeGet(value, TestCodeGenPojo::getId), ctx);

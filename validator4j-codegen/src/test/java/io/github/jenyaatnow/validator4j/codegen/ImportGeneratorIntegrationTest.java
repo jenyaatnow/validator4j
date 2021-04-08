@@ -7,7 +7,7 @@ import io.github.jenyaatnow.validator4j.util.test.IntegrationTest;
 class ImportGeneratorIntegrationTest extends AbstractCodeGeneratorIntegrationTest {
 
     @Override
-    String generateSimple() {
+    String generate() {
         return new ImportGenerator().generate(TypeDescriptors.V4J_INTEGER);
     }
 

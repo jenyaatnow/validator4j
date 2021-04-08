@@ -8,7 +8,6 @@ import io.github.jenyaatnow.validator4j.core.ValidationContext;
 import io.github.jenyaatnow.validator4j.util.Checks;
 import lombok.NonNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -44,10 +43,6 @@ public final class TypeDescriptors {
 
     public static final TypeDescriptor VALIDATABLE_TYPE = new TypeDescriptor("com.sample.Test", DataType.VALIDATABLE);
     public static final TypeDescriptor V4J_VALIDATABLE_TYPE = new TypeDescriptor("com.sample.VTest", DataType.V4J);
-
-
-    public static final TypeDescriptor INT_LIST =
-        new TypeDescriptor(ArrayList.class.getName(), DataType.COLLECTION, List.of(INTEGER));
 
 
     public static TypeDescriptor getUserType(@NonNull final Class<?> clazz) {

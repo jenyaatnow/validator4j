@@ -13,19 +13,20 @@ public final class VClassGenerator extends AbstractCodeGenerator {
     private final GetterGenerator getterGenerator = new GetterGenerator();
     private final ImportGenerator importGenerator = new ImportGenerator();
 
-    public String generate(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+    public String generate(@NonNull final ExtendedTypeDescriptor typeDescriptor,
+                           @NonNull final TypeMappings typeMappings)
+    {
         final var sourceType = typeDescriptor.getSimpleName();
-        final var fields = generateFields(typeDescriptor);
-        final var getters = generateGetters(typeDescriptor);
-        final var assignments = generateAssignments(typeDescriptor);
+        final var packageName = typeDescriptor.getPackageName();
+        final var fields = generateFields(typeDescriptor, typeMappings);
+        final var imports = generateImports(typeDescriptor);
+        final var getters = generateGetters(typeDescriptor, typeMappings);
+        final var assignments = generateAssignments(typeDescriptor, typeMappings);
 
         final var placeholderReplacements = Stream.of(
-            new PlaceholderReplacement(
-                OutcomeTemplatePlaceholderType.PACKAGE,
-                typeDescriptor.getPackageName()
-            ),
+            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.PACKAGE, packageName),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.TYPE_ROOT, sourceType),
-            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.IMPORTS, generateImports(typeDescriptor)),
+            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.IMPORTS, imports),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.FIELDS, fields),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.GETTERS, getters),
             new PlaceholderReplacement(OutcomeTemplatePlaceholderType.ASSIGNMENTS, assignments)
@@ -35,24 +36,30 @@ public final class VClassGenerator extends AbstractCodeGenerator {
         return result.trim();
     }
 
-    private String generateAssignments(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+    private String generateAssignments(@NonNull final ExtendedTypeDescriptor typeDescriptor,
+                                       @NonNull final TypeMappings typeMappings)
+    {
         return typeDescriptor.getFields().stream()
             .map(fieldDescriptor -> CodeGenUtils
-                .indent(assignmentGenerator.generate(fieldDescriptor), IndentLevel.LEVEL_TWO)
+                .indent(assignmentGenerator.generate(fieldDescriptor, typeMappings), IndentLevel.LEVEL_TWO)
             ).collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR));
     }
 
-    private String generateFields(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+    private String generateFields(@NonNull final ExtendedTypeDescriptor typeDescriptor,
+                                  @NonNull final TypeMappings typeMappings)
+    {
         return typeDescriptor.getFields().stream()
             .map(fieldDescriptor ->
-                CodeGenUtils.indent(fieldGenerator.generate(fieldDescriptor), IndentLevel.LEVEL_ONE))
+                CodeGenUtils.indent(fieldGenerator.generate(fieldDescriptor, typeMappings), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR + CodeGenUtils.LINE_SEPARATOR));
     }
 
-    private String generateGetters(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+    private String generateGetters(@NonNull final ExtendedTypeDescriptor typeDescriptor,
+                                   @NonNull final TypeMappings typeMappings)
+    {
         return typeDescriptor.getFields().stream()
             .map(fieldDescriptor ->
-                CodeGenUtils.indent(getterGenerator.generate(fieldDescriptor), IndentLevel.LEVEL_ONE))
+                CodeGenUtils.indent(getterGenerator.generate(fieldDescriptor, typeMappings), IndentLevel.LEVEL_ONE))
             .collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR + CodeGenUtils.LINE_SEPARATOR));
     }
 

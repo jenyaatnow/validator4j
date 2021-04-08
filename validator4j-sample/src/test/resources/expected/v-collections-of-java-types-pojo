@@ -46,16 +46,16 @@ public final class VCollectionsOfJavaTypesPojo extends ValidatableObject<Collect
     public VCollectionsOfJavaTypesPojo(final String path, final CollectionsOfJavaTypesPojo value, final ValidationContext ctx) {
         super(path, value, ctx);
 
-        this.booleans = new ValidatableCollection<>(appendPath("booleans"), safeGet(value, CollectionsOfJavaTypesPojo::getBooleans), ctx);
-        this.bytes = new ValidatableCollection<>(appendPath("bytes"), safeGet(value, CollectionsOfJavaTypesPojo::getBytes), ctx);
-        this.shorts = new ValidatableCollection<>(appendPath("shorts"), safeGet(value, CollectionsOfJavaTypesPojo::getShorts), ctx);
-        this.integers = new ValidatableCollection<>(appendPath("integers"), safeGet(value, CollectionsOfJavaTypesPojo::getIntegers), ctx);
-        this.longs = new ValidatableCollection<>(appendPath("longs"), safeGet(value, CollectionsOfJavaTypesPojo::getLongs), ctx);
-        this.floats = new ValidatableCollection<>(appendPath("floats"), safeGet(value, CollectionsOfJavaTypesPojo::getFloats), ctx);
-        this.doubles = new ValidatableCollection<>(appendPath("doubles"), safeGet(value, CollectionsOfJavaTypesPojo::getDoubles), ctx);
-        this.strings = new ValidatableCollection<>(appendPath("strings"), safeGet(value, CollectionsOfJavaTypesPojo::getStrings), ctx);
-        this.dates = new ValidatableCollection<>(appendPath("dates"), safeGet(value, CollectionsOfJavaTypesPojo::getDates), ctx);
-        this.enums = new ValidatableCollection<>(appendPath("enums"), safeGet(value, CollectionsOfJavaTypesPojo::getEnums), ctx);
+        this.booleans = new ValidatableCollection<Boolean>(appendPath("booleans"), safeGet(value, CollectionsOfJavaTypesPojo::getBooleans), ctx);
+        this.bytes = new ValidatableCollection<Byte>(appendPath("bytes"), safeGet(value, CollectionsOfJavaTypesPojo::getBytes), ctx);
+        this.shorts = new ValidatableCollection<Short>(appendPath("shorts"), safeGet(value, CollectionsOfJavaTypesPojo::getShorts), ctx);
+        this.integers = new ValidatableCollection<Integer>(appendPath("integers"), safeGet(value, CollectionsOfJavaTypesPojo::getIntegers), ctx);
+        this.longs = new ValidatableCollection<Long>(appendPath("longs"), safeGet(value, CollectionsOfJavaTypesPojo::getLongs), ctx);
+        this.floats = new ValidatableCollection<Float>(appendPath("floats"), safeGet(value, CollectionsOfJavaTypesPojo::getFloats), ctx);
+        this.doubles = new ValidatableCollection<Double>(appendPath("doubles"), safeGet(value, CollectionsOfJavaTypesPojo::getDoubles), ctx);
+        this.strings = new ValidatableCollection<String>(appendPath("strings"), safeGet(value, CollectionsOfJavaTypesPojo::getStrings), ctx);
+        this.dates = new ValidatableCollection<Date>(appendPath("dates"), safeGet(value, CollectionsOfJavaTypesPojo::getDates), ctx);
+        this.enums = new ValidatableCollection<SampleEnum>(appendPath("enums"), safeGet(value, CollectionsOfJavaTypesPojo::getEnums), ctx);
     }
 
     public ValidatableCollection<Boolean> getBooleans() {

@@ -2,13 +2,13 @@
 Corresponding **V-fields** will be generated for all non-static fields of the supported types of the validated class.
 Field of unsupported types will be ignored during generation process. You will be noticed about it in console output.
 Below is a list of supported types:
-- `Boolean`
-- `String`
-- `Date`
-- `Number` (all inheritors)
-- `Collection<types listed above>` (all inheritors)
-- `@Validatable` classes
-- Enums
+- **Enum**
+- **Boolean**
+- **String**
+- **Date**
+- **Number** (all inheritors)
+- **Collection** (all inheritors)
+- classes annotated with **@Validatable**
 
 Inheritance hierarchies is unsupported yet.
 

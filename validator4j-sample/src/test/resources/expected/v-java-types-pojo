@@ -46,16 +46,16 @@ public final class VJavaTypesPojo extends ValidatableObject<JavaTypesPojo> {
     public VJavaTypesPojo(final String path, final JavaTypesPojo value, final ValidationContext ctx) {
         super(path, value, ctx);
 
-        this.booleanField = new ValidatableValue<>(appendPath("booleanField"), safeGet(value, JavaTypesPojo::getBooleanField), ctx);
-        this.byteField = new ValidatableValue<>(appendPath("byteField"), safeGet(value, JavaTypesPojo::getByteField), ctx);
-        this.shortField = new ValidatableValue<>(appendPath("shortField"), safeGet(value, JavaTypesPojo::getShortField), ctx);
-        this.integerField = new ValidatableValue<>(appendPath("integerField"), safeGet(value, JavaTypesPojo::getIntegerField), ctx);
-        this.longField = new ValidatableValue<>(appendPath("longField"), safeGet(value, JavaTypesPojo::getLongField), ctx);
-        this.floatField = new ValidatableValue<>(appendPath("floatField"), safeGet(value, JavaTypesPojo::getFloatField), ctx);
-        this.doubleField = new ValidatableValue<>(appendPath("doubleField"), safeGet(value, JavaTypesPojo::getDoubleField), ctx);
-        this.stringField = new ValidatableValue<>(appendPath("stringField"), safeGet(value, JavaTypesPojo::getStringField), ctx);
-        this.dateField = new ValidatableValue<>(appendPath("dateField"), safeGet(value, JavaTypesPojo::getDateField), ctx);
-        this.enumField = new ValidatableValue<>(appendPath("enumField"), safeGet(value, JavaTypesPojo::getEnumField), ctx);
+        this.booleanField = new ValidatableValue<Boolean>(appendPath("booleanField"), safeGet(value, JavaTypesPojo::getBooleanField), ctx);
+        this.byteField = new ValidatableValue<Byte>(appendPath("byteField"), safeGet(value, JavaTypesPojo::getByteField), ctx);
+        this.shortField = new ValidatableValue<Short>(appendPath("shortField"), safeGet(value, JavaTypesPojo::getShortField), ctx);
+        this.integerField = new ValidatableValue<Integer>(appendPath("integerField"), safeGet(value, JavaTypesPojo::getIntegerField), ctx);
+        this.longField = new ValidatableValue<Long>(appendPath("longField"), safeGet(value, JavaTypesPojo::getLongField), ctx);
+        this.floatField = new ValidatableValue<Float>(appendPath("floatField"), safeGet(value, JavaTypesPojo::getFloatField), ctx);
+        this.doubleField = new ValidatableValue<Double>(appendPath("doubleField"), safeGet(value, JavaTypesPojo::getDoubleField), ctx);
+        this.stringField = new ValidatableValue<String>(appendPath("stringField"), safeGet(value, JavaTypesPojo::getStringField), ctx);
+        this.dateField = new ValidatableValue<Date>(appendPath("dateField"), safeGet(value, JavaTypesPojo::getDateField), ctx);
+        this.enumField = new ValidatableValue<SampleEnum>(appendPath("enumField"), safeGet(value, JavaTypesPojo::getEnumField), ctx);
     }
 
     public ValidatableValue<Boolean> getBooleanField() {

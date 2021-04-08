@@ -66,6 +66,22 @@ public class TypeDescriptor {
     }
 
     /**
+     * Constructs class name with generic type parameters without package name.
+     * Example: {@code HashMap<Integer, List<Optional<String>>>}.
+     *
+     * @return name with generic type parameters.
+     */
+    public String getNameWithTypeParameters() {
+        if (isGeneric()) {
+            return getTypeParameters().stream()
+                .map(TypeDescriptor::getNameWithTypeParameters)
+                .collect(Collectors.joining(", ", getSimpleName() + "<", ">"));
+        } else {
+            return getSimpleName();
+        }
+    }
+
+    /**
      * Determines whether the type represented by this class instance is generic.
      *
      * @return true if this type generic, otherwise - false.

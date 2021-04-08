@@ -8,17 +8,12 @@ import lombok.NonNull;
 class GetterGeneratorIntegrationTest extends GeneratorByFieldIntegrationTest {
 
     @Override
-    String generate(@NonNull final FieldDescriptor fieldDescriptor) {
-        return new GetterGenerator().generate(fieldDescriptor);
+    String generate(@NonNull final FieldDescriptor fieldDescriptor, @NonNull final TypeMappings typeMappings) {
+        return new GetterGenerator().generate(fieldDescriptor, typeMappings);
     }
 
     @Override
     TestTemplateResource getExpectedResource() {
         return TestTemplateResource.SIMPLE_VALUE_GETTER;
-    }
-
-    @Override
-    TestTemplateResource getExpectedGenericResource() {
-        return TestTemplateResource.GENERIC_VALUE_GETTER;
     }
 }

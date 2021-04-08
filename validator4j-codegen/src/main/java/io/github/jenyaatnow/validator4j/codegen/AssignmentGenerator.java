@@ -12,7 +12,9 @@ final class AssignmentGenerator extends GeneratorByField {
     }
 
     @Override
-    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final FieldDescriptor fieldDescriptor) {
+    Stream<PlaceholderReplacement> supplyPlaceholderReplacements(@NonNull final FieldDescriptor fieldDescriptor,
+                                                                 @NonNull final TypeMappings typeMappings)
+    {
         return Stream.of(
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.FIELD_NAME,
@@ -21,7 +23,7 @@ final class AssignmentGenerator extends GeneratorByField {
             ),
             new PlaceholderReplacement(
                 AssignmentTemplatePlaceholderType.V_TYPE,
-                generateTypeNameDiamond(fieldDescriptor)
+                generateTypeName(fieldDescriptor, typeMappings)
             ),
 
             new PlaceholderReplacement(

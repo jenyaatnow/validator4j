@@ -5,7 +5,7 @@ import io.github.jenyaatnow.validator4j.codegen.ExtendedTypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.FieldDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptors;
-import io.github.jenyaatnow.validator4j.codegen.TypeMapping;
+import io.github.jenyaatnow.validator4j.codegen.TypeMappings;
 import io.github.jenyaatnow.validator4j.codegen.VClassGenerator;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import lombok.NonNull;
@@ -68,16 +68,17 @@ public class ValidatableProcessor extends AbstractProcessor {
         final var fieldDescriptors = getFieldDescriptors(annotatedClass);
         final var typeMappings = fieldDescriptors.stream()
             .map(field -> typeMapper.mapToValidatable(field.getType()))
-            .collect(Collectors.toSet());
+            .collect(Collectors.toCollection(TypeMappings::new));
 
         final var annotatedClassTypeDescriptor = new ExtendedTypeDescriptor(
             annotatedClass.getQualifiedName().toString(),
             DataType.VALIDATABLE,
             getImports(typeMappings),
-            fieldDescriptors
+            fieldDescriptors,
+            typeMappings
         );
 
-        final var sourceContent = generator.generate(annotatedClassTypeDescriptor);
+        final var sourceContent = generator.generate(annotatedClassTypeDescriptor, typeMappings);
 
         write(annotatedClass.getSimpleName(), sourceContent);
 
@@ -101,7 +102,7 @@ public class ValidatableProcessor extends AbstractProcessor {
         return fieldDescriptors;
     }
 
-    private Collection<TypeDescriptor> getImports(@NonNull final Set<TypeMapping> typeMappings) {
+    private Collection<TypeDescriptor> getImports(@NonNull final TypeMappings typeMappings) {
         final var importTypes = typeMappings.stream()
             .flatMap(mapping -> mapping.getValidatableType().getAllRelatedTypes().stream())
             .filter(type -> !type.getName().startsWith("java.lang"))
