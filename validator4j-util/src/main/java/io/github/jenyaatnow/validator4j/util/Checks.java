@@ -19,7 +19,7 @@ public final class Checks {
 
     public static void nonEmpty(@NonNull final Collection<?> typeParameters, @NonNull final String fieldName) {
         if (typeParameters.isEmpty()) {
-            throw new RuntimeException(String.format("'%s' must not to be empty.", fieldName));
+            throw new Validator4jException(String.format("'%s' must not to be empty.", fieldName));
         }
     }
 }

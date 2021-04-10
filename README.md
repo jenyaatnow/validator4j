@@ -3,14 +3,17 @@
 with our data classes. We try to reach this goal by code-generation at compilation phase.
 We generate so called **V-classes** providing validation API.
 
+The project is under active development thus here is no stable API yet.
+Even though we use [Semantic Versioning](https://semver.org/), close minor versions can contain backward incompatible changes.
+
 ### Quickstart
 Add the following dependencies to your project:
 
 ##### Gradle
 
 ```kotlin
-implementation("io.github.jenyaatnow:validator4j-core:0.1.0")       // base validator4j functionality
-annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.1.0")   // annotation processor used to generate V-classes
+implementation("io.github.jenyaatnow:validator4j-core:0.2.0")       // base validator4j functionality
+annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.2.0")   // annotation processor used to generate V-classes
 ```
 
 <details><summary>Maven</summary>
@@ -21,14 +24,14 @@ annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.1.0")   // annotatio
 <dependency>
   <groupId>io.github.jenyaatnow</groupId>
   <artifactId>validator4j-core</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 </dependency>
 
 <!-- annotation processor used to generate V-classes -->
 <dependency>
   <groupId>io.github.jenyaatnow</groupId>
   <artifactId>validator4j-apt</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <optional>true</optional>
 </dependency>
 ```

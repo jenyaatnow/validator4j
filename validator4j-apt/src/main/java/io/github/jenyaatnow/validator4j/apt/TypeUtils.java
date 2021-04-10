@@ -4,6 +4,7 @@ import io.github.jenyaatnow.validator4j.codegen.DataType;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import io.github.jenyaatnow.validator4j.util.Checks;
+import io.github.jenyaatnow.validator4j.util.Validator4jException;
 import lombok.NonNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -67,7 +68,7 @@ final class TypeUtils {
                 return isAssignable(typeMirror, dataType);
             })
             .findFirst()
-            .orElseThrow(() -> new RuntimeException(String.format("Unexpected type '%s'", typeMirror)));
+            .orElseThrow(() -> new Validator4jException(String.format("Unexpected type '%s'", typeMirror)));
     }
 
     private static boolean isValidatableAnnotationPresent(@NonNull final TypeMirror typeMirror) {

@@ -3,7 +3,6 @@ package io.github.jenyaatnow.validator4j.core;
 import lombok.NonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -60,16 +59,13 @@ public class ValidatableCollection<TARGET> extends ValidatableReference<List<Val
         @NonNull final ValidationContext ctx
     )
     {
-        return (p, v) -> {
-            // todo implement for user defined classes
-            return new ValidatableValue<>(p, v, ctx);
-        };
+        return (p, v) -> new ValidatableValue<>(p, v, ctx);
     }
 
     /**
      * Iterates over collection and prepares validation rules for each element with passed handler.
      * Use it to get access to each element of this collection in form of {@link ValidatableReference} implementation
-     * and perform validation using {@link ValidatableReference#validate(ValidationRule...)}. Doesn't perform
+     * and perform validation using {@link ValidatableReference#validate(ValidationRule)}. Doesn't perform
      * any validation itself. Example:
      *     <pre>
      *     {@code
@@ -90,7 +86,7 @@ public class ValidatableCollection<TARGET> extends ValidatableReference<List<Val
 
     /**
      * Simplified alternative of {@link ValidatableCollection#forEach(Consumer)}. Iterates over collection and prepares
-     * validation rules for each element with passed rules directly bypassing v-type interaction. Doesn't perform
+     * validation rule for each element with passed rule directly bypassing v-type interaction. Doesn't perform
      * any validation itself. Example:
      *     <pre>
      *     {@code
@@ -103,11 +99,10 @@ public class ValidatableCollection<TARGET> extends ValidatableReference<List<Val
      *     }
      *     </pre>
      *
-     * @param validationRules validation rules.
+     * @param validationRule validation rules.
      */
-    @SafeVarargs
-    public final void validateEach(@NonNull final ValidationRule<TARGET>... validationRules) {
-        value.forEach(vEntry -> Arrays.stream(validationRules).forEach(vEntry::validate));
+    public final void validateEach(@NonNull final ValidationRule<TARGET> validationRule) {
+        value.forEach(vEntry -> vEntry.validate(validationRule));
     }
 
     // TODO Implement iterable, flatMap analogue
