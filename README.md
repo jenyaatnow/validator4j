@@ -1,10 +1,7 @@
 ## validator4j
-**Validator4j** is attempt to make the bean validation most natural and close to OOP approach that we use to interact
+**Validator4j** is attempt to make the DTO validation more natural and close to the OOP approach we use to interact
 with our data classes. We try to reach this goal by code-generation at compilation phase.
 We generate so called **V-classes** providing validation API.
-
-The project is under active development thus here is no stable API yet.
-Even though we use [Semantic Versioning](https://semver.org/), close minor versions can contain backward incompatible changes.
 
 ### Quickstart
 Add the following dependencies to your project:
@@ -46,7 +43,7 @@ have to contain getters for all fields we want to validate (Lombok is allowed). 
 generated two specific classes - `VUser` and `VAddress`. We can interact with these classes in the similar fashion
 as with the original classes. These classes will contain all fields and getters which present in the original classes,
 but they will have special types, providing the validation API. Thus `Integer` fields will turn
-into `ValidatableValue<Integer>`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableCollection<String>`,
+into `ValidatableValue<Integer>`, `Set<String>` (or any `Collection` inheritor) will become `ValidatableScalarCollection<String>`,
 `Address` - `VAddress`. Also you'll see some constructors. You can find code examples below.
 
 [More about V-class generation](docs/GENERATION_RULES.md)
@@ -77,7 +74,7 @@ public final class VUser extends ValidatableObject<User> {
 
     private final ValidatableValue<Integer> id;
 
-    private final ValidatableCollection<String> roles;
+    private final ValidatableScalarCollection<String> roles;
 
     private final VAddress address;
 
@@ -91,7 +88,7 @@ public final class VUser extends ValidatableObject<User> {
         super(path, value, errors);
 
         this.id = new ValidatableValue<>(appendPath("id"), safeGet(value, User::getId), errors);
-        this.roles = new ValidatableCollection<>(appendPath("roles"), safeGet(value, User::getRoles), errors);
+        this.roles = new ValidatableScalarCollection<>(appendPath("roles"), safeGet(value, User::getRoles), errors);
         this.address = new VAddress(appendPath("address"), safeGet(value, User::getAddress), errors);
     }
 
@@ -99,7 +96,7 @@ public final class VUser extends ValidatableObject<User> {
         return id;
     }
 
-    public ValidatableCollection<String> getRoles() {
+    public ValidatableScalarCollection<String> getRoles() {
         return roles;
     }
 
@@ -138,7 +135,7 @@ public final class VAddress extends ValidatableObject<Address> {
 So, now we can perform our validation.
 
 ```java
-public ErrorsContainer validateUser(final User user) {
+public ErrorsReport validateUser(final User user) {
     final VUser validatableUser = new VUser(user);
 
     validatableUser.getId().validate((id, reject) -> {

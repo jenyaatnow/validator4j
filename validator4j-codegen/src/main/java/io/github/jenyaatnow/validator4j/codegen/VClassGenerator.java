@@ -5,14 +5,23 @@ import lombok.NonNull;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+/**
+ * Entry point of validatable class source generation.
+ */
 public final class VClassGenerator extends AbstractCodeGenerator {
 
-    private final AssignmentGenerator assignmentGenerator = new AssignmentGenerator();
     private final FieldGenerator fieldGenerator = new FieldGenerator();
     private final GetterGenerator getterGenerator = new GetterGenerator();
     private final ImportGenerator importGenerator = new ImportGenerator();
+    private final AssignmentGenerator assignmentGenerator = new AssignmentGenerator();
 
+    /**
+     * Generate the source code of the {@link io.github.jenyaatnow.validator4j.core.ValidatableObject} inheritors.
+     *
+     * @param typeDescriptor type of the validated class.
+     * @param typeMappings set of {@link TypeMapping} used by validated class.
+     * @return source code of validatable class.
+     */
     public String generate(@NonNull final ExtendedTypeDescriptor typeDescriptor,
                            @NonNull final TypeMappings typeMappings)
     {
@@ -36,6 +45,35 @@ public final class VClassGenerator extends AbstractCodeGenerator {
         return result.trim();
     }
 
+    /**
+     * Generate the source code of the {@link io.github.jenyaatnow.validator4j.core.ValidatableCollection} inheritors.
+     *
+     * @param typeDescriptor collection content type.
+     * @return source code of validatable collection.
+     */
+    public String generateCollection(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
+        final var contentType = typeDescriptor.getSingleTypeParameter();
+        final var sourceType = contentType.getSimpleName();
+        final var packageName = contentType.getPackageName();
+        final var imports = generateImports(typeDescriptor);
+
+        final var placeholderReplacements = Stream.of(
+            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.PACKAGE, packageName),
+            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.TYPE_ROOT, sourceType),
+            new PlaceholderReplacement(OutcomeTemplatePlaceholderType.IMPORTS, imports)
+        );
+
+        final var result = resolvePlaceholders(getTemplate(TemplateResource.V_COLLECTION), placeholderReplacements);
+        return result.trim();
+    }
+
+    /**
+     * Generates fields assignments.
+     *
+     * @param typeDescriptor type of the validated class.
+     * @param typeMappings set of {@link TypeMapping} used by validated class.
+     * @return generated fields assignments.
+     */
     private String generateAssignments(@NonNull final ExtendedTypeDescriptor typeDescriptor,
                                        @NonNull final TypeMappings typeMappings)
     {
@@ -45,6 +83,13 @@ public final class VClassGenerator extends AbstractCodeGenerator {
             ).collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR));
     }
 
+    /**
+     * Generates fields declarations.
+     *
+     * @param typeDescriptor type of the validated class.
+     * @param typeMappings set of {@link TypeMapping} used by validated class.
+     * @return generated fields declarations.
+     */
     private String generateFields(@NonNull final ExtendedTypeDescriptor typeDescriptor,
                                   @NonNull final TypeMappings typeMappings)
     {
@@ -54,6 +99,13 @@ public final class VClassGenerator extends AbstractCodeGenerator {
             .collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR + CodeGenUtils.LINE_SEPARATOR));
     }
 
+    /**
+     * Generates getters for all validated fields.
+     *
+     * @param typeDescriptor type of the validated class.
+     * @param typeMappings set of {@link TypeMapping} used by validated class.
+     * @return generated getters.
+     */
     private String generateGetters(@NonNull final ExtendedTypeDescriptor typeDescriptor,
                                    @NonNull final TypeMappings typeMappings)
     {
@@ -63,6 +115,12 @@ public final class VClassGenerator extends AbstractCodeGenerator {
             .collect(Collectors.joining(CodeGenUtils.LINE_SEPARATOR + CodeGenUtils.LINE_SEPARATOR));
     }
 
+    /**
+     * Generates import statements.
+     *
+     * @param typeDescriptor type of the validated class.
+     * @return generated import statements.
+     */
     private String generateImports(@NonNull final ExtendedTypeDescriptor typeDescriptor) {
         return typeDescriptor.getImports().stream()
             .map(importGenerator::generate)

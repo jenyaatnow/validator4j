@@ -1,21 +1,19 @@
 package io.github.jenyaatnow.validator4j.test.source;
 
-import io.github.jenyaatnow.validator4j.core.V4jIgnore;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import io.github.jenyaatnow.validator4j.test.source.nested.NestedPojo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
 import java.util.List;
 
 @Getter
 @Validatable
 @RequiredArgsConstructor
-public class CustomTypesPojo {
-    @V4jIgnore
-    private NestedPojo nestedIgnored;
-    private static NestedPojo staticIgnored;
-
+public class ValidationTargetPojo {
+    private final Integer integer;
+    private final Collection<String> strings;
     private final NestedPojo nested;
-    private final List<NestedPojo> nestedPojoList;
+    private final List<CustomTypesPojo> customTypesPojoList;
 }

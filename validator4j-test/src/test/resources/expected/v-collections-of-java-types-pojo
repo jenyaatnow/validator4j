@@ -1,8 +1,8 @@
 package io.github.jenyaatnow.validator4j.test.source;
 
-import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableScalarCollection;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
 import io.github.jenyaatnow.validator4j.test.source.SampleEnum;
 import io.github.jenyaatnow.validator4j.util.Checks;
@@ -11,25 +11,25 @@ import java.util.Date;
 
 public final class VCollectionsOfJavaTypesPojo extends ValidatableObject<CollectionsOfJavaTypesPojo> {
 
-    private final ValidatableCollection<Boolean> booleans;
+    private final ValidatableScalarCollection<Boolean> booleans;
 
-    private final ValidatableCollection<Byte> bytes;
+    private final ValidatableScalarCollection<Byte> bytes;
 
-    private final ValidatableCollection<Short> shorts;
+    private final ValidatableScalarCollection<Short> shorts;
 
-    private final ValidatableCollection<Integer> integers;
+    private final ValidatableScalarCollection<Integer> integers;
 
-    private final ValidatableCollection<Long> longs;
+    private final ValidatableScalarCollection<Long> longs;
 
-    private final ValidatableCollection<Float> floats;
+    private final ValidatableScalarCollection<Float> floats;
 
-    private final ValidatableCollection<Double> doubles;
+    private final ValidatableScalarCollection<Double> doubles;
 
-    private final ValidatableCollection<String> strings;
+    private final ValidatableScalarCollection<String> strings;
 
-    private final ValidatableCollection<Date> dates;
+    private final ValidatableScalarCollection<Date> dates;
 
-    private final ValidatableCollection<SampleEnum> enums;
+    private final ValidatableScalarCollection<SampleEnum> enums;
 
     /**
      * Root object constructor.
@@ -46,55 +46,55 @@ public final class VCollectionsOfJavaTypesPojo extends ValidatableObject<Collect
     public VCollectionsOfJavaTypesPojo(final String path, final CollectionsOfJavaTypesPojo value, final ValidationContext ctx) {
         super(path, value, ctx);
 
-        this.booleans = new ValidatableCollection<Boolean>(appendPath("booleans"), safeGet(value, CollectionsOfJavaTypesPojo::getBooleans), ctx);
-        this.bytes = new ValidatableCollection<Byte>(appendPath("bytes"), safeGet(value, CollectionsOfJavaTypesPojo::getBytes), ctx);
-        this.shorts = new ValidatableCollection<Short>(appendPath("shorts"), safeGet(value, CollectionsOfJavaTypesPojo::getShorts), ctx);
-        this.integers = new ValidatableCollection<Integer>(appendPath("integers"), safeGet(value, CollectionsOfJavaTypesPojo::getIntegers), ctx);
-        this.longs = new ValidatableCollection<Long>(appendPath("longs"), safeGet(value, CollectionsOfJavaTypesPojo::getLongs), ctx);
-        this.floats = new ValidatableCollection<Float>(appendPath("floats"), safeGet(value, CollectionsOfJavaTypesPojo::getFloats), ctx);
-        this.doubles = new ValidatableCollection<Double>(appendPath("doubles"), safeGet(value, CollectionsOfJavaTypesPojo::getDoubles), ctx);
-        this.strings = new ValidatableCollection<String>(appendPath("strings"), safeGet(value, CollectionsOfJavaTypesPojo::getStrings), ctx);
-        this.dates = new ValidatableCollection<Date>(appendPath("dates"), safeGet(value, CollectionsOfJavaTypesPojo::getDates), ctx);
-        this.enums = new ValidatableCollection<SampleEnum>(appendPath("enums"), safeGet(value, CollectionsOfJavaTypesPojo::getEnums), ctx);
+        this.booleans = new ValidatableScalarCollection<Boolean>(appendPath("booleans"), safeGet(value, CollectionsOfJavaTypesPojo::getBooleans), ctx);
+        this.bytes = new ValidatableScalarCollection<Byte>(appendPath("bytes"), safeGet(value, CollectionsOfJavaTypesPojo::getBytes), ctx);
+        this.shorts = new ValidatableScalarCollection<Short>(appendPath("shorts"), safeGet(value, CollectionsOfJavaTypesPojo::getShorts), ctx);
+        this.integers = new ValidatableScalarCollection<Integer>(appendPath("integers"), safeGet(value, CollectionsOfJavaTypesPojo::getIntegers), ctx);
+        this.longs = new ValidatableScalarCollection<Long>(appendPath("longs"), safeGet(value, CollectionsOfJavaTypesPojo::getLongs), ctx);
+        this.floats = new ValidatableScalarCollection<Float>(appendPath("floats"), safeGet(value, CollectionsOfJavaTypesPojo::getFloats), ctx);
+        this.doubles = new ValidatableScalarCollection<Double>(appendPath("doubles"), safeGet(value, CollectionsOfJavaTypesPojo::getDoubles), ctx);
+        this.strings = new ValidatableScalarCollection<String>(appendPath("strings"), safeGet(value, CollectionsOfJavaTypesPojo::getStrings), ctx);
+        this.dates = new ValidatableScalarCollection<Date>(appendPath("dates"), safeGet(value, CollectionsOfJavaTypesPojo::getDates), ctx);
+        this.enums = new ValidatableScalarCollection<SampleEnum>(appendPath("enums"), safeGet(value, CollectionsOfJavaTypesPojo::getEnums), ctx);
     }
 
-    public ValidatableCollection<Boolean> getBooleans() {
+    public ValidatableScalarCollection<Boolean> getBooleans() {
         return booleans;
     }
 
-    public ValidatableCollection<Byte> getBytes() {
+    public ValidatableScalarCollection<Byte> getBytes() {
         return bytes;
     }
 
-    public ValidatableCollection<Short> getShorts() {
+    public ValidatableScalarCollection<Short> getShorts() {
         return shorts;
     }
 
-    public ValidatableCollection<Integer> getIntegers() {
+    public ValidatableScalarCollection<Integer> getIntegers() {
         return integers;
     }
 
-    public ValidatableCollection<Long> getLongs() {
+    public ValidatableScalarCollection<Long> getLongs() {
         return longs;
     }
 
-    public ValidatableCollection<Float> getFloats() {
+    public ValidatableScalarCollection<Float> getFloats() {
         return floats;
     }
 
-    public ValidatableCollection<Double> getDoubles() {
+    public ValidatableScalarCollection<Double> getDoubles() {
         return doubles;
     }
 
-    public ValidatableCollection<String> getStrings() {
+    public ValidatableScalarCollection<String> getStrings() {
         return strings;
     }
 
-    public ValidatableCollection<Date> getDates() {
+    public ValidatableScalarCollection<Date> getDates() {
         return dates;
     }
 
-    public ValidatableCollection<SampleEnum> getEnums() {
+    public ValidatableScalarCollection<SampleEnum> getEnums() {
         return enums;
     }
 }

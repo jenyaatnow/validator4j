@@ -1,10 +1,12 @@
 package io.github.jenyaatnow.validator4j.codegen;
 
+import io.github.jenyaatnow.validator4j.util.Validator4jException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +54,19 @@ public class TypeDescriptor {
     }
 
     /**
+     * Copies {@code this} instance as {@link ExtendedTypeDescriptor}.
+     *
+     * @param imports collection of types that uses as imports.
+     * @param fields list of declared fields.
+     * @return extended type descriptor.
+     */
+    public ExtendedTypeDescriptor toExtendedTypeDescriptor(@NonNull final Collection<TypeDescriptor> imports,
+                                                           @NonNull final List<FieldDescriptor> fields)
+    {
+        return new ExtendedTypeDescriptor(name, dataType, typeParameters, imports, fields);
+    }
+
+    /**
      * Recursively collects type descriptors of all types related to this getter.
      *
      * @return set of type descriptors.
@@ -79,6 +94,24 @@ public class TypeDescriptor {
         } else {
             return getSimpleName();
         }
+    }
+
+    /**
+     * Returns the single type parameter if so, otherwise throws an exception.
+     *
+     * @return descriptor of current type's single type parameter.
+     */
+    public TypeDescriptor getSingleTypeParameter() {
+        if (typeParameters.isEmpty()) {
+            throw new Validator4jException(String.format("'%s' is not generic", name));
+        }
+
+        final var typeParamsCount = typeParameters.size();
+        if (typeParamsCount > 1) {
+            throw new Validator4jException(String.format("'%s' parameterized with %d types", name, typeParamsCount));
+        }
+
+        return typeParameters.iterator().next();
     }
 
     /**

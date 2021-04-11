@@ -3,6 +3,7 @@ package io.github.jenyaatnow.validator4j.codegen;
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
+import io.github.jenyaatnow.validator4j.core.ValidatableScalarCollection;
 import io.github.jenyaatnow.validator4j.core.ValidatableValue;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
 import io.github.jenyaatnow.validator4j.util.Checks;
@@ -17,6 +18,10 @@ public final class TypeDescriptors {
     public static final TypeDescriptor CHECKS = new TypeDescriptor(Checks.class, DataType.V4J);
     public static final TypeDescriptor VALIDATABLE_OBJECT = new TypeDescriptor(ValidatableObject.class, DataType.V4J);
     public static final TypeDescriptor VALIDATION_CONTEXT = new TypeDescriptor(ValidationContext.class, DataType.V4J);
+
+    public static final TypeDescriptor VALIDATABLE_COLLECTION =
+        new TypeDescriptor(ValidatableCollection.class, DataType.V4J);
+
     public static final TypeDescriptor VALIDATABLE_REFERENCE =
         new TypeDescriptor(ValidatableReference.class, DataType.V4J);
 
@@ -39,7 +44,7 @@ public final class TypeDescriptors {
     public static final TypeDescriptor COLLECTION_OF_VALUES =
         new TypeDescriptor(Collection.class.getName(), DataType.COLLECTION, List.of(INTEGER));
     public static final TypeDescriptor V4J_COLLECTION_OF_VALUES =
-        new TypeDescriptor(ValidatableCollection.class.getName(), DataType.V4J, List.of(INTEGER));
+        new TypeDescriptor(ValidatableScalarCollection.class.getName(), DataType.V4J, List.of(INTEGER));
 
     public static final TypeDescriptor VALIDATABLE_TYPE = new TypeDescriptor("com.sample.Test", DataType.VALIDATABLE);
     public static final TypeDescriptor V4J_VALIDATABLE_TYPE = new TypeDescriptor("com.sample.VTest", DataType.V4J);
@@ -50,7 +55,7 @@ public final class TypeDescriptors {
     }
 
     private static TypeDescriptor getValueType(@NonNull final Class<?> clazz) {
-        return new TypeDescriptor(clazz.getName(), DataType.VALUE);
+        return new TypeDescriptor(clazz.getName(), DataType.SCALAR);
     }
 
     private static TypeDescriptor getValidatableValueType(@NonNull final TypeDescriptor sourceType) {

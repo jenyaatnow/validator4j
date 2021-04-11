@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 
+/**
+ * Set of {@link TypeMapping}.
+ */
 @NoArgsConstructor
 public class TypeMappings extends HashSet<TypeMapping> {
 
@@ -14,6 +17,12 @@ public class TypeMappings extends HashSet<TypeMapping> {
         super(c);
     }
 
+    /**
+     * Returns the validatable counterpart of passed type if present in this set.
+     *
+     * @param sourceType source type descriptor.
+     * @return validatable type descriptor.
+     */
     public Optional<TypeDescriptor> getValidatableType(@NonNull final TypeDescriptor sourceType) {
         return stream()
             .filter(mapping -> mapping.getSourceType().equals(sourceType))

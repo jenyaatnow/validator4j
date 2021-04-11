@@ -10,6 +10,7 @@ import io.github.jenyaatnow.validator4j.codegen.VClassGenerator;
 import io.github.jenyaatnow.validator4j.core.V4jIgnore;
 import io.github.jenyaatnow.validator4j.core.Validatable;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -20,7 +21,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.io.PrintWriter;
@@ -59,31 +59,55 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private void generate(@NonNull final RoundEnvironment roundEnv) {
-        roundEnv.getElementsAnnotatedWith(Validatable.class)
-            .forEach(element -> generate((TypeElement) element));
+        final var inputs = roundEnv.getElementsAnnotatedWith(Validatable.class).stream()
+            .map(annotatedClass -> prepare((TypeElement) annotatedClass))
+            .collect(Collectors.toList());
+
+        final var typeMappings = inputs.stream()
+            .flatMap(input -> input.typeMappings.stream())
+            .collect(Collectors.toCollection(TypeMappings::new));
+
+        generateCollectionClasses(typeMappings);
+        inputs.forEach(this::generateValidatableClass);
     }
 
-    private void generate(@NonNull final TypeElement annotatedClass) {
-        info(String.format("Starting to generate V-class for '%s'.", annotatedClass.getQualifiedName()));
-
+    private Input prepare(@NonNull final TypeElement annotatedClass) {
         final var fieldDescriptors = getFieldDescriptors(annotatedClass);
         final var typeMappings = fieldDescriptors.stream()
             .map(field -> typeMapper.mapToValidatable(field.getType()))
             .collect(Collectors.toCollection(TypeMappings::new));
 
+        return new Input(annotatedClass, fieldDescriptors, typeMappings);
+    }
+
+    private void generateValidatableClass(@NonNull final Input input) {
+        final var imports = getImports(input.typeMappings);
         final var annotatedClassTypeDescriptor = new ExtendedTypeDescriptor(
-            annotatedClass.getQualifiedName().toString(),
+            input.annotatedClass.getQualifiedName().toString(),
             DataType.VALIDATABLE,
-            getImports(typeMappings),
-            fieldDescriptors,
-            typeMappings
+            imports,
+            input.fieldDescriptors
         );
+        final var sourceContent = generator.generate(annotatedClassTypeDescriptor, input.typeMappings);
+        write(Validatable.GENERATED_CLASS_PREFIX + input.annotatedClass.getSimpleName(), sourceContent);
+    }
 
-        final var sourceContent = generator.generate(annotatedClassTypeDescriptor, typeMappings);
-
-        write(annotatedClass.getSimpleName(), sourceContent);
-
-        info(String.format("Successfully generated V-class for '%s'.", annotatedClass.getQualifiedName()));
+    private void generateCollectionClasses(@NonNull final TypeMappings typeMappings) {
+        typeMappings.stream()
+            .filter(mapping -> mapping.getSourceType().getDataType() == DataType.V_COLLECTION)
+            .distinct()
+            .forEach(mapping -> {
+                final var typeDescriptor = mapping.getSourceType().toExtendedTypeDescriptor(
+                    Set.of(
+                        TypeDescriptors.COLLECTION_OF_VALUES,
+                        TypeDescriptors.VALIDATION_CONTEXT,
+                        TypeDescriptors.VALIDATABLE_COLLECTION
+                    ),
+                    List.of()
+                );
+                final var sourceCode = generator.generateCollection(typeDescriptor);
+                write(mapping.getValidatableType().getSimpleName(), sourceCode);
+            });
     }
 
     private List<FieldDescriptor> getFieldDescriptors(@NonNull final TypeElement annotatedClass) {
@@ -106,7 +130,7 @@ public class ValidatableProcessor extends AbstractProcessor {
     private Collection<TypeDescriptor> getImports(@NonNull final TypeMappings typeMappings) {
         final var importTypes = typeMappings.stream()
             .flatMap(mapping -> mapping.getValidatableType().getAllRelatedTypes().stream())
-            .filter(type -> !type.getName().startsWith("java.lang"))
+            .filter(type -> !type.getName().startsWith(Class.class.getPackageName()))
             .collect(Collectors.toMap(TypeDescriptor::getName, p -> p, (p, q) -> p))
             .values();
 
@@ -141,8 +165,8 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     @SneakyThrows
-    private void write(@NonNull final Name className, @NonNull final String sourceContent) {
-        final var file = processingEnv.getFiler().createSourceFile(Validatable.GENERATED_CLASS_PREFIX + className);
+    private void write(@NonNull final CharSequence className, @NonNull final String sourceContent) {
+        final var file = processingEnv.getFiler().createSourceFile(className);
 
         try (final var out = new PrintWriter(file.openWriter())) {
             out.print(sourceContent);
@@ -153,7 +177,10 @@ public class ValidatableProcessor extends AbstractProcessor {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, message);
     }
 
-    private void info(@NonNull final String message) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
+    @RequiredArgsConstructor
+    private static class Input {
+        final TypeElement annotatedClass;
+        final List<FieldDescriptor> fieldDescriptors;
+        final TypeMappings typeMappings;
     }
 }
