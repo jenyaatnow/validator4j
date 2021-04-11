@@ -3,21 +3,18 @@ package io.github.jenyaatnow.validator4j.test.source;
 import io.github.jenyaatnow.validator4j.core.ValidatableObject;
 import io.github.jenyaatnow.validator4j.core.ValidatableReference;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
-import io.github.jenyaatnow.validator4j.test.source.nested.VNestedPojo;
 import io.github.jenyaatnow.validator4j.test.source.nested.VNestedPojoCollection;
 import io.github.jenyaatnow.validator4j.util.Checks;
 
 
-public final class VCustomTypesPojo extends ValidatableObject<CustomTypesPojo> {
-
-    private final VNestedPojo nested;
+public final class VNestedPojoCollectionShouldBeGeneratedExactlyOnce extends ValidatableObject<NestedPojoCollectionShouldBeGeneratedExactlyOnce> {
 
     private final VNestedPojoCollection nestedPojoList;
 
     /**
      * Root object constructor.
      */
-    public VCustomTypesPojo(final CustomTypesPojo value) {
+    public VNestedPojoCollectionShouldBeGeneratedExactlyOnce(final NestedPojoCollectionShouldBeGeneratedExactlyOnce value) {
         this(ValidatableReference.PATH_ROOT, value, ValidationContext.getInstance());
 
         Checks.nonNull(value, "value");
@@ -26,15 +23,10 @@ public final class VCustomTypesPojo extends ValidatableObject<CustomTypesPojo> {
     /**
      * Nested object constructor.
      */
-    public VCustomTypesPojo(final String path, final CustomTypesPojo value, final ValidationContext ctx) {
+    public VNestedPojoCollectionShouldBeGeneratedExactlyOnce(final String path, final NestedPojoCollectionShouldBeGeneratedExactlyOnce value, final ValidationContext ctx) {
         super(path, value, ctx);
 
-        this.nested = new VNestedPojo(appendPath("nested"), safeGet(value, CustomTypesPojo::getNested), ctx);
-        this.nestedPojoList = new VNestedPojoCollection(appendPath("nestedPojoList"), safeGet(value, CustomTypesPojo::getNestedPojoList), ctx);
-    }
-
-    public VNestedPojo getNested() {
-        return nested;
+        this.nestedPojoList = new VNestedPojoCollection(appendPath("nestedPojoList"), safeGet(value, NestedPojoCollectionShouldBeGeneratedExactlyOnce::getNestedPojoList), ctx);
     }
 
     public VNestedPojoCollection getNestedPojoList() {

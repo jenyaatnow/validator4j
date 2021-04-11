@@ -1,12 +1,11 @@
-package io.github.jenyaatnow.validator4j.test.generated;
+package io.github.jenyaatnow.validator4j.test.source.nested;
 
 import io.github.jenyaatnow.validator4j.core.ValidatableCollection;
 import io.github.jenyaatnow.validator4j.core.ValidationContext;
-import io.github.jenyaatnow.validator4j.test.source.NestedPojo;
-
 import java.util.Collection;
 
-public final class VNestedPojoCollection extends ValidatableCollection<NestedPojo> {
+
+public final class VNestedPojoCollection extends ValidatableCollection<NestedPojo, VNestedPojo> {
 
     public VNestedPojoCollection(final String path, final Collection<NestedPojo> value, final ValidationContext ctx) {
         super(

@@ -16,7 +16,7 @@ subprojects {
     apply(plugin = "io.freefair.lombok")
 
     group = "io.github.jenyaatnow"
-    version = "0.2.0-SNAPSHOT"
+    version = "0.2.0"
 
     repositories {
         mavenCentral()

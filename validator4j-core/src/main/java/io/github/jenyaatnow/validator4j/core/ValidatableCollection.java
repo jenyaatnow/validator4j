@@ -16,28 +16,33 @@ import java.util.stream.IntStream;
  * will be generated an inheritor of this class.
  *
  * @param <TARGET> original type of validated collection's elements.
+ * @param <VALIDATABLE> v-type of validated collection's elements.
  */
-public class ValidatableCollection<TARGET> extends ValidatableReference<List<ValidatableReference<TARGET>>> {
+public abstract class ValidatableCollection<TARGET, VALIDATABLE extends ValidatableReference<TARGET>>
+    extends ValidatableReference<List<VALIDATABLE>>
+{
 
     /**
      * Used to instantiate {@link ValidatableCollection} of simple values.
      */
+    @SuppressWarnings("unchecked")
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
                                  @NonNull final ValidationContext ctx)
     {
-        super(path, toValidatableList(value, path, mapSimpleValue(ctx)), ctx);
+        super(path, (List<VALIDATABLE>) toValidatableList(value, path, mapSimpleValue(ctx)), ctx);
     }
 
     /**
      * Used to instantiate {@link ValidatableCollection} of {@link Validatable} objects.
      */
+    @SuppressWarnings("unchecked")
     public ValidatableCollection(@NonNull final String path,
                                  final Collection<TARGET> value,
                                  @NonNull final BiFunction<String, TARGET, ValidatableReference<TARGET>> valueMapper,
                                  @NonNull final ValidationContext ctx)
     {
-        super(path, toValidatableList(value, path, valueMapper), ctx);
+        super(path, (List<VALIDATABLE>) toValidatableList(value, path, valueMapper), ctx);
     }
 
     private static <T, V extends ValidatableReference<T>> List<V> toValidatableList(
@@ -55,10 +60,7 @@ public class ValidatableCollection<TARGET> extends ValidatableReference<List<Val
             .orElse(null);
     }
 
-    private static <T> BiFunction<String, T, ValidatableReference<T>> mapSimpleValue(
-        @NonNull final ValidationContext ctx
-    )
-    {
+    private static <T> BiFunction<String, T, ValidatableReference<T>> mapSimpleValue(final ValidationContext ctx) {
         return (p, v) -> new ValidatableValue<>(p, v, ctx);
     }
 
@@ -80,7 +82,7 @@ public class ValidatableCollection<TARGET> extends ValidatableReference<List<Val
      *
      * @param validationHandler validation handler whose only argument is a {@link ValidatableReference} instance.
      */
-    public final void forEach(@NonNull final Consumer<ValidatableReference<TARGET>> validationHandler) {
+    public final void forEach(@NonNull final Consumer<VALIDATABLE> validationHandler) {
         value.forEach(validationHandler);
     }
 
