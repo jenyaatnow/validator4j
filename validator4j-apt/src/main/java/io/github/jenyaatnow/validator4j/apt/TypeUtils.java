@@ -41,17 +41,19 @@ final class TypeUtils {
     public static TypeDescriptor getTypeDescriptor(@NonNull final TypeMirror typeMirror) {
         checkInitialization();
 
-        final var typeParamsDescriptors = Optional.of(typeMirror)
-            .filter(type -> type instanceof DeclaredType)
+        final var declaredType = (DeclaredType) typeMirror;
+
+        final var typeParamsDescriptors = Optional.of(declaredType)
             .map(type -> {
-                final List<? extends TypeMirror> typeArguments = ((DeclaredType) typeMirror).getTypeArguments();
+                final List<? extends TypeMirror> typeArguments = type.getTypeArguments();
                 return typeArguments.stream()
                     .map(TypeUtils::getTypeDescriptor)
                     .collect(Collectors.toList());
             })
             .orElse(Collections.emptyList());
 
-        return new TypeDescriptor(TYPES.erasure(typeMirror).toString(), getDataType(typeMirror), typeParamsDescriptors);
+        final var qualifiedName = declaredType.asElement().toString();
+        return new TypeDescriptor(qualifiedName, getDataType(typeMirror), typeParamsDescriptors);
     }
 
     private static DataType getDataType(@NonNull final TypeMirror typeMirror) {

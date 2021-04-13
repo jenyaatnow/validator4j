@@ -77,6 +77,6 @@ class TypeDescriptorTest {
         final var hashMap =
             new TypeDescriptor(HashMap.class.getName(), DataType.OTHER, List.of(TypeDescriptors.INTEGER, list));
 
-        Assertions.assertEquals("HashMap<Integer, List<Optional<String>>>", hashMap.getNameWithTypeParameters());
+        Assertions.assertEquals("HashMap<Integer, List<Optional<String>>>", hashMap.getSimpleNameWithTypeParameters());
     }
 }

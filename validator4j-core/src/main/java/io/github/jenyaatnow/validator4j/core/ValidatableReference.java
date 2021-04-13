@@ -54,13 +54,57 @@ public abstract class ValidatableReference<TARGET> {
         this.ruleActions = ctx.getRuleActions();
 
         this.reject = message -> {
-            final var error = ValidationError.of(path, message);
+            final var error = ValidationError.of(this.path, message);
             this.errors.add(error);
         };
     }
 
     /**
-     * Prepares validation rule to perform deferred validation. Doesn't perform any validation itself. Example:
+     * Prepares validation rule to perform deferred validation. Doesn't perform any validation itself.
+     * Validation will happen with {@link ValidatableObject#validate()} call. Example:
+     *     <pre>
+     *     {@code
+     *     final VUser vUser = ...;
+     *     vUser.getId().validate((id, reject) -> {
+     *         if (id < 1) {
+     *             reject.accept("Id should be positive number");
+     *         }
+     *     })
+     *     }
+     *     </pre>
+     * Above notation is semantically equivalent to following sample using {@link ValidatableReference#reject(String)}:
+     *     <pre>
+     *     {@code
+     *     final VUser vUser = ...;
+     *     final ValidatableValue<Integer> validatableId = vUser.getId();
+     *     final Integer id = validatableId.get();
+     *     if (id < 1) {
+     *         validatableId.reject("Id should be positive number");
+     *     }
+     *     }
+     *     </pre>
+     *
+     * @param validationRule validation rule.
+     */
+    public final void validate(@NonNull final ValidationRule<TARGET> validationRule) {
+        ruleActions.add(() -> validationRule.validate(value, reject));
+    }
+
+    /**
+     * Prepares rejection of underlying validated value. Rejection itself will happen
+     * with {@link ValidatableObject#validate()} call. Example:
+     *     <pre>
+     *     {@code
+     *     final VUser vUser = ...;
+     *     final ValidatableValue<Integer> validatableId = vUser.getId();
+     *     final Integer id = validatableId.get();
+     *     if (id < 1) {
+     *         validatableId.reject("Id should be positive number");
+     *     }
+     *     }
+     *     </pre>
+     * Above notation is semantically equivalent to following sample
+     * using {@link ValidatableReference#validate(ValidationRule)}:
      *     <pre>
      *     {@code
      *     final VUser vUser = ...;
@@ -72,9 +116,18 @@ public abstract class ValidatableReference<TARGET> {
      *     }
      *     </pre>
      *
-     * @param validationRule validation rule.
+     * @param message error message.
      */
-    public final void validate(@NonNull final ValidationRule<TARGET> validationRule) {
-        ruleActions.add(() -> validationRule.validate(value, reject));
+    public final void reject(@NonNull final String message) {
+        ruleActions.add(() -> reject.accept(message));
+    }
+
+    /**
+     * Returns underlying validated value.
+     *
+     * @return validated value.
+     */
+    public TARGET get() {
+        return value;
     }
 }

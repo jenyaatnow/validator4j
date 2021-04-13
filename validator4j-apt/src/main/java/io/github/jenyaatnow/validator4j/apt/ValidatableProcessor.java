@@ -1,5 +1,6 @@
 package io.github.jenyaatnow.validator4j.apt;
 
+import com.google.auto.service.AutoService;
 import io.github.jenyaatnow.validator4j.codegen.DataType;
 import io.github.jenyaatnow.validator4j.codegen.ExtendedTypeDescriptor;
 import io.github.jenyaatnow.validator4j.codegen.FieldDescriptor;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -31,6 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@AutoService(Processor.class)
 @SupportedAnnotationTypes(Validatable.NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class ValidatableProcessor extends AbstractProcessor {
@@ -116,11 +119,11 @@ public class ValidatableProcessor extends AbstractProcessor {
         final var fieldDescriptors = annotatedClass.getEnclosedElements().stream()
             .filter(element -> element.getKind() == ElementKind.FIELD)
             .map(element -> {
-                final var returnType = TypeUtils.getTypeDescriptor(element.asType());
-                if (checkIfFieldShouldBeIgnored(element, returnType)) return null;
+                final var fieldType = TypeUtils.getTypeDescriptor(element.asType());
+                if (checkIfFieldShouldBeIgnored(enclosingType, element, fieldType)) return null;
 
                 final var fieldName = element.getSimpleName().toString();
-                return new FieldDescriptor(fieldName, returnType, enclosingType);
+                return new FieldDescriptor(fieldName, fieldType, enclosingType);
             })
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
@@ -146,8 +149,9 @@ public class ValidatableProcessor extends AbstractProcessor {
         return generalImports;
     }
 
-    private boolean checkIfFieldShouldBeIgnored(@NonNull final Element element,
-                                                @NonNull final TypeDescriptor returnType)
+    private boolean checkIfFieldShouldBeIgnored(@NonNull final TypeDescriptor enclosingElement,
+                                                @NonNull final Element element,
+                                                @NonNull final TypeDescriptor fieldType)
     {
         if (element.getModifiers().contains(Modifier.STATIC)) {
             return true;
@@ -157,8 +161,12 @@ public class ValidatableProcessor extends AbstractProcessor {
             return true;
         }
 
-        if (returnType.getDataType() == DataType.OTHER) {
-            warn(String.format("Ignored field of unsupported type '%s'.", returnType.getName()));
+        if (fieldType.getDataType() == DataType.OTHER) {
+            warn(String.format(
+                "Ignored field of unsupported type '%s' [at %s].",
+                fieldType.getSimpleNameWithTypeParameters(),
+                enclosingElement.getName()
+            ));
             return true;
         }
         return false;

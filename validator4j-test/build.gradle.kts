@@ -1,6 +1,5 @@
 dependencies {
     implementation(project(":validator4j-core"))
-    implementation(project(":validator4j-util")) // todo remove
     annotationProcessor(project(":validator4j-apt"))
 }
 
@@ -11,5 +10,3 @@ tasks.register<Copy>("copyGeneratedFiles") {
 }
 
 tasks.getByPath("test").dependsOn("copyGeneratedFiles")
-
-

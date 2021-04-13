@@ -1,7 +1,6 @@
 dependencies {
-    implementation(project(":validator4j-util"))
-    implementation("org.hibernate.validator:hibernate-validator:7.0.1.Final")
-    implementation("org.glassfish:jakarta.el:4.0.1")
-    implementation("jakarta.el:jakarta.el-api:4.0.0")
-    api("jakarta.validation:jakarta.validation-api:3.0.0")
+    api(project(":validator4j-util"))
+    api("javax.validation:validation-api:2.0.1.Final")
+    implementation("org.glassfish:javax.el:3.0.0")
+    implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
 }

@@ -1,9 +1,9 @@
 package io.github.jenyaatnow.validator4j.core;
 
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import lombok.NonNull;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.Collection;
 import java.util.stream.Collectors;
 

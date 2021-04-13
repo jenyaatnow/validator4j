@@ -34,7 +34,7 @@ abstract class GeneratorByField extends AbstractCodeGenerator {
                             @NonNull final TypeMappings typeMappings)
     {
         return typeMappings.getValidatableType(fieldDescriptor.getType())
-            .map(TypeDescriptor::getNameWithTypeParameters)
+            .map(TypeDescriptor::getSimpleNameWithTypeParameters)
             .orElseThrow();
     }
 

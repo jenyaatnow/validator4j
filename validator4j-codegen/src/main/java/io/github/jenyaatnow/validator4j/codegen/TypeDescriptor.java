@@ -86,10 +86,10 @@ public class TypeDescriptor {
      *
      * @return name with generic type parameters.
      */
-    public String getNameWithTypeParameters() {
+    public String getSimpleNameWithTypeParameters() {
         if (isGeneric()) {
             return getTypeParameters().stream()
-                .map(TypeDescriptor::getNameWithTypeParameters)
+                .map(TypeDescriptor::getSimpleNameWithTypeParameters)
                 .collect(Collectors.joining(", ", getSimpleName() + "<", ">"));
         } else {
             return getSimpleName();

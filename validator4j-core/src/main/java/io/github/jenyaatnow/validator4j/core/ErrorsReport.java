@@ -10,4 +10,11 @@ public interface ErrorsReport {
      * @return errors collection.
      */
     Collection<ValidationError> getErrors();
+
+    /**
+     * Returns whether this report contains any errors or not.
+     *
+     * @return whether this report contains any errors or not.
+     */
+    boolean containsErrors();
 }

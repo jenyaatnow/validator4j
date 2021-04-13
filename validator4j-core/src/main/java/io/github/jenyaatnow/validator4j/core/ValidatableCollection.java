@@ -4,7 +4,6 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -19,7 +18,7 @@ import java.util.stream.IntStream;
  * @param <VALIDATABLE> v-type of validated collection's elements.
  */
 public abstract class ValidatableCollection<TARGET, VALIDATABLE extends ValidatableReference<TARGET>>
-    extends ValidatableReference<List<VALIDATABLE>>
+    extends ValidatableReference<V4jList<TARGET, VALIDATABLE>>
 {
 
     /**
@@ -30,7 +29,7 @@ public abstract class ValidatableCollection<TARGET, VALIDATABLE extends Validata
                                  final Collection<TARGET> value,
                                  @NonNull final ValidationContext ctx)
     {
-        super(path, (List<VALIDATABLE>) toValidatableList(value, path, mapSimpleValue(ctx)), ctx);
+        super(path, (V4jList<TARGET, VALIDATABLE>) toValidatableList(value, path, mapSimpleValue(ctx)), ctx);
     }
 
     /**
@@ -42,10 +41,10 @@ public abstract class ValidatableCollection<TARGET, VALIDATABLE extends Validata
                                  @NonNull final BiFunction<String, TARGET, ValidatableReference<TARGET>> valueMapper,
                                  @NonNull final ValidationContext ctx)
     {
-        super(path, (List<VALIDATABLE>) toValidatableList(value, path, valueMapper), ctx);
+        super(path, (V4jList<TARGET, VALIDATABLE>) toValidatableList(value, path, valueMapper), ctx);
     }
 
-    private static <T, V extends ValidatableReference<T>> List<V> toValidatableList(
+    private static <T, V extends ValidatableReference<T>> V4jList<T, V> toValidatableList(
         final Collection<T> source, @NonNull final String path, @NonNull final BiFunction<String, T, V> valueMapper
     )
     {
@@ -55,7 +54,7 @@ public abstract class ValidatableCollection<TARGET, VALIDATABLE extends Validata
                 return IntStream
                     .range(0, sourceList.size())
                     .mapToObj(idx -> valueMapper.apply(String.format("%s[%d]", path, idx), sourceList.get(idx)))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toCollection(V4jList::new));
             })
             .orElse(null);
     }
@@ -105,6 +104,15 @@ public abstract class ValidatableCollection<TARGET, VALIDATABLE extends Validata
      */
     public final void validateEach(@NonNull final ValidationRule<TARGET> validationRule) {
         value.forEach(vEntry -> vEntry.validate(validationRule));
+    }
+
+    /**
+     * Retrieves and returns the underlying validated values of this collection.
+     *
+     * @return validated values collection.
+     */
+    public final Collection<TARGET> getValues() {
+        return get().values();
     }
 
     // TODO Implement iterable, flatMap analogue

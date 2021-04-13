@@ -29,7 +29,7 @@ annotationProcessor("io.github.jenyaatnow:validator4j-apt:0.2.0")   // annotatio
   <groupId>io.github.jenyaatnow</groupId>
   <artifactId>validator4j-apt</artifactId>
   <version>0.2.0</version>
-  <optional>true</optional>
+  <scope>provided</scope>
 </dependency>
 ```
 
@@ -142,18 +142,33 @@ public ErrorsReport validateUser(final User user) {
         if (id < 1) reject.accept("Id should be positive number");
     });
 
-    validatableUser.getRoles().validateEach((role, reject) -> {
-        if (role.isBlank()) reject.accept("Role should not be blank string");
-    });
-
     validatableUser.getAddress().getStreet().validate((street, reject) -> {
         if (street.isBlank()) reject.accept("Street should not be blank string");
+    });
+
+    validatableUser.getRoles().validateEach((role, reject) -> {
+        if (role.isBlank()) reject.accept("Role should not be blank string");
     });
 
     final ErrorsReport errors = validatableUser.validate();
     return errors;
 }
 ```
+
+<details><summary>There is an alternative notation:</summary>
+<p>
+
+```java
+    final ValidatableValue<Integer> validatableId = validatableUser.getId();
+    if (validatableId.get() < 1) validatableId.reject("Id should be positive number");
+
+    final ValidatableValue<Integer> validatableStreet = validatableUser.getAddress().getStreet();
+    if (validatableStreet.get().isBlank()) validatableStreet.reject("Street should not be blank string");
+```
+
+</p>
+</details>
+
 As you see `validate...(...)` methods receives lambda of type `ValidationRule` (`BiConsumer` analogue) with two arguments.
 First is the validating value and second is a function used to reject invalid value. These methods doesn't perform
 any validation directly, but setup validation rules for further use. Validaton itself happens with

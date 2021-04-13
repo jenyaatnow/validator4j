@@ -3,4 +3,4 @@ out
 .idea
 .gradle
 gradle.properties
-deploy
+release

@@ -30,4 +30,9 @@ final class ValidationErrors implements ErrorsContainer {
         this.errors.addAll(errors);
         Collections.sort(this.errors);
     }
+
+    @Override
+    public boolean containsErrors() {
+        return !errors.isEmpty();
+    }
 }

@@ -39,8 +39,8 @@ public class ValidationTest {
     }
 
     @ParameterizedTest
-    @MethodSource("validationCaseProvider")
-    public void testValidation(final Runnable runnable, final String path) {
+    @MethodSource("validateWithValidate")
+    public void validateWithValidate(final Runnable runnable, final String path) {
         runnable.run();
 
         final var errors = validatable.validate().getErrors();
@@ -49,7 +49,7 @@ public class ValidationTest {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static Stream<Arguments> validationCaseProvider() {
+    private static Stream<Arguments> validateWithValidate() {
         final ValidationRule validationRule = (value, reject) -> reject.accept(ERROR_MESSAGE);
 
         return Stream.of(
@@ -111,6 +111,83 @@ public class ValidationTest {
                         vNested.getId().validate((id, reject) -> {
                             if (WRONG_INT.equals(id)) reject.accept(ERROR_MESSAGE);
                         });
+                    });
+                }),
+                "customTypesPojoList[1].nestedPojoList[1].id"
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("validateWithReject")
+    public void validateWithReject(final Runnable runnable, final String path) {
+        runnable.run();
+
+        final var errors = validatable.validate().getErrors();
+        Assertions.assertEquals(1, errors.size());
+        Assertions.assertEquals(path, errors.iterator().next().getPath());
+    }
+
+    private static Stream<Arguments> validateWithReject() {
+        return Stream.of(
+            Arguments.of(
+                (Runnable) () -> validatable.getInteger().reject(ERROR_MESSAGE),
+                "integer"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getStrings().validateEach((str, reject) -> {
+                    if (WRONG_STRING.equals(str)) reject.accept(ERROR_MESSAGE);
+                }),
+                "strings[1]"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getNested().reject(ERROR_MESSAGE),
+                "nested"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getNested().getId().reject(ERROR_MESSAGE),
+                "nested.id"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getCustomTypesPojoList().reject(ERROR_MESSAGE),
+                "customTypesPojoList"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getCustomTypesPojoList().validateEach((pojo, reject) -> {
+                    if (WRONG_INT.equals(pojo.getNested().getId())) reject.accept(ERROR_MESSAGE);
+                }),
+                "customTypesPojoList[2]"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getCustomTypesPojoList().forEach(vCustomTypesPojo -> {
+                    if (WRONG_INT.equals(vCustomTypesPojo.getNested().getId().get())) {
+                        vCustomTypesPojo.getNested().reject(ERROR_MESSAGE);
+                    }
+                }),
+                "customTypesPojoList[2].nested"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getCustomTypesPojoList().forEach(vCustomTypesPojo -> {
+                    if (WRONG_INT.equals(vCustomTypesPojo.getNested().getId().get())) {
+                        vCustomTypesPojo.getNested().getId().reject(ERROR_MESSAGE);
+                    }
+                }),
+                "customTypesPojoList[2].nested.id"
+            ),
+
+            Arguments.of(
+                (Runnable) () -> validatable.getCustomTypesPojoList().forEach(vCustomTypesPojo -> {
+                    vCustomTypesPojo.getNestedPojoList().forEach(vNested -> {
+                        if (WRONG_INT.equals(vNested.getId().get())) {
+                            vNested.getId().reject(ERROR_MESSAGE);
+                        }
                     });
                 }),
                 "customTypesPojoList[1].nestedPojoList[1].id"
