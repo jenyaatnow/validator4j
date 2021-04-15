@@ -16,7 +16,7 @@ subprojects {
     apply(plugin = "io.freefair.lombok")
 
     group = "io.github.jenyaatnow"
-    version = "0.2.0"
+    version = "0.3.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
@@ -71,7 +71,7 @@ configure(subprojects.filter { it.name in publicModules }) {
 
                 pom {
                     name.set("Validator4j")
-                    description.set("Java bean validation library designed to perform validation" +
+                    description.set("Java DTO validation library designed to perform validation" +
                         " in the most natural way using code generation capabilities.")
                     url.set("https://github.com/jenyaatnow/validator4j")
                     licenses {
