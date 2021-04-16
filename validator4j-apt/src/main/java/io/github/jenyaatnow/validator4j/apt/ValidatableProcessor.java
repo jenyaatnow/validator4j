@@ -40,6 +40,7 @@ public class ValidatableProcessor extends AbstractProcessor {
 
     public static final Boolean LET_OTHER_PROCESSORS_TO_DO_THE_WORK = Boolean.FALSE;
 
+    private TypeUtils typeUtils;
     private final TypeMapper typeMapper = new TypeMapper();
     private final VClassGenerator generator = new VClassGenerator();
 
@@ -58,7 +59,7 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private void bootstrap() {
-        TypeUtils.init(processingEnv);
+        typeUtils = new TypeUtils(processingEnv);
     }
 
     private void generate(@NonNull final RoundEnvironment roundEnv) {
@@ -114,12 +115,12 @@ public class ValidatableProcessor extends AbstractProcessor {
     }
 
     private List<FieldDescriptor> getFieldDescriptors(@NonNull final TypeElement annotatedClass) {
-        final var enclosingType = TypeUtils.getTypeDescriptor(annotatedClass.asType());
+        final var enclosingType = typeUtils.getTypeDescriptor(annotatedClass.asType());
 
         final var fieldDescriptors = annotatedClass.getEnclosedElements().stream()
             .filter(element -> element.getKind() == ElementKind.FIELD)
             .map(element -> {
-                final var fieldType = TypeUtils.getTypeDescriptor(element.asType());
+                final var fieldType = typeUtils.getTypeDescriptor(element.asType());
                 if (checkIfFieldShouldBeIgnored(enclosingType, element, fieldType)) return null;
 
                 final var fieldName = element.getSimpleName().toString();
@@ -157,7 +158,7 @@ public class ValidatableProcessor extends AbstractProcessor {
             return true;
         }
 
-        if (TypeUtils.isAnnotationPresent(element, V4jIgnore.class)) {
+        if (typeUtils.isAnnotationPresent(element, V4jIgnore.class)) {
             return true;
         }
 

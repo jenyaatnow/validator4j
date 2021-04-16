@@ -35,7 +35,11 @@ class TypeMapperTest {
             Arguments.of(TypeDescriptors.STRING, TypeDescriptors.V4J_STRING),
             Arguments.of(TypeDescriptors.DATE, TypeDescriptors.V4J_DATE),
             Arguments.of(TypeDescriptors.COLLECTION_OF_VALUES, TypeDescriptors.V4J_COLLECTION_OF_VALUES),
-            Arguments.of(TypeDescriptors.VALIDATABLE_TYPE, TypeDescriptors.V4J_VALIDATABLE_TYPE)
+            Arguments.of(TypeDescriptors.VALIDATABLE_TYPE, TypeDescriptors.V4J_VALIDATABLE_TYPE),
+            Arguments.of(
+                TypeDescriptors.COLLECTION_OF_VALIDATABLE_TYPES,
+                TypeDescriptors.V4J_COLLECTION_OF_VALIDATABLE_TYPES
+            )
         );
     }
 }

@@ -3,7 +3,6 @@ package io.github.jenyaatnow.validator4j.apt;
 import io.github.jenyaatnow.validator4j.codegen.DataType;
 import io.github.jenyaatnow.validator4j.codegen.TypeDescriptor;
 import io.github.jenyaatnow.validator4j.core.Validatable;
-import io.github.jenyaatnow.validator4j.util.Checks;
 import io.github.jenyaatnow.validator4j.util.Validator4jException;
 import lombok.NonNull;
 
@@ -22,32 +21,28 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-final class TypeUtils {
+class TypeUtils {
 
-    private static Types TYPES;
-    private static Elements ELEMENTS;
+    private final Types types;
+    private final Elements elements;
 
-    public static void init(@NonNull final ProcessingEnvironment processingEnvironment) {
-        TYPES = processingEnvironment.getTypeUtils();
-        ELEMENTS = processingEnvironment.getElementUtils();
+    public TypeUtils(@NonNull final ProcessingEnvironment processingEnvironment) {
+        types = processingEnvironment.getTypeUtils();
+        elements = processingEnvironment.getElementUtils();
     }
 
-    public static TypeElement getTypeElement(@NonNull final Class<?> clazz) {
-        checkInitialization();
-
-        return ELEMENTS.getTypeElement(clazz.getName());
+    public TypeElement getTypeElement(@NonNull final Class<?> clazz) {
+        return elements.getTypeElement(clazz.getName());
     }
 
-    public static TypeDescriptor getTypeDescriptor(@NonNull final TypeMirror typeMirror) {
-        checkInitialization();
-
+    public TypeDescriptor getTypeDescriptor(@NonNull final TypeMirror typeMirror) {
         final var declaredType = (DeclaredType) typeMirror;
 
         final var typeParamsDescriptors = Optional.of(declaredType)
             .map(type -> {
                 final List<? extends TypeMirror> typeArguments = type.getTypeArguments();
                 return typeArguments.stream()
-                    .map(TypeUtils::getTypeDescriptor)
+                    .map(this::getTypeDescriptor)
                     .collect(Collectors.toList());
             })
             .orElse(Collections.emptyList());
@@ -56,7 +51,7 @@ final class TypeUtils {
         return new TypeDescriptor(qualifiedName, getDataType(typeMirror), typeParamsDescriptors);
     }
 
-    private static DataType getDataType(@NonNull final TypeMirror typeMirror) {
+    DataType getDataType(@NonNull final TypeMirror typeMirror) {
         if (isEnum(typeMirror)) return DataType.SCALAR;
         if (isScalarCollection(typeMirror)) return DataType.COLLECTION;
         if (isVCollection(typeMirror)) return DataType.V_COLLECTION;
@@ -68,60 +63,55 @@ final class TypeUtils {
             .orElseThrow(() -> new Validator4jException(String.format("Unexpected type '%s'", typeMirror)));
     }
 
-    private static boolean isEnum(@NonNull final TypeMirror typeMirror) {
-        return TYPES.asElement(typeMirror).getKind() == ElementKind.ENUM;
+    private boolean isEnum(@NonNull final TypeMirror typeMirror) {
+        return types.asElement(typeMirror).getKind() == ElementKind.ENUM;
     }
 
-    private static boolean isScalarCollection(@NonNull final TypeMirror typeMirror) {
+    private boolean isScalarCollection(@NonNull final TypeMirror typeMirror) {
         return getSingleTypeParam((DeclaredType) typeMirror)
             .map(typeParam ->
                 typeParam.getDataType() == DataType.SCALAR && isAssignable(typeMirror, DataType.COLLECTION)
             ).orElse(false);
     }
 
-    private static boolean isVCollection(@NonNull final TypeMirror typeMirror) {
+    private boolean isVCollection(@NonNull final TypeMirror typeMirror) {
         return getSingleTypeParam((DeclaredType) typeMirror)
             .map(typeParam ->
                 typeParam.getDataType() == DataType.VALIDATABLE && isAssignable(typeMirror, DataType.V_COLLECTION)
             ).orElse(false);
     }
 
-    private static Optional<TypeDescriptor> getSingleTypeParam(@NonNull final DeclaredType typeMirror) {
+    private Optional<TypeDescriptor> getSingleTypeParam(@NonNull final DeclaredType typeMirror) {
         final List<? extends TypeMirror> typeArguments = typeMirror.getTypeArguments();
         if (typeArguments.size() != 1) {
             return Optional.empty();
         }
 
         final var typeParam = typeArguments.stream()
-            .map(TypeUtils::getTypeDescriptor)
+            .map(this::getTypeDescriptor)
             .findFirst();
 
         return typeParam;
     }
 
-    private static boolean isValidatableObject(@NonNull final TypeMirror typeMirror) {
+    private boolean isValidatableObject(@NonNull final TypeMirror typeMirror) {
         return isValidatableAnnotationPresent(typeMirror) && isAssignable(typeMirror, DataType.VALIDATABLE);
     }
 
-    private static boolean isValidatableAnnotationPresent(@NonNull final TypeMirror typeMirror) {
-        return TYPES.asElement(typeMirror).getAnnotation(Validatable.class) != null;
+    private boolean isValidatableAnnotationPresent(@NonNull final TypeMirror typeMirror) {
+        return types.asElement(typeMirror).getAnnotation(Validatable.class) != null;
     }
 
-    public static boolean isAnnotationPresent(@NonNull final Element element,
-                                              @NonNull final Class<? extends Annotation> annotation)
+    public boolean isAnnotationPresent(@NonNull final Element element,
+                                       @NonNull final Class<? extends Annotation> annotation)
     {
         return element.getAnnotation(annotation) != null;
     }
 
-    private static boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final DataType dataType) {
+    boolean isAssignable(@NonNull final TypeMirror typeMirror, @NonNull final DataType dataType) {
         return dataType.getJClasses().stream()
             .anyMatch(
-                jClass -> TYPES.isAssignable(TYPES.erasure(typeMirror), getTypeElement(jClass).asType())
+                jClass -> types.isAssignable(types.erasure(typeMirror), getTypeElement(jClass).asType())
             );
-    }
-
-    private static void checkInitialization() {
-        Checks.nonNullCustom(TYPES, "'TYPES' is not initialized.");
-        Checks.nonNullCustom(ELEMENTS, "'ELEMENTS' is not initialized.");
     }
 }

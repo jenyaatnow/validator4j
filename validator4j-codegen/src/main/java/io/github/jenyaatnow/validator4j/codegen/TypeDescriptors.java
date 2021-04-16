@@ -49,6 +49,11 @@ public final class TypeDescriptors {
     public static final TypeDescriptor VALIDATABLE_TYPE = new TypeDescriptor("com.sample.Test", DataType.VALIDATABLE);
     public static final TypeDescriptor V4J_VALIDATABLE_TYPE = new TypeDescriptor("com.sample.VTest", DataType.V4J);
 
+    public static final TypeDescriptor COLLECTION_OF_VALIDATABLE_TYPES =
+        new TypeDescriptor(Collection.class.getName(), DataType.V_COLLECTION, List.of(VALIDATABLE_TYPE));
+    public static final TypeDescriptor V4J_COLLECTION_OF_VALIDATABLE_TYPES =
+        new TypeDescriptor("com.sample.VTestCollection", DataType.V4J);
+
 
     public static TypeDescriptor getUserType(@NonNull final Class<?> clazz) {
         return new TypeDescriptor(clazz.getName(), DataType.VALIDATABLE);
